@@ -1,9 +1,0 @@
-/**
- * 
- */
-/**
- * @author Matheus
- *
- */
-module MSMoney {
-}
