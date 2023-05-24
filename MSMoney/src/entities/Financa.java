@@ -16,8 +16,39 @@ public class Financa {
 		this.mes = mes;
 	}
 
+	public Financa() {
+	}
 
 
+	public Financa(String nome, String categoria, boolean mensal_Ocasional, Double total, FinancaEnum tipo, int mes) {
+		this.nome = nome;
+		this.categoria = categoria;
+		this.mensal_Ocasional = mensal_Ocasional;
+		this.total = total;
+		this.tipo = tipo;
+		this.mes = mes;
+	}
+
+	
+
+	public Financa(String nome, String categoria, boolean mensal_Ocasional, Double total, FinancaEnum tipo) {
+
+		this.nome = nome;
+		this.categoria = categoria;
+		this.mensal_Ocasional = mensal_Ocasional;
+		this.total = total;
+		this.tipo = tipo;
+	}
+	
+	
+
+	public Financa(String nome, boolean mensal_Ocasional, Double total, FinancaEnum tipo) {
+		super();
+		this.nome = nome;
+		this.mensal_Ocasional = mensal_Ocasional;
+		this.total = total;
+		this.tipo = tipo;
+	}
 
 	public int getMes() {
 		return mes;
@@ -41,15 +72,7 @@ public class Financa {
 	
 	
 	
-	public Financa(String nome, String categoria, boolean mensal_Ocasional, Double total, FinancaEnum tipo, int mes) {
-		this.nome = nome;
-		this.categoria = categoria;
-		this.mensal_Ocasional = mensal_Ocasional;
-		this.total = total;
-		this.tipo = tipo;
-		this.mes = mes;
-	}
-
+	
 
 	
 	
