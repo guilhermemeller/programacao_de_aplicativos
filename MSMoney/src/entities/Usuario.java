@@ -90,10 +90,10 @@ public class Usuario {
 		this.login = login;
 		this.senha = senha;
 		this.nome = nome;
-		this.rendimentos = new ArrayList<Financa>();
-		this.despesas = new ArrayList<Financa>();
-		this.longoPrazo = new ArrayList<Financa>();
-		this.despesasOcasionais = new ArrayList<Financa>();
+		this.rendimentos = null;
+		this.despesas = null;
+		this.longoPrazo = null;
+		this.despesasOcasionais = null;
 		this.resumo = new ArrayList<List<Financa>>();
 		this.usuarioUtils = new UsuarioUtils();
 	}
