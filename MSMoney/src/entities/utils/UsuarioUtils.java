@@ -32,17 +32,38 @@ public class UsuarioUtils {
 	}
 	
 	public void vizualizarResumo(List<List<Financa>> listaResumo) {
-		Double totalResumo;
-		FinancaEnum finEnum[] = FinancaEnum.values();		
-		for(int i = 0; i< listaResumo.size(); i++) {
-			for(FinancaEnum financaEnum : finEnum) {
-				System.out.println(financaEnum.toString());
-				for(Financa financa : listaResumo.get(i)) {
-					System.out.println(financa.toString());
-				}
+		Double totalResumo = 0.0;
+		for(List<Financa> listaFinanca : listaResumo) {
+			Double totalFinanca = 0.0;
+			if(listaFinanca.get(0)!=null) {
+				System.out.println(listaFinanca.get(0).getTipo());
+			}
+			for(Financa financa : listaFinanca) {
+				totalFinanca += financa.getTotal();
 			}
 			
+			System.out.println(" R$ "+totalFinanca);
+			
+			
+			if(listaFinanca.get(0).getTipo() == FinancaEnum.REDIMENTO) {
+				totalResumo += totalFinanca;
+			}
+			if(listaFinanca.get(0).getTipo() == FinancaEnum.DESPESAS) {
+				totalResumo -= totalFinanca;
+			}
+			if(listaFinanca.get(0).getTipo() == FinancaEnum.LONGO_PRAZO) {
+				totalResumo -= totalFinanca;
+			}
 		}
+		System.out.println("TOTAL:\n"+" R$ "+totalResumo);
+	}
+	
+	public List<List<Financa>> atualizarResumo(List<List<Financa>> listaResumo, List<Financa> listaRendimento, List<Financa> listaDespesas, List<Financa> listaLongoPrazo){
+		listaResumo = new ArrayList<List<Financa>>();
+		listaResumo.add(listaRendimento);
+		listaResumo.add(listaDespesas);
+		listaResumo.add(listaLongoPrazo);
+		return listaResumo;
 	}
 	
 	/*
