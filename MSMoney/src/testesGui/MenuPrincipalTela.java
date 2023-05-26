@@ -8,89 +8,17 @@ import java.awt.event.ActionListener;
 
 public class MenuPrincipalTela extends JFrame {
     private JPanel mainPanel;
-    private JPanel sidePanel;
-    private JPanel contentPanel;
 
     public MenuPrincipalTela() {
+    	setResizable(false);
         // Configurações da janela principal
         setTitle("Menu Principal");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800, 600);
+        setSize(1000, 800);
         setLocationRelativeTo(null);
 
         // Painel principal
-        mainPanel = new JPanel(new BorderLayout());
-
-        // Painel lateral
-        sidePanel = new JPanel(new GridLayout(6, 1));
-
-        JButton rendimentoButton = new JButton("Rendimento");
-        rendimentoButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Implemente aqui a lógica para exibir a funcionalidade de Rendimento
-                JOptionPane.showMessageDialog(null, "Funcionalidade de Rendimento selecionada.");
-            }
-        });
-
-        JButton despesasButton = new JButton("Despesas");
-        despesasButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Implemente aqui a lógica para exibir a funcionalidade de Despesas
-                JOptionPane.showMessageDialog(null, "Funcionalidade de Despesas selecionada.");
-            }
-        });
-
-        JButton investimentoButton = new JButton("Investimento");
-        investimentoButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Implemente aqui a lógica para exibir a funcionalidade de Investimento
-                JOptionPane.showMessageDialog(null, "Funcionalidade de Investimento selecionada.");
-            }
-        });
-
-        JButton fundoButton = new JButton("Fundo de Despesas Ocasionais");
-        fundoButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Implemente aqui a lógica para exibir a funcionalidade de Fundo de Despesas Ocasionais
-                JOptionPane.showMessageDialog(null, "Funcionalidade de Fundo de Despesas Ocasionais selecionada.");
-            }
-        });
-
-        JButton resumoButton = new JButton("Resumo");
-        resumoButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Implemente aqui a lógica para exibir a funcionalidade de Resumo
-                JOptionPane.showMessageDialog(null, "Funcionalidade de Resumo selecionada.");
-            }
-        });
-
-        JButton relatorioButton = new JButton("Relatório");
-        relatorioButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Implemente aqui a lógica para exibir a funcionalidade de Relatório
-                JOptionPane.showMessageDialog(null, "Funcionalidade de Relatório selecionada.");
-            }
-        });
-
-        sidePanel.add(rendimentoButton);
-        sidePanel.add(despesasButton);
-        sidePanel.add(investimentoButton);
-        sidePanel.add(fundoButton);
-        sidePanel.add(resumoButton);
-        sidePanel.add(relatorioButton);
-
-        // Painel de conteúdo
-        contentPanel = new JPanel();
-        contentPanel.setBackground(Color.WHITE);
-
-        mainPanel.add(sidePanel, BorderLayout.WEST);
-        mainPanel.add(contentPanel, BorderLayout.CENTER);
+        mainPanel = new JPanel();
 
         // Barra superior com menu de opções
         JMenuBar menuBar = new JMenuBar();
@@ -110,7 +38,31 @@ public class MenuPrincipalTela extends JFrame {
         setJMenuBar(menuBar);
 
         // Adicionar o painel principal à janela
-        add(mainPanel);
+        getContentPane().add(mainPanel);
+        mainPanel.setLayout(null);
+        
+        JTabbedPane tpSideMenu = new JTabbedPane(JTabbedPane.TOP);
+        tpSideMenu.setFont(new Font("Tahoma", Font.BOLD, 20));
+        tpSideMenu.setBounds(10, 11, 964, 717);
+        mainPanel.add(tpSideMenu);
+        
+        JPanel rendimentoPanel = new JPanel();
+        tpSideMenu.addTab("Rendimento", null, rendimentoPanel, null);
+        
+        JPanel despesasPanel = new JPanel();
+        tpSideMenu.addTab("Despesas", null, despesasPanel, null);
+        
+        JPanel investimentoPanel = new JPanel();
+        tpSideMenu.addTab("Investimento", null, investimentoPanel, null);
+        
+        JPanel despesasocasionaisPanel = new JPanel();
+        tpSideMenu.addTab("Fundo de Despesas", null, despesasocasionaisPanel, null);
+        
+        JPanel resumoPanel = new JPanel();
+        tpSideMenu.addTab("Resumo", null, resumoPanel, null);
+        
+        JPanel relatorioPanel = new JPanel();
+        tpSideMenu.addTab("Relatório", null, relatorioPanel, null);
 
         // Exibir a janela
         setVisible(true);

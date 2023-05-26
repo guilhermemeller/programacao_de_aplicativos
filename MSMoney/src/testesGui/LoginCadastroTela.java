@@ -24,7 +24,7 @@ public class LoginCadastroTela extends JFrame {
         // Configurações da janela principal
         setTitle("Login");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(300, 200);
+        setSize(360, 200);
         setLocationRelativeTo(null);
 
         // Painel de login
@@ -92,11 +92,11 @@ public class LoginCadastroTela extends JFrame {
         nomeField = new JTextField();
         nomeField.setColumns(25);
 
-        JLabel novoUsernameLabel = new JLabel("Novo Usuário:");
+        JLabel novoUsernameLabel = new JLabel("Usuário:");
         novoUsernameField = new JTextField();
         novoUsernameField.setColumns(25);
 
-        JLabel novoPasswordLabel = new JLabel("Nova Senha:");
+        JLabel novoPasswordLabel = new JLabel("Senha:");
         novoPasswordField = new JPasswordField();
         novoPasswordField.setColumns(25);
 
