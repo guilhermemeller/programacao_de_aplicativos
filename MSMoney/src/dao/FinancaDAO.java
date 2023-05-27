@@ -29,7 +29,7 @@ public class FinancaDAO {
 
 		try {
 
-			st = conn.prepareStatement("SELECT nome, categoria, mensal_Ocasional, total, tipo, mes " +
+			st = conn.prepareStatement("SELECT nome, categoria, mensal_ocasional, total, tipo, mes " +
 	                "FROM Financa WHERE usuario_id = ?");
 			
 			st.setInt(1, usuarioId);
