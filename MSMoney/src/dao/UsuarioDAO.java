@@ -26,10 +26,10 @@ public class UsuarioDAO {
 			st = conn.prepareStatement("INSERT INTO usuario (login, senha, nome) values (?, ?, ?)");
 			
 			st.setString(1, usuario.getLogin());
-            st.setString(2, usuario.getSenha());
-            st.setString(3, usuario.getNome());
+			st.setString(2, usuario.getSenha());
+			st.setString(3, usuario.getNome());
             
-            st.executeUpdate();
+			st.executeUpdate();
 			
 		} finally {
 			

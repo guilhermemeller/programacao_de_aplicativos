@@ -40,18 +40,18 @@ public class FinancaDAO {
 
 			while (rs.next()) {
 
-                String nome = rs.getString("nome");
-                String categoria = rs.getString("categoria");
-                boolean mensalOcasional = rs.getBoolean("mensal_Ocasional");
-                double total = rs.getDouble("total");
-                String tipoString = rs.getString("tipo");
-                int mes = rs.getInt("mes");
+				String nome = rs.getString("nome");
+				String categoria = rs.getString("categoria");
+				boolean mensalOcasional = rs.getBoolean("mensal_Ocasional");
+				double total = rs.getDouble("total");
+				String tipoString = rs.getString("tipo");
+				int mes = rs.getInt("mes");
                 
-                FinancaEnum tipo = FinancaEnum.valueOf(tipoString);
+				FinancaEnum tipo = FinancaEnum.valueOf(tipoString);
                 
-                Financa financa = new Financa(nome, categoria, mensalOcasional, total, tipo, mes);
+				Financa financa = new Financa(nome, categoria, mensalOcasional, total, tipo, mes);
                 
-                financas.add(financa);
+				financas.add(financa);
 
 			}
 			return financas;
@@ -62,7 +62,7 @@ public class FinancaDAO {
 			BancoDados.finalizarResultSet(rs);
 			BancoDados.desconectar();
 		}
-    }
+	}
 	
 	public void inserirFinanca(Financa financa, int usuarioId) throws SQLException {
 		
@@ -73,14 +73,14 @@ public class FinancaDAO {
 			st = conn.prepareStatement("INSERT INTO financa (nome, categoria, mensal_ocasional, total, tipo, mes, usuario_id) VALUES (?, ?, ?, ?, ?, ?, ?)");
 			
 			st.setString(1, financa.getNome());
-	        st.setString(2, financa.getCategoria());
-	        st.setBoolean(3, financa.isMensal_Ocasional());
-	        st.setDouble(4, financa.getTotal());
-	        st.setString(5, financa.getTipo().name());
-	        st.setInt(6, financa.getMes());
-	        st.setInt(7, usuarioId);
+			st.setString(2, financa.getCategoria());
+			st.setBoolean(3, financa.isMensal_Ocasional());
+			st.setDouble(4, financa.getTotal());
+			st.setString(5, financa.getTipo().name());
+			st.setInt(6, financa.getMes());
+			st.setInt(7, usuarioId);
 	         
-	        st.executeUpdate();
+			st.executeUpdate();
 			
 		} finally {
 			
