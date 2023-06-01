@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.border.TitledBorder;
+import javax.swing.border.EtchedBorder;
 
 public class MenuPrincipalTela extends JFrame {
     private JPanel mainPanel;
@@ -13,6 +14,10 @@ public class MenuPrincipalTela extends JFrame {
     private JTable tableRendimento;
     private JTable tableInvestimento;
     private JTable tableFundoDespesas;
+    private JTable tableResumoMensal;
+    private JTable tableRelatorioMensal;
+    private JTable tableResumoAnual;
+    private JTable tableRelatorioAnual;
 
     public MenuPrincipalTela() {
     	setResizable(false);
@@ -72,7 +77,7 @@ public class MenuPrincipalTela extends JFrame {
         rendimentoPanel.add(centerPanelRendimento, BorderLayout.CENTER);
         
         tableRendimento = new JTable();
-        tableRendimento.setBounds(10, 11, 939, 550);
+        tableRendimento.setBounds(10, 11, 927, 528);
         centerPanelRendimento.add(tableRendimento);
         
         JPanel botPanelRendimento = new JPanel();
@@ -109,7 +114,7 @@ public class MenuPrincipalTela extends JFrame {
         centerPanelDespesas.setLayout(null);
         
         tableDespesas = new JTable();
-        tableDespesas.setBounds(10, 11, 939, 550);
+        tableDespesas.setBounds(10, 11, 927, 528);
         centerPanelDespesas.add(tableDespesas);
         
         JPanel botPanelDespesas = new JPanel();
@@ -146,7 +151,7 @@ public class MenuPrincipalTela extends JFrame {
         investimentoPanel.add(centerPanelInvestimento, BorderLayout.CENTER);
         
         tableInvestimento = new JTable();
-        tableInvestimento.setBounds(10, 11, 939, 550);
+        tableInvestimento.setBounds(10, 11, 927, 528);
         centerPanelInvestimento.add(tableInvestimento);
         
         JPanel botPanelInvestimento = new JPanel();
@@ -183,7 +188,7 @@ public class MenuPrincipalTela extends JFrame {
         despesasocasionaisPanel.add(centerPanelFundoDespesas, BorderLayout.CENTER);
         
         tableFundoDespesas = new JTable();
-        tableFundoDespesas.setBounds(10, 11, 939, 550);
+        tableFundoDespesas.setBounds(10, 11, 927, 528);
         centerPanelFundoDespesas.add(tableFundoDespesas);
         
         JPanel botPanelFundoDespesas = new JPanel();
@@ -200,10 +205,141 @@ public class MenuPrincipalTela extends JFrame {
         botPanelFundoDespesas.add(btnExcluirFundoDespesas);
         
         JPanel resumoPanel = new JPanel();
+        resumoPanel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Resumo de contas", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
         tpSideMenu.addTab("Resumo", null, resumoPanel, null);
+        resumoPanel.setLayout(null);
+        
+        JTabbedPane tpResumo = new JTabbedPane(JTabbedPane.LEFT);
+        tpResumo.setFont(new Font("Tahoma", Font.BOLD, 15));
+        tpResumo.setBounds(10, 21, 939, 646);
+        resumoPanel.add(tpResumo);
+        
+        JPanel resumomensalPanel = new JPanel();
+        resumomensalPanel.setBorder(new TitledBorder(null, "Resumo Mensal", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+        tpResumo.addTab("Resumo Mensal", null, resumomensalPanel, null);
+        resumomensalPanel.setLayout(new BorderLayout(0, 0));
+        
+        JPanel topPanelResumomensal = new JPanel();
+        resumomensalPanel.add(topPanelResumomensal, BorderLayout.NORTH);
+        topPanelResumomensal.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 25));
+        
+        JComboBox cbResumoMensal = new JComboBox();
+        cbResumoMensal.setModel(new DefaultComboBoxModel(new String[] {"Janeiro", "Fevereiro", "Março", "Abril", "Março", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"}));
+        topPanelResumomensal.add(cbResumoMensal);
+        
+        JButton btnPesquisarResumoMensal = new JButton("Pesquisar");
+        topPanelResumomensal.add(btnPesquisarResumoMensal);
+        
+        JPanel centerPanelResumomensal = new JPanel();
+        centerPanelResumomensal.setLayout(null);
+        resumomensalPanel.add(centerPanelResumomensal, BorderLayout.CENTER);
+        
+        tableResumoMensal = new JTable();
+        tableResumoMensal.setBounds(10, 11, 770, 524);
+        centerPanelResumomensal.add(tableResumoMensal);
+        
+        JPanel resumoanualPanel = new JPanel();
+        resumoanualPanel.setBorder(new TitledBorder(null, "Resumo Anual", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+        tpResumo.addTab("Resumo Anual", null, resumoanualPanel, null);
+        resumoanualPanel.setLayout(new BorderLayout(0, 0));
+        
+        JPanel topPanelResumoanual = new JPanel();
+        resumoanualPanel.add(topPanelResumoanual, BorderLayout.NORTH);
+        topPanelResumoanual.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 25));
+        
+        JComboBox cbResumoAnual = new JComboBox();
+        cbResumoAnual.setModel(new DefaultComboBoxModel(new String[] {"2023"}));
+        topPanelResumoanual.add(cbResumoAnual);
+        
+        JButton btnPesquisarResumoAnual = new JButton("Pesquisar");
+        topPanelResumoanual.add(btnPesquisarResumoAnual);
         
         JPanel relatorioPanel = new JPanel();
+        relatorioPanel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Gera\u00E7\u00E3o de Relat\u00F3rios", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
         tpSideMenu.addTab("Relatório", null, relatorioPanel, null);
+        relatorioPanel.setLayout(null);
+        
+        JTabbedPane tpRelatorio = new JTabbedPane(JTabbedPane.LEFT);
+        tpRelatorio.setFont(new Font("Tahoma", Font.BOLD, 15));
+        tpRelatorio.setBounds(10, 21, 939, 646);
+        relatorioPanel.add(tpRelatorio);
+        
+        JPanel relatoriomensalPanel = new JPanel();
+        relatoriomensalPanel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Relat\u00F3rio Mensal", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+        tpRelatorio.addTab("Relatório Mensal", null, relatoriomensalPanel, null);
+        relatoriomensalPanel.setLayout(new BorderLayout(0, 0));
+        
+        JPanel topPanelRelatoriomensal = new JPanel();
+        relatoriomensalPanel.add(topPanelRelatoriomensal, BorderLayout.NORTH);
+        topPanelRelatoriomensal.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 25));
+        
+        JComboBox cbRelatorioMensal = new JComboBox();
+        topPanelRelatoriomensal.add(cbRelatorioMensal);
+        
+        JComboBox cbCategoriaMensal = new JComboBox();
+        topPanelRelatoriomensal.add(cbCategoriaMensal);
+        
+        JButton btnPesquisarRelatorioMensal = new JButton("Pesquisar");
+        topPanelRelatoriomensal.add(btnPesquisarRelatorioMensal);
+        
+        JPanel centerPanelRelatoriomensal = new JPanel();
+        centerPanelRelatoriomensal.setLayout(null);
+        relatoriomensalPanel.add(centerPanelRelatoriomensal, BorderLayout.CENTER);
+        
+        tableRelatorioMensal = new JTable();
+        tableRelatorioMensal.setBounds(10, 11, 759, 483);
+        centerPanelRelatoriomensal.add(tableRelatorioMensal);
+        
+        JPanel botPanelRelatorioMensal = new JPanel();
+        relatoriomensalPanel.add(botPanelRelatorioMensal, BorderLayout.SOUTH);
+        botPanelRelatorioMensal.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 5));
+        
+        JButton btnGerarRelatorioMensal = new JButton("Gerar Relatório");
+        btnGerarRelatorioMensal.setFont(new Font("Tahoma", Font.PLAIN, 18));
+        botPanelRelatorioMensal.add(btnGerarRelatorioMensal);
+        
+        JPanel relatorioanualPanel = new JPanel();
+        relatorioanualPanel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Relat\u00F3rio Anual", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+        tpRelatorio.addTab("Relatório Anual", null, relatorioanualPanel, null);
+        relatorioanualPanel.setLayout(new BorderLayout(0, 0));
+        
+        JPanel topPanelRelatorioanual = new JPanel();
+        relatorioanualPanel.add(topPanelRelatorioanual, BorderLayout.NORTH);
+        topPanelRelatorioanual.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 25));
+        
+        JComboBox cbRelatorioAnual = new JComboBox();
+        cbRelatorioAnual.setModel(new DefaultComboBoxModel(new String[] {"2023"}));
+        topPanelRelatorioanual.add(cbRelatorioAnual);
+        
+        JComboBox cbCategoriaAnual = new JComboBox();
+        topPanelRelatorioanual.add(cbCategoriaAnual);
+        
+        JButton btnPesquisarRelatorioAnual = new JButton("Pesquisar");
+        topPanelRelatorioanual.add(btnPesquisarRelatorioAnual);
+        
+        JPanel centerPanelRelatorioanual = new JPanel();
+        centerPanelRelatorioanual.setLayout(null);
+        relatorioanualPanel.add(centerPanelRelatorioanual, BorderLayout.CENTER);
+        
+        tableRelatorioAnual = new JTable();
+        tableRelatorioAnual.setBounds(10, 11, 759, 483);
+        centerPanelRelatorioanual.add(tableRelatorioAnual);
+        
+        JPanel botPanelRelatorioAnual = new JPanel();
+        relatorioanualPanel.add(botPanelRelatorioAnual, BorderLayout.SOUTH);
+        botPanelRelatorioAnual.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 5));
+        
+        JButton btnGerarRelatorioAnual = new JButton("Gerar Relatório");
+        btnGerarRelatorioAnual.setFont(new Font("Tahoma", Font.PLAIN, 18));
+        botPanelRelatorioAnual.add(btnGerarRelatorioAnual);
+        
+        JPanel centerPanelResumoanual = new JPanel();
+        centerPanelResumoanual.setLayout(null);
+        resumoanualPanel.add(centerPanelResumoanual, BorderLayout.CENTER);
+        
+        tableResumoAnual = new JTable();
+        tableResumoAnual.setBounds(10, 11, 770, 524);
+        centerPanelResumoanual.add(tableResumoAnual);
 
         // Exibir a janela
         setVisible(true);
