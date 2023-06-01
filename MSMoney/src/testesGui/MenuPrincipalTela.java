@@ -66,10 +66,12 @@ public class MenuPrincipalTela extends JFrame {
         topPanelRendimento.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 25));
         
         JComboBox cbRendimento = new JComboBox();
+        cbRendimento.setFont(new Font("Tahoma", Font.PLAIN, 15));
         cbRendimento.setModel(new DefaultComboBoxModel(new String[] {"Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"}));
         topPanelRendimento.add(cbRendimento);
         
-        JButton btnPesquisarRendimento = new JButton("Pesquisar");
+        JButton btnPesquisarRendimento = new JButton("");
+        btnPesquisarRendimento.setIcon(new ImageIcon(MenuPrincipalTela.class.getResource("/images/pesquisar20.png")));
         topPanelRendimento.add(btnPesquisarRendimento);
         
         JPanel centerPanelRendimento = new JPanel();
@@ -82,15 +84,24 @@ public class MenuPrincipalTela extends JFrame {
         
         JPanel botPanelRendimento = new JPanel();
         rendimentoPanel.add(botPanelRendimento, BorderLayout.SOUTH);
-        botPanelRendimento.setLayout(new FlowLayout(FlowLayout.CENTER, 200, 5));
+        botPanelRendimento.setLayout(new FlowLayout(FlowLayout.CENTER, 150, 5));
         
         JButton btnCadastrarRendimento = new JButton("Cadastrar");
+        btnCadastrarRendimento.setIcon(new ImageIcon(MenuPrincipalTela.class.getResource("/images/cadastrar40.png")));
+        btnCadastrarRendimento.setFont(new Font("Tahoma", Font.BOLD, 16));
+        btnCadastrarRendimento.setBackground(new Color(221, 249, 226));
         botPanelRendimento.add(btnCadastrarRendimento);
         
         JButton btnEditarRendimento = new JButton("Editar");
+        btnEditarRendimento.setIcon(new ImageIcon(MenuPrincipalTela.class.getResource("/images/editar40.png")));
+        btnEditarRendimento.setBackground(new Color(191, 214, 255));
+        btnEditarRendimento.setFont(new Font("Tahoma", Font.BOLD, 16));
         botPanelRendimento.add(btnEditarRendimento);
         
         JButton btnExcluirRendimento = new JButton("Excluir");
+        btnExcluirRendimento.setIcon(new ImageIcon(MenuPrincipalTela.class.getResource("/images/excluir40.png")));
+        btnExcluirRendimento.setBackground(new Color(255, 176, 176));
+        btnExcluirRendimento.setFont(new Font("Tahoma", Font.BOLD, 16));
         botPanelRendimento.add(btnExcluirRendimento);
         
         JPanel despesasPanel = new JPanel();
