@@ -18,6 +18,8 @@ import java.awt.Color;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 import java.awt.Font;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class CadastrarFinancaTela extends JFrame {
 
@@ -45,6 +47,7 @@ public class CadastrarFinancaTela extends JFrame {
 	 * Create the frame.
 	 */
 	public CadastrarFinancaTela() {
+		setTitle("Cadastro ou Edição de Categoria");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 500);
@@ -89,11 +92,11 @@ public class CadastrarFinancaTela extends JFrame {
 		categoriaPanel.add(cbCategoria);
 		
 		JPanel botoesPanel = new JPanel();
-		botoesPanel.setBounds(16, 57, 175, 63);
+		botoesPanel.setBounds(7, 57, 190, 63);
 		categoriaPanel.add(botoesPanel);
 		botoesPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		JButton btnCadastrarCategoria = new JButton("Cadastrar Categoria");
+		JButton btnCadastrarCategoria = new JButton("Cadastrar nova Categoria");
 		btnCadastrarCategoria.setFont(new Font("Tahoma", Font.BOLD, 11));
 		btnCadastrarCategoria.setBackground(new Color(221, 249, 226));
 		botoesPanel.add(btnCadastrarCategoria);
@@ -132,6 +135,13 @@ public class CadastrarFinancaTela extends JFrame {
 		cadastrofinancaPanel.add(btnCadastrarFinanca);
 		
 		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Fechar a tela
+                System.exit(0);
+            }
+        });
 		btnCancelar.setBackground(new Color(255, 176, 176));
 		btnCancelar.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btnCancelar.setBounds(270, 385, 115, 30);

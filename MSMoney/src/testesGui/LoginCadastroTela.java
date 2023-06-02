@@ -29,127 +29,161 @@ public class LoginCadastroTela extends JFrame {
 
         // Painel de login
         loginPanel = new JPanel();
-
-        JLabel usernameLabel = new JLabel("Usuário:");
-        usernameField = new JTextField();
-        usernameField.setColumns(25);
-
-        JLabel passwordLabel = new JLabel("Senha:");
-        passwordField = new JPasswordField();
-        passwordField.setColumns(25);
-
-        JButton loginButton = new JButton("Login");
-        loginButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Verificar a autenticação do usuário
-                String username = usernameField.getText();
-                String password = new String(passwordField.getPassword());
-
-                // Implemente aqui a lógica de autenticação
-
-                // Exemplo simples de autenticação
-                if (username.equals("admin") && password.equals("senha123")) {
-                    JOptionPane.showMessageDialog(null, "Login bem-sucedido!");
-                    loginEfetuado = true;
-                    dispose(); // Fechar a janela de login
-
-                    // Abrir a tela do menu principal após o login
-                    SwingUtilities.invokeLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            new MenuPrincipalTela();
-                        }
-                    });
-                } else {
-                    JOptionPane.showMessageDialog(null, "Login falhou. Tente novamente!");
-                }
-            }
-        });
-
-        JButton cadastrarButton = new JButton("Cadastre-se");
-        cadastrarButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Alternar para a tela de cadastro
-                loginPanel.setVisible(false);
-                cadastroPanel.setVisible(true);
-            }
-        });
-        loginPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-
-        loginPanel.add(usernameLabel);
-        loginPanel.add(usernameField);
-        loginPanel.add(passwordLabel);
-        loginPanel.add(passwordField);
-        loginPanel.add(loginButton);
-        loginPanel.add(cadastrarButton);
+        loginPanel.setLayout(new BorderLayout(0, 0));
 
         // Painel de cadastro
         cadastroPanel = new JPanel();
-
-        JLabel nomeLabel = new JLabel("Nome:");
-        nomeField = new JTextField();
-        nomeField.setColumns(25);
-
-        JLabel novoUsernameLabel = new JLabel("Usuário:");
-        novoUsernameField = new JTextField();
-        novoUsernameField.setColumns(25);
-
-        JLabel novoPasswordLabel = new JLabel("Senha:");
-        novoPasswordField = new JPasswordField();
-        novoPasswordField.setColumns(25);
-
-        JButton cadastrarUsuarioButton = new JButton("Cadastrar");
-        cadastrarUsuarioButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Implemente aqui a lógica de cadastro do usuário
-                String nome = nomeField.getText();
-                String novoUsername = novoUsernameField.getText();
-                String novaSenha = new String(novoPasswordField.getPassword());
-
-                // Exemplo simples de cadastro
-                // Você pode adicionar sua lógica de armazenamento de dados aqui
-
-                JOptionPane.showMessageDialog(null, "Cadastro realizado com sucesso!");
-                cadastroRealizado = true;
-
-                // Limpar os campos após o cadastro
-                nomeField.setText("");
-                novoUsernameField.setText("");
-                novoPasswordField.setText("");
-
-                // Alternar para a tela de login após o cadastro
-                cadastroPanel.setVisible(false);
-                loginPanel.setVisible(true);
-            }
-        });
-
-        JButton voltarButton = new JButton("Voltar");
-        voltarButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Voltar para a tela de login
-                cadastroPanel.setVisible(false);
-                loginPanel.setVisible(true);
-            }
-        });
-        cadastroPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-
-        cadastroPanel.add(nomeLabel);
-        cadastroPanel.add(nomeField);
-        cadastroPanel.add(novoUsernameLabel);
-        cadastroPanel.add(novoUsernameField);
-        cadastroPanel.add(novoPasswordLabel);
-        cadastroPanel.add(novoPasswordField);
-        cadastroPanel.add(cadastrarUsuarioButton);
-        cadastroPanel.add(voltarButton);
+        cadastroPanel.setLayout(new BorderLayout(0, 0));
+        
+        JPanel dadoscadastroPanel = new JPanel();
+        cadastroPanel.add(dadoscadastroPanel, BorderLayout.CENTER);
+                dadoscadastroPanel.setLayout(null);
+        
+                JLabel nomeLabel = new JLabel("Nome:");
+                nomeLabel.setBounds(45, 25, 50, 14);
+                dadoscadastroPanel.add(nomeLabel);
+                nomeField = new JTextField();
+                nomeField.setBounds(88, 22, 206, 20);
+                dadoscadastroPanel.add(nomeField);
+                nomeField.setColumns(25);
+                
+                        JLabel novoUsernameLabel = new JLabel("Usuário:");
+                        novoUsernameLabel.setBounds(35, 56, 50, 14);
+                        dadoscadastroPanel.add(novoUsernameLabel);
+                        novoUsernameField = new JTextField();
+                        novoUsernameField.setBounds(88, 53, 206, 20);
+                        dadoscadastroPanel.add(novoUsernameField);
+                        novoUsernameField.setColumns(25);
+                        
+                                JLabel novoPasswordLabel = new JLabel("Senha:");
+                                novoPasswordLabel.setBounds(43, 87, 50, 14);
+                                dadoscadastroPanel.add(novoPasswordLabel);
+                                novoPasswordField = new JPasswordField();
+                                novoPasswordField.setBounds(88, 84, 206, 20);
+                                dadoscadastroPanel.add(novoPasswordField);
+                                novoPasswordField.setColumns(25);
 
         // Adicionar os painéis à janela principal
         getContentPane().setLayout(new CardLayout());
         getContentPane().add(loginPanel);
+        
+        JPanel dadosloginPanel = new JPanel();
+        loginPanel.add(dadosloginPanel, BorderLayout.CENTER);
+                dadosloginPanel.setLayout(null);
+        
+                JLabel usernameLabel = new JLabel("Usuário:");
+                usernameLabel.setBounds(36, 36, 60, 14);
+                dadosloginPanel.add(usernameLabel);
+                usernameField = new JTextField();
+                usernameField.setBounds(89, 33, 206, 20);
+                dadosloginPanel.add(usernameField);
+                usernameField.setColumns(25);
+                
+                        JLabel passwordLabel = new JLabel("Senha:");
+                        passwordLabel.setBounds(44, 80, 60, 14);
+                        dadosloginPanel.add(passwordLabel);
+                        
+                        JLabel label = new JLabel("");
+                        label.setBounds(319, 15, 0, 0);
+                        dadosloginPanel.add(label);
+                        passwordField = new JPasswordField();
+                        passwordField.setBounds(89, 77, 206, 20);
+                        dadosloginPanel.add(passwordField);
+                        passwordField.setColumns(25);
+                        
+                        JLabel label_1 = new JLabel("");
+                        label_1.setBounds(277, 40, 0, 0);
+                        dadosloginPanel.add(label_1);
+        
+        JPanel botoesloginPanel = new JPanel();
+        loginPanel.add(botoesloginPanel, BorderLayout.SOUTH);
+                        botoesloginPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+                
+                        JButton loginButton = new JButton("Login");
+                        loginButton.setBackground(new Color(221, 249, 226));
+                        botoesloginPanel.add(loginButton);
+                        loginButton.addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                // Verificar a autenticação do usuário
+                                String username = usernameField.getText();
+                                String password = new String(passwordField.getPassword());
+
+                                // Implemente aqui a lógica de autenticação
+
+                                // Exemplo simples de autenticação
+                                if (username.equals("admin") && password.equals("senha123")) {
+                                    loginEfetuado = true;
+                                    dispose(); // Fechar a janela de login
+
+                                    // Abrir a tela do menu principal após o login
+                                    SwingUtilities.invokeLater(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            new MenuPrincipalTela();
+                                        }
+                                    });
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Usuário ou senha estão incorretos. Por favor, verifique suas informações e tente novamente!\nCaso ainda não possua cadastro pressione o botão \"Cadastre-se\".", "Erro", JOptionPane.ERROR_MESSAGE);
+                                }
+                            }
+                        });
+        
+                JButton cadastrarButton = new JButton("Cadastre-se");
+                cadastrarButton.setBackground(new Color(191, 214, 255));
+                botoesloginPanel.add(cadastrarButton);
+                cadastrarButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        // Alternar para a tela de cadastro
+                        loginPanel.setVisible(false);
+                        cadastroPanel.setVisible(true);
+                    }
+                });
         getContentPane().add(cadastroPanel);
+        
+        JPanel botoescadastroPanel = new JPanel();
+        cadastroPanel.add(botoescadastroPanel, BorderLayout.SOUTH);
+        
+                JButton cadastrarUsuarioButton = new JButton("Cadastrar");
+                cadastrarUsuarioButton.setBackground(new Color(221, 249, 226));
+                botoescadastroPanel.add(cadastrarUsuarioButton);
+                
+                        JButton voltarButton = new JButton("Voltar");
+                        voltarButton.setBackground(new Color(255, 176, 176));
+                        botoescadastroPanel.add(voltarButton);
+                        voltarButton.addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                // Voltar para a tela de login
+                                cadastroPanel.setVisible(false);
+                                loginPanel.setVisible(true);
+                            }
+                        });
+                cadastrarUsuarioButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        // Implemente aqui a lógica de cadastro do usuário
+                        String nome = nomeField.getText();
+                        String novoUsername = novoUsernameField.getText();
+                        String novaSenha = new String(novoPasswordField.getPassword());
+
+                        // Exemplo simples de cadastro
+                        // Você pode adicionar sua lógica de armazenamento de dados aqui
+
+                        JOptionPane.showMessageDialog(null, "Cadastro realizado com sucesso!");
+                        cadastroRealizado = true;
+
+                        // Limpar os campos após o cadastro
+                        nomeField.setText("");
+                        novoUsernameField.setText("");
+                        novoPasswordField.setText("");
+
+                        // Alternar para a tela de login após o cadastro
+                        cadastroPanel.setVisible(false);
+                        loginPanel.setVisible(true);
+                    }
+                });
 
         // Definir a tela de cadastro como oculta inicialmente
         cadastroPanel.setVisible(false);

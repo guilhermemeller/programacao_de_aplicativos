@@ -22,7 +22,7 @@ public class MenuPrincipalTela extends JFrame {
     public MenuPrincipalTela() {
     	setResizable(false);
         // Configurações da janela principal
-        setTitle("Menu Principal");
+        setTitle("Sistema de Gestão de Finanças");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1000, 800);
         setLocationRelativeTo(null);
@@ -114,10 +114,12 @@ public class MenuPrincipalTela extends JFrame {
         topPanelDespesas.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 25));
         
         JComboBox cbDespesas = new JComboBox();
+        cbDespesas.setFont(new Font("Tahoma", Font.PLAIN, 15));
         cbDespesas.setModel(new DefaultComboBoxModel(new String[] {"Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"}));
         topPanelDespesas.add(cbDespesas);
         
-        JButton btnPesquisarDespesas = new JButton("Pesquisar");
+        JButton btnPesquisarDespesas = new JButton("");
+        btnPesquisarDespesas.setIcon(new ImageIcon(MenuPrincipalTela.class.getResource("/images/pesquisar20.png")));
         topPanelDespesas.add(btnPesquisarDespesas);
         
         JPanel centerPanelDespesas = new JPanel();
@@ -130,15 +132,24 @@ public class MenuPrincipalTela extends JFrame {
         
         JPanel botPanelDespesas = new JPanel();
         despesasPanel.add(botPanelDespesas, BorderLayout.SOUTH);
-        botPanelDespesas.setLayout(new FlowLayout(FlowLayout.CENTER, 200, 5));
+        botPanelDespesas.setLayout(new FlowLayout(FlowLayout.CENTER, 150, 5));
         
         JButton btnCadastrarDespesas = new JButton("Cadastrar");
+        btnCadastrarDespesas.setBackground(new Color(221, 249, 226));
+        btnCadastrarDespesas.setIcon(new ImageIcon(MenuPrincipalTela.class.getResource("/images/cadastrar40.png")));
+        btnCadastrarDespesas.setFont(new Font("Tahoma", Font.BOLD, 16));
         botPanelDespesas.add(btnCadastrarDespesas);
         
         JButton btnEditarDespesas = new JButton("Editar");
+        btnEditarDespesas.setBackground(new Color(191, 214, 255));
+        btnEditarDespesas.setIcon(new ImageIcon(MenuPrincipalTela.class.getResource("/images/editar40.png")));
+        btnEditarDespesas.setFont(new Font("Tahoma", Font.BOLD, 16));
         botPanelDespesas.add(btnEditarDespesas);
         
         JButton btnExcluirDespesas = new JButton("Excluir");
+        btnExcluirDespesas.setBackground(new Color(255, 176, 176));
+        btnExcluirDespesas.setIcon(new ImageIcon(MenuPrincipalTela.class.getResource("/images/excluir40.png")));
+        btnExcluirDespesas.setFont(new Font("Tahoma", Font.BOLD, 16));
         botPanelDespesas.add(btnExcluirDespesas);
         
         JPanel investimentoPanel = new JPanel();
@@ -151,10 +162,12 @@ public class MenuPrincipalTela extends JFrame {
         topPanelInvestimento.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 25));
         
         JComboBox cbInvestimento = new JComboBox();
+        cbInvestimento.setFont(new Font("Tahoma", Font.PLAIN, 15));
         cbInvestimento.setModel(new DefaultComboBoxModel(new String[] {"Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"}));
         topPanelInvestimento.add(cbInvestimento);
         
-        JButton btnPesquisarInvestimento = new JButton("Pesquisar");
+        JButton btnPesquisarInvestimento = new JButton("");
+        btnPesquisarInvestimento.setIcon(new ImageIcon(MenuPrincipalTela.class.getResource("/images/pesquisar20.png")));
         topPanelInvestimento.add(btnPesquisarInvestimento);
         
         JPanel centerPanelInvestimento = new JPanel();
@@ -167,15 +180,24 @@ public class MenuPrincipalTela extends JFrame {
         
         JPanel botPanelInvestimento = new JPanel();
         investimentoPanel.add(botPanelInvestimento, BorderLayout.SOUTH);
-        botPanelInvestimento.setLayout(new FlowLayout(FlowLayout.CENTER, 200, 5));
+        botPanelInvestimento.setLayout(new FlowLayout(FlowLayout.CENTER, 150, 5));
         
         JButton btnCadastrarInvestimento = new JButton("Cadastrar");
+        btnCadastrarInvestimento.setBackground(new Color(221, 249, 226));
+        btnCadastrarInvestimento.setIcon(new ImageIcon(MenuPrincipalTela.class.getResource("/images/cadastrar40.png")));
+        btnCadastrarInvestimento.setFont(new Font("Tahoma", Font.BOLD, 16));
         botPanelInvestimento.add(btnCadastrarInvestimento);
         
         JButton btnEditarInvestimento = new JButton("Editar");
+        btnEditarInvestimento.setBackground(new Color(191, 214, 255));
+        btnEditarInvestimento.setIcon(new ImageIcon(MenuPrincipalTela.class.getResource("/images/editar40.png")));
+        btnEditarInvestimento.setFont(new Font("Tahoma", Font.BOLD, 16));
         botPanelInvestimento.add(btnEditarInvestimento);
         
         JButton btnExcluirInvestimento = new JButton("Excluir");
+        btnExcluirInvestimento.setIcon(new ImageIcon(MenuPrincipalTela.class.getResource("/images/excluir40.png")));
+        btnExcluirInvestimento.setFont(new Font("Tahoma", Font.BOLD, 16));
+        btnExcluirInvestimento.setBackground(new Color(255, 176, 176));
         botPanelInvestimento.add(btnExcluirInvestimento);
         
         JPanel despesasocasionaisPanel = new JPanel();
@@ -188,10 +210,12 @@ public class MenuPrincipalTela extends JFrame {
         topPanelFundoDespesas.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 25));
         
         JComboBox cbFundoDespesas = new JComboBox();
+        cbFundoDespesas.setFont(new Font("Tahoma", Font.PLAIN, 15));
         cbFundoDespesas.setModel(new DefaultComboBoxModel(new String[] {"Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"}));
         topPanelFundoDespesas.add(cbFundoDespesas);
         
-        JButton btnPesquisarFundoDespesas = new JButton("Pesquisar");
+        JButton btnPesquisarFundoDespesas = new JButton("");
+        btnPesquisarFundoDespesas.setIcon(new ImageIcon(MenuPrincipalTela.class.getResource("/images/pesquisar20.png")));
         topPanelFundoDespesas.add(btnPesquisarFundoDespesas);
         
         JPanel centerPanelFundoDespesas = new JPanel();
@@ -204,15 +228,24 @@ public class MenuPrincipalTela extends JFrame {
         
         JPanel botPanelFundoDespesas = new JPanel();
         despesasocasionaisPanel.add(botPanelFundoDespesas, BorderLayout.SOUTH);
-        botPanelFundoDespesas.setLayout(new FlowLayout(FlowLayout.CENTER, 200, 5));
+        botPanelFundoDespesas.setLayout(new FlowLayout(FlowLayout.CENTER, 150, 5));
         
         JButton btnCadastrarFundoDespesas = new JButton("Cadastrar");
+        btnCadastrarFundoDespesas.setIcon(new ImageIcon(MenuPrincipalTela.class.getResource("/images/cadastrar40.png")));
+        btnCadastrarFundoDespesas.setBackground(new Color(221, 249, 226));
+        btnCadastrarFundoDespesas.setFont(new Font("Tahoma", Font.BOLD, 16));
         botPanelFundoDespesas.add(btnCadastrarFundoDespesas);
         
         JButton btnEditarFundoDespesas = new JButton("Editar");
+        btnEditarFundoDespesas.setIcon(new ImageIcon(MenuPrincipalTela.class.getResource("/images/editar40.png")));
+        btnEditarFundoDespesas.setBackground(new Color(191, 214, 255));
+        btnEditarFundoDespesas.setFont(new Font("Tahoma", Font.BOLD, 16));
         botPanelFundoDespesas.add(btnEditarFundoDespesas);
         
         JButton btnExcluirFundoDespesas = new JButton("Excluir");
+        btnExcluirFundoDespesas.setIcon(new ImageIcon(MenuPrincipalTela.class.getResource("/images/excluir40.png")));
+        btnExcluirFundoDespesas.setFont(new Font("Tahoma", Font.BOLD, 16));
+        btnExcluirFundoDespesas.setBackground(new Color(255, 176, 176));
         botPanelFundoDespesas.add(btnExcluirFundoDespesas);
         
         JPanel resumoPanel = new JPanel();
@@ -235,10 +268,12 @@ public class MenuPrincipalTela extends JFrame {
         topPanelResumomensal.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 25));
         
         JComboBox cbResumoMensal = new JComboBox();
+        cbResumoMensal.setFont(new Font("Tahoma", Font.PLAIN, 15));
         cbResumoMensal.setModel(new DefaultComboBoxModel(new String[] {"Janeiro", "Fevereiro", "Março", "Abril", "Março", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"}));
         topPanelResumomensal.add(cbResumoMensal);
         
-        JButton btnPesquisarResumoMensal = new JButton("Pesquisar");
+        JButton btnPesquisarResumoMensal = new JButton("");
+        btnPesquisarResumoMensal.setIcon(new ImageIcon(MenuPrincipalTela.class.getResource("/images/pesquisar20.png")));
         topPanelResumomensal.add(btnPesquisarResumoMensal);
         
         JPanel centerPanelResumomensal = new JPanel();
@@ -259,10 +294,12 @@ public class MenuPrincipalTela extends JFrame {
         topPanelResumoanual.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 25));
         
         JComboBox cbResumoAnual = new JComboBox();
+        cbResumoAnual.setFont(new Font("Tahoma", Font.PLAIN, 15));
         cbResumoAnual.setModel(new DefaultComboBoxModel(new String[] {"2023"}));
         topPanelResumoanual.add(cbResumoAnual);
         
-        JButton btnPesquisarResumoAnual = new JButton("Pesquisar");
+        JButton btnPesquisarResumoAnual = new JButton("");
+        btnPesquisarResumoAnual.setIcon(new ImageIcon(MenuPrincipalTela.class.getResource("/images/pesquisar20.png")));
         topPanelResumoanual.add(btnPesquisarResumoAnual);
         
         JPanel relatorioPanel = new JPanel();
@@ -285,12 +322,17 @@ public class MenuPrincipalTela extends JFrame {
         topPanelRelatoriomensal.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 25));
         
         JComboBox cbRelatorioMensal = new JComboBox();
+        cbRelatorioMensal.setModel(new DefaultComboBoxModel(new String[] {"Janeiro"}));
+        cbRelatorioMensal.setFont(new Font("Tahoma", Font.PLAIN, 15));
         topPanelRelatoriomensal.add(cbRelatorioMensal);
         
         JComboBox cbCategoriaMensal = new JComboBox();
+        cbCategoriaMensal.setFont(new Font("Tahoma", Font.PLAIN, 15));
+        cbCategoriaMensal.setModel(new DefaultComboBoxModel(new String[] {"Salário", "Automóvel"}));
         topPanelRelatoriomensal.add(cbCategoriaMensal);
         
-        JButton btnPesquisarRelatorioMensal = new JButton("Pesquisar");
+        JButton btnPesquisarRelatorioMensal = new JButton("");
+        btnPesquisarRelatorioMensal.setIcon(new ImageIcon(MenuPrincipalTela.class.getResource("/images/pesquisar20.png")));
         topPanelRelatoriomensal.add(btnPesquisarRelatorioMensal);
         
         JPanel centerPanelRelatoriomensal = new JPanel();
@@ -306,7 +348,9 @@ public class MenuPrincipalTela extends JFrame {
         botPanelRelatorioMensal.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 5));
         
         JButton btnGerarRelatorioMensal = new JButton("Gerar Relatório");
-        btnGerarRelatorioMensal.setFont(new Font("Tahoma", Font.PLAIN, 18));
+        btnGerarRelatorioMensal.setIcon(new ImageIcon(MenuPrincipalTela.class.getResource("/images/relatorio40.png")));
+        btnGerarRelatorioMensal.setBackground(new Color(221, 249, 226));
+        btnGerarRelatorioMensal.setFont(new Font("Tahoma", Font.BOLD, 16));
         botPanelRelatorioMensal.add(btnGerarRelatorioMensal);
         
         JPanel relatorioanualPanel = new JPanel();
@@ -319,13 +363,17 @@ public class MenuPrincipalTela extends JFrame {
         topPanelRelatorioanual.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 25));
         
         JComboBox cbRelatorioAnual = new JComboBox();
+        cbRelatorioAnual.setFont(new Font("Tahoma", Font.PLAIN, 15));
         cbRelatorioAnual.setModel(new DefaultComboBoxModel(new String[] {"2023"}));
         topPanelRelatorioanual.add(cbRelatorioAnual);
         
         JComboBox cbCategoriaAnual = new JComboBox();
+        cbCategoriaAnual.setModel(new DefaultComboBoxModel(new String[] {"Salário", "Automóvel"}));
+        cbCategoriaAnual.setFont(new Font("Tahoma", Font.PLAIN, 15));
         topPanelRelatorioanual.add(cbCategoriaAnual);
         
-        JButton btnPesquisarRelatorioAnual = new JButton("Pesquisar");
+        JButton btnPesquisarRelatorioAnual = new JButton("");
+        btnPesquisarRelatorioAnual.setIcon(new ImageIcon(MenuPrincipalTela.class.getResource("/images/pesquisar20.png")));
         topPanelRelatorioanual.add(btnPesquisarRelatorioAnual);
         
         JPanel centerPanelRelatorioanual = new JPanel();
@@ -341,7 +389,9 @@ public class MenuPrincipalTela extends JFrame {
         botPanelRelatorioAnual.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 5));
         
         JButton btnGerarRelatorioAnual = new JButton("Gerar Relatório");
-        btnGerarRelatorioAnual.setFont(new Font("Tahoma", Font.PLAIN, 18));
+        btnGerarRelatorioAnual.setIcon(new ImageIcon(MenuPrincipalTela.class.getResource("/images/relatorio40.png")));
+        btnGerarRelatorioAnual.setBackground(new Color(221, 249, 226));
+        btnGerarRelatorioAnual.setFont(new Font("Tahoma", Font.BOLD, 16));
         botPanelRelatorioAnual.add(btnGerarRelatorioAnual);
         
         JPanel centerPanelResumoanual = new JPanel();
