@@ -20,6 +20,7 @@ public class Usuario {
 	
 	public String getLogin() {
 		return login;
+	}
 	public static void main(String[] args) {
 
 	}
@@ -103,7 +104,4 @@ public class Usuario {
 	public Usuario() {
 		
 	}
-	
-	
-	
 }
