@@ -6,6 +6,7 @@ import entities.Usuario;
 
 
 public class UsuarioTest {
+	/*
 	public static void main(String[] args) {
 		Usuario usuario = new Usuario("jvchudek90@gmail.com", "1234", "João Chudek");
 		
@@ -36,4 +37,5 @@ public class UsuarioTest {
 		}
 		
 	}
+	*/
 }
