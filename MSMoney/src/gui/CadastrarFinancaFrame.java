@@ -47,7 +47,7 @@ public class CadastrarFinancaFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public CadastrarFinancaFrame() {
-		setTitle("Cadastro ou Edição de Categoria");
+		setTitle("Cadastro/Edição de Finança");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 500);
@@ -139,7 +139,7 @@ public class CadastrarFinancaFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Fechar a tela
-                System.exit(0);
+            	dispose();
             }
         });
 		btnCancelar.setBackground(new Color(255, 176, 176));
