@@ -5,8 +5,17 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
+
 import javax.swing.border.TitledBorder;
+
+import entities.Categoria;
+import service.CategoriaService;
+
 import javax.swing.border.EtchedBorder;
+import utils.Mes;
 
 public class MenuPrincipalFrame extends JFrame {
     private JPanel mainPanel;
@@ -149,7 +158,7 @@ public class MenuPrincipalFrame extends JFrame {
         
         cbRendimento = new JComboBox();
         cbRendimento.setFont(new Font("Tahoma", Font.PLAIN, 15));
-        cbRendimento.setModel(new DefaultComboBoxModel(new String[] {"Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"}));
+        cbRendimento.setModel(new DefaultComboBoxModel(Mes.values()));
         topPanelRendimento.add(cbRendimento);
         
         btnPesquisarRendimento = new JButton("");
@@ -202,7 +211,7 @@ public class MenuPrincipalFrame extends JFrame {
         
         cbDespesas = new JComboBox();
         cbDespesas.setFont(new Font("Tahoma", Font.PLAIN, 15));
-        cbDespesas.setModel(new DefaultComboBoxModel(new String[] {"Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"}));
+        cbDespesas.setModel(new DefaultComboBoxModel(Mes.values()));
         topPanelDespesas.add(cbDespesas);
         
         btnPesquisarDespesas = new JButton("");
@@ -255,7 +264,7 @@ public class MenuPrincipalFrame extends JFrame {
         
         cbInvestimento = new JComboBox();
         cbInvestimento.setFont(new Font("Tahoma", Font.PLAIN, 15));
-        cbInvestimento.setModel(new DefaultComboBoxModel(new String[] {"Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"}));
+        cbInvestimento.setModel(new DefaultComboBoxModel(Mes.values()));
         topPanelInvestimento.add(cbInvestimento);
         
         btnPesquisarInvestimento = new JButton("");
@@ -308,7 +317,7 @@ public class MenuPrincipalFrame extends JFrame {
         
         cbFundoDespesas = new JComboBox();
         cbFundoDespesas.setFont(new Font("Tahoma", Font.PLAIN, 15));
-        cbFundoDespesas.setModel(new DefaultComboBoxModel(new String[] {"Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"}));
+        cbFundoDespesas.setModel(new DefaultComboBoxModel(Mes.values()));
         topPanelFundoDespesas.add(cbFundoDespesas);
         
         btnPesquisarFundoDespesas = new JButton("");
@@ -371,7 +380,7 @@ public class MenuPrincipalFrame extends JFrame {
         
         cbResumoMensal = new JComboBox();
         cbResumoMensal.setFont(new Font("Tahoma", Font.PLAIN, 15));
-        cbResumoMensal.setModel(new DefaultComboBoxModel(new String[] {"Janeiro", "Fevereiro", "Março", "Abril", "Março", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"}));
+        cbResumoMensal.setModel(new DefaultComboBoxModel(Mes.values()));
         topPanelResumomensal.add(cbResumoMensal);
         
         btnPesquisarResumoMensal = new JButton("");
@@ -424,13 +433,12 @@ public class MenuPrincipalFrame extends JFrame {
         topPanelRelatoriomensal.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 25));
         
         cbRelatorioMensal = new JComboBox();
-        cbRelatorioMensal.setModel(new DefaultComboBoxModel(new String[] {"Janeiro"}));
+        cbRelatorioMensal.setModel(new DefaultComboBoxModel(Mes.values()));
         cbRelatorioMensal.setFont(new Font("Tahoma", Font.PLAIN, 15));
         topPanelRelatoriomensal.add(cbRelatorioMensal);
         
         cbCategoriaMensal = new JComboBox();
         cbCategoriaMensal.setFont(new Font("Tahoma", Font.PLAIN, 15));
-        cbCategoriaMensal.setModel(new DefaultComboBoxModel(new String[] {"Salário", "Automóvel"}));
         topPanelRelatoriomensal.add(cbCategoriaMensal);
         
         btnPesquisarRelatorioMensal = new JButton("");
@@ -470,8 +478,8 @@ public class MenuPrincipalFrame extends JFrame {
         topPanelRelatorioanual.add(cbRelatorioAnual);
         
         cbCategoriaAnual = new JComboBox();
-        cbCategoriaAnual.setModel(new DefaultComboBoxModel(new String[] {"Salário", "Automóvel"}));
         cbCategoriaAnual.setFont(new Font("Tahoma", Font.PLAIN, 15));
+        atualizarCategorias();
         topPanelRelatorioanual.add(cbCategoriaAnual);
         
         btnPesquisarRelatorioAnual = new JButton("");
@@ -531,6 +539,31 @@ public class MenuPrincipalFrame extends JFrame {
 		cadastrarFinanca.setLocationRelativeTo(null);
 		cadastrarFinanca.setVisible(true);
     }
+    
+    public void atualizarCategorias(){
+		CategoriaService cService = new CategoriaService();
+		if(cbCategoriaMensal != null) {
+			cbCategoriaMensal.removeAllItems();
+		}
+		if(cbCategoriaAnual != null) {
+			cbCategoriaAnual.removeAllItems();
+		}
+		List<Categoria> categorias;
+		try {
+			categorias = cService.buscarCategorias();
+			for (Categoria categoria : categorias) {
+				cbCategoriaMensal.addItem(categoria.getNome());
+				cbCategoriaAnual.addItem(categoria.getNome());
+			}
+			cbCategoriaMensal.revalidate();
+			cbCategoriaMensal.repaint();
+			cbCategoriaAnual.revalidate();
+			cbCategoriaAnual.repaint();
+		} catch (SQLException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
     
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {

@@ -30,6 +30,7 @@ import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 import java.awt.event.ActionEvent;
 
 public class CadastrarFinancaFrame extends JFrame {
@@ -126,7 +127,11 @@ public class CadastrarFinancaFrame extends JFrame {
 		categoriaPanel.setBounds(196, 66, 207, 128);
 		cadastrofinancaPanel.add(categoriaPanel);
 		
-		cbCategoria = new JComboBox();
+		cbCategoria = new JComboBox<>();
+		cbCategoria.setEditable(false);
+		
+		atualizarCategorias();
+		
 		cbCategoria.setBounds(16, 20, 175, 30);
 		categoriaPanel.add(cbCategoria);
 		
@@ -230,6 +235,7 @@ public class CadastrarFinancaFrame extends JFrame {
 	        try {
 	            cService.inserirCategoria(categoria);
 	            JOptionPane.showMessageDialog(null, "Cadastro realizado com sucesso!");
+	            atualizarCategorias();
 	        } catch (SQLException | IOException e1) {
 	            JOptionPane.showMessageDialog(null, e1.getMessage());
 	        }
@@ -237,6 +243,24 @@ public class CadastrarFinancaFrame extends JFrame {
 	        // Usuário cancelou a operação
 	        JOptionPane.showMessageDialog(null, "Operação cancelada!");
 	    }
+	}
+	
+	public void atualizarCategorias(){
+		CategoriaService cService = new CategoriaService();
+		cbCategoria.removeAllItems();
+		
+		List<Categoria> categorias;
+		try {
+			categorias = cService.buscarCategorias();
+			for (Categoria categoria : categorias) {
+				cbCategoria.addItem(categoria.getNome());
+			}
+			cbCategoria.revalidate();
+			cbCategoria.repaint();
+		} catch (SQLException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }
