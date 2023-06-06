@@ -1,8 +1,12 @@
 package dao;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import database.BancoDados;
 import entities.Categoria;
@@ -53,6 +57,39 @@ public class CategoriaDAO {
 		} finally {
 			
 			BancoDados.finalizarStatement(st);
+			BancoDados.desconectar();
+		}
+	}
+	
+	public List<Categoria> buscarCategorias() throws SQLException, IOException {
+		
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		
+		try {
+			
+			st = conn.prepareStatement("SELECT nome_categoria, id_categoria FROM categoria");
+			
+			rs = st.executeQuery();
+			
+			List<Categoria> categorias = new ArrayList<>();
+			
+			while (rs.next()) {
+
+				String nome = rs.getString("nome_categoria");
+				int id_categoria = rs.getInt("id_categoria");
+
+				Categoria categoria = new Categoria(nome, id_categoria);
+
+				categorias.add(categoria);
+			}
+			
+			return categorias;
+			
+		} finally {
+			
+			BancoDados.finalizarStatement(st);
+			BancoDados.finalizarResultSet(rs);
 			BancoDados.desconectar();
 		}
 	}
