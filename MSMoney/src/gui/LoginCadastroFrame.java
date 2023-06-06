@@ -4,6 +4,7 @@ import javax.swing.*;
 
 import entities.Usuario;
 import service.UsuarioService;
+import utils.DadosUsuario;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -87,7 +88,10 @@ public class LoginCadastroFrame extends JFrame {
 		// Verificar a autenticação do usuário
 		try {
 			if (uService.verificarLogin(username, password)) {
-				loginEfetuado = true;
+				loginEfetuado = true;	
+				
+				uService.atualizarIdUsuario(username, password);
+				
 				dispose(); // Fechar a janela de login
 
 				// Abrir a tela do menu principal após o login
