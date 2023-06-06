@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import entities.Financa;
 import entities.Financa.FinancaEnum;
+import entities.Categoria;
 
 public class FinancaDAO {
 
@@ -41,7 +42,7 @@ public class FinancaDAO {
 			while (rs.next()) {
 
 				String nome = rs.getString("nome");
-				String categoria = rs.getString("categoria");
+				Categoria categoria = new Categoria(rs.getInt("categoria"));
 				boolean mensalOcasional = rs.getBoolean("mensal_Ocasional");
 				double total = rs.getDouble("total");
 				String tipoString = rs.getString("tipo");
@@ -80,7 +81,7 @@ public class FinancaDAO {
 							"INSERT INTO financa (nome, categoria, mensal_ocasional, total, tipo, mes, usuario_id) VALUES (?, ?, ?, ?, ?, ?, ?)");
 
 					st.setString(1, aux.getNome());
-					st.setString(2, aux.getCategoria());
+					st.setInt(2, aux.getCategoria().getId_Categoria());
 					st.setBoolean(3, aux.isMensal_Ocasional());
 					st.setDouble(4, aux.getTotal());
 					st.setString(5, aux.getTipo().name());
@@ -103,7 +104,7 @@ public class FinancaDAO {
 						"INSERT INTO financa (nome, categoria, mensal_ocasional, total, tipo, mes, usuario_id) VALUES (?, ?, ?, ?, ?, ?, ?)");
 
 				st.setString(1, financa.getNome());
-				st.setString(2, financa.getCategoria());
+				st.setInt(2, financa.getCategoria().getId_Categoria());
 				st.setBoolean(3, financa.isMensal_Ocasional());
 				st.setDouble(4, financa.getTotal());
 				st.setString(5, financa.getTipo().name());

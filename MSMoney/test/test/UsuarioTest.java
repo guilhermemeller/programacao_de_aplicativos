@@ -10,10 +10,10 @@ import service.FinancaService;
 import service.UsuarioService;
 
 public class UsuarioTest {
-	/*
+
 	public static void main(String[] args) {
 
-		Usuario usuario = new Usuario("matheus@mitz.com", "12345", "Matheus Mitz");
+		/*Usuario usuario = new Usuario("matheus@mitz.com", "12345", "Matheus Mitz");
 
 		UsuarioService user = new UsuarioService();
 		FinancaService financaService = new FinancaService();
@@ -21,7 +21,7 @@ public class UsuarioTest {
 		/*
 		 * try { user.cadastrarUsuario(usuario); } catch (Exception e) {
 		 * System.out.println("Erro");// TODO: handle exception }
-		 */
+		 
 
 		try {
 			user.atualizarIdUsuario(usuario);
@@ -81,5 +81,4 @@ public class UsuarioTest {
 		 */
 
 	}
-	*/
 }
