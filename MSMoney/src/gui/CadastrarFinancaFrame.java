@@ -11,6 +11,7 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import javax.swing.border.TitledBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.border.BevelBorder;
 import javax.swing.JComboBox;
 import javax.swing.border.EtchedBorder;
@@ -181,6 +182,6 @@ public class CadastrarFinancaFrame extends JFrame {
 	}
 	
 	public void btnCadastrarCategoriaActionPerformed() {
-		
+		String categoria = JOptionPane.showInputDialog(null, "Digite o nome da nova categoria:","Cadastrar Categoria", JOptionPane.INFORMATION_MESSAGE);
 	}
 }
