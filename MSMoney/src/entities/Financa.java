@@ -9,6 +9,8 @@ public class Financa {
 	private int mes;
 
 	
+	public Financa() {
+	}
 	
 	public Financa(String nome, Categoria categoria, boolean mensal_Ocasional, Double total, FinancaEnum tipo,
 			int mes) {
