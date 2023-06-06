@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 27/05/2023 às 03:26
+-- Tempo de geração: 06/06/2023 às 20:50
 -- Versão do servidor: 10.4.28-MariaDB
 -- Versão do PHP: 8.2.4
 
@@ -24,13 +24,25 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Estrutura para tabela `categoria`
+--
+
+CREATE TABLE `categoria` (
+  `nome_categoria` varchar(240) NOT NULL,
+  `id_categoria` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura para tabela `financa`
 --
 
 CREATE TABLE `financa` (
   `id` int(11) NOT NULL,
+  `usuario_id` int(240) NOT NULL,
   `nome` varchar(240) NOT NULL,
-  `categoria` varchar(240) NOT NULL,
+  `categoria` int(11) NOT NULL,
   `mensal_ocasional` tinyint(1) NOT NULL,
   `total` decimal(10,2) NOT NULL,
   `tipo` varchar(240) NOT NULL,
@@ -51,14 +63,30 @@ CREATE TABLE `usuario` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
+-- Despejando dados para a tabela `usuario`
+--
+
+INSERT INTO `usuario` (`id`, `login`, `senha`, `nome`) VALUES
+(1, 'jvchudek90@gmail.com', '1234', 'João Chudek'),
+(3, 'matheus@mitz.com', '12345', 'Matheus Mitz');
+
+--
 -- Índices para tabelas despejadas
 --
+
+--
+-- Índices de tabela `categoria`
+--
+ALTER TABLE `categoria`
+  ADD PRIMARY KEY (`id_categoria`);
 
 --
 -- Índices de tabela `financa`
 --
 ALTER TABLE `financa`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `usuario_id_fk` (`usuario_id`),
+  ADD KEY `id_categoria_fk` (`categoria`);
 
 --
 -- Índices de tabela `usuario`
@@ -71,16 +99,33 @@ ALTER TABLE `usuario`
 --
 
 --
+-- AUTO_INCREMENT de tabela `categoria`
+--
+ALTER TABLE `categoria`
+  MODIFY `id_categoria` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de tabela `financa`
 --
 ALTER TABLE `financa`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT de tabela `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- Restrições para tabelas despejadas
+--
+
+--
+-- Restrições para tabelas `financa`
+--
+ALTER TABLE `financa`
+  ADD CONSTRAINT `financa_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `financa_ibfk_2` FOREIGN KEY (`categoria`) REFERENCES `categoria` (`id_categoria`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
