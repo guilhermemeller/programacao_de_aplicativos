@@ -37,8 +37,16 @@ public class MenuPrincipalFrame extends JFrame {
         exitMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Fechar o programa
-                System.exit(0);
+            	// Fechar a janela
+                dispose(); 
+
+                // Abrir a tela de Login
+                SwingUtilities.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        new LoginCadastroFrame();
+                    }
+                });
             }
         });
 
@@ -84,7 +92,7 @@ public class MenuPrincipalFrame extends JFrame {
         
         JPanel botPanelRendimento = new JPanel();
         rendimentoPanel.add(botPanelRendimento, BorderLayout.SOUTH);
-        botPanelRendimento.setLayout(new FlowLayout(FlowLayout.CENTER, 150, 5));
+        botPanelRendimento.setLayout(new FlowLayout(FlowLayout.CENTER, 100, 5));
         
         JButton btnCadastrarRendimento = new JButton("Cadastrar");
         btnCadastrarRendimento.setIcon(new ImageIcon(MenuPrincipalFrame.class.getResource("/images/cadastrar40.png")));
@@ -132,7 +140,7 @@ public class MenuPrincipalFrame extends JFrame {
         
         JPanel botPanelDespesas = new JPanel();
         despesasPanel.add(botPanelDespesas, BorderLayout.SOUTH);
-        botPanelDespesas.setLayout(new FlowLayout(FlowLayout.CENTER, 150, 5));
+        botPanelDespesas.setLayout(new FlowLayout(FlowLayout.CENTER, 100, 5));
         
         JButton btnCadastrarDespesas = new JButton("Cadastrar");
         btnCadastrarDespesas.setBackground(new Color(221, 249, 226));
@@ -180,7 +188,7 @@ public class MenuPrincipalFrame extends JFrame {
         
         JPanel botPanelInvestimento = new JPanel();
         investimentoPanel.add(botPanelInvestimento, BorderLayout.SOUTH);
-        botPanelInvestimento.setLayout(new FlowLayout(FlowLayout.CENTER, 150, 5));
+        botPanelInvestimento.setLayout(new FlowLayout(FlowLayout.CENTER, 100, 5));
         
         JButton btnCadastrarInvestimento = new JButton("Cadastrar");
         btnCadastrarInvestimento.setBackground(new Color(221, 249, 226));
@@ -228,7 +236,7 @@ public class MenuPrincipalFrame extends JFrame {
         
         JPanel botPanelFundoDespesas = new JPanel();
         despesasocasionaisPanel.add(botPanelFundoDespesas, BorderLayout.SOUTH);
-        botPanelFundoDespesas.setLayout(new FlowLayout(FlowLayout.CENTER, 150, 5));
+        botPanelFundoDespesas.setLayout(new FlowLayout(FlowLayout.CENTER, 100, 5));
         
         JButton btnCadastrarFundoDespesas = new JButton("Cadastrar");
         btnCadastrarFundoDespesas.setIcon(new ImageIcon(MenuPrincipalFrame.class.getResource("/images/cadastrar40.png")));
@@ -410,23 +418,7 @@ public class MenuPrincipalFrame extends JFrame {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                // Criar uma instância da tela de login
-                LoginCadastroFrame loginTela = new LoginCadastroFrame();
-                loginTela.setVisible(true);
-
-                // Esperar até que o login seja efetuado ou um cadastro seja realizado
-                while (!loginTela.isLoginEfetuado() && !loginTela.isCadastroRealizado()) {
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                // Se o login for efetuado ou um cadastro for realizado, exibir a tela do menu principal
-                if (loginTela.isLoginEfetuado() || loginTela.isCadastroRealizado()) {
-                    new MenuPrincipalFrame();
-                }
+                new LoginCadastroFrame();
             }
         });
     }
