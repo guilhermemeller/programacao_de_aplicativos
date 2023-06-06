@@ -1,6 +1,11 @@
 package entities;
 
 public class Categoria {
+	public Categoria(int id_Categoria) {
+		super();
+		this.id_Categoria = id_Categoria;
+	}
+
 	private int id_Categoria;
 	private String nome;
 	

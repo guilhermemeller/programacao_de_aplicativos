@@ -15,4 +15,10 @@ public class UsuarioService {
 		Connection conn = BancoDados.conectar();
 		new UsuarioDAO(conn).cadastrarUsuario(usuario);
 	}
+	
+	public void atualizarIdUsuario(Usuario usuario) throws SQLException, IOException {
+		
+		Connection conn = BancoDados.conectar();
+		new UsuarioDAO(conn).atualizarIdUsuario(usuario);
+	}
 }

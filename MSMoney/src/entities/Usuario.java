@@ -8,6 +8,7 @@ import entities.utils.UsuarioUtils;
 
 public class Usuario {
 	
+	private Integer id;
 	private String login;
 	private String senha;
 	private String nome;
@@ -103,5 +104,13 @@ public class Usuario {
 
 	public Usuario() {
 		
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 }
