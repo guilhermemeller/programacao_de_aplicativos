@@ -21,4 +21,10 @@ public class UsuarioService {
 		Connection conn = BancoDados.conectar();
 		new UsuarioDAO(conn).atualizarIdUsuario(usuario);
 	}
+	
+	public boolean verificarLogin(String login, String senha) throws SQLException, IOException {
+		
+		Connection conn = BancoDados.conectar();
+		return new UsuarioDAO(conn).verificarLogin(login, senha);
+	}
 }
