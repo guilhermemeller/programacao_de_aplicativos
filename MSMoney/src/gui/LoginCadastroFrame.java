@@ -2,11 +2,16 @@ package gui;
 
 import javax.swing.*;
 
+import entities.Usuario;
+import service.UsuarioService;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.sql.SQLException;
 
 public class LoginCadastroFrame extends JFrame {
     private JPanel loginPanel;
@@ -168,11 +173,16 @@ public class LoginCadastroFrame extends JFrame {
                         String novoUsername = novoUsernameField.getText();
                         String novaSenha = new String(novoPasswordField.getPassword());
 
-                        // Exemplo simples de cadastro
-                        // Você pode adicionar sua lógica de armazenamento de dados aqui
-
-                        JOptionPane.showMessageDialog(null, "Cadastro realizado com sucesso!");
-                        cadastroRealizado = true;
+                        Usuario usuario = new Usuario(novoUsername, novaSenha, nome);
+                        UsuarioService uService = new UsuarioService();
+                        try {
+							uService.cadastrarUsuario(usuario);
+							JOptionPane.showMessageDialog(null, "Cadastro realizado com sucesso!");
+	                        cadastroRealizado = true;
+						} catch (SQLException | IOException e1) {
+							// TODO Auto-generated catch block
+							JOptionPane.showMessageDialog(null,e1.getMessage());
+						}
 
                         // Limpar os campos após o cadastro
                         nomeField.setText("");
@@ -205,8 +215,8 @@ public class LoginCadastroFrame extends JFrame {
         String username = usernameField.getText();
         String password = new String(passwordField.getPassword());
 
-        // Implemente aqui a lógica de autenticação
-
+        Usuario usuario = new Usuario(username, password);
+        UsuarioService uService = new UsuarioService();
         // Exemplo simples de autenticação
         if (username.equals("admin") && password.equals("senha123")) {
             loginEfetuado = true;

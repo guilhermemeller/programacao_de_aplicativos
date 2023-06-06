@@ -22,9 +22,6 @@ public class Usuario {
 	public String getLogin() {
 		return login;
 	}
-	public static void main(String[] args) {
-
-	}
 
 	public void setLogin(String login) {
 		this.login = login;
@@ -100,6 +97,12 @@ public class Usuario {
 		this.despesasOcasionais = null;
 		this.resumo = new ArrayList<List<Financa>>();
 		this.usuarioUtils = new UsuarioUtils();
+	}
+
+	public Usuario(String login, String senha) {
+		super();
+		this.login = login;
+		this.senha = senha;
 	}
 
 	public Usuario() {
