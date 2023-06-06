@@ -210,7 +210,6 @@ public class LoginCadastroFrame extends JFrame {
 	}
 
 	public void cadastrarUsuario() {
-		// Implemente aqui a lógica de cadastro do usuário
 		String nome = nomeField.getText();
 		String novoUsername = novoUsernameField.getText();
 		String novaSenha = new String(novoPasswordField.getPassword());
@@ -237,12 +236,12 @@ public class LoginCadastroFrame extends JFrame {
 	}
 
 	public void logarSistema() {
-		// Verificar a autenticação do usuário
 		String username = usernameField.getText();
 		String password = new String(passwordField.getPassword());
 
 		UsuarioService uService = new UsuarioService();
-		// Exemplo simples de autenticação
+
+		// Verificar a autenticação do usuário
 		try {
 			if (uService.verificarLogin(username, password)) {
 				loginEfetuado = true;
