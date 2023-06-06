@@ -22,6 +22,9 @@ public class Usuario {
 	public String getLogin() {
 		return login;
 	}
+	public static void main(String[] args) {
+
+	}
 
 	public void setLogin(String login) {
 		this.login = login;
