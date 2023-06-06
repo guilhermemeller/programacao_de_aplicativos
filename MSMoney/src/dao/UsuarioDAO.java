@@ -64,4 +64,33 @@ public class UsuarioDAO {
 			BancoDados.desconectar();
 		}
 	}
+	
+	public boolean verificarLogin(String login, String senha) throws SQLException, IOException {
+
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		
+		try {
+
+			st = conn.prepareStatement("SELECT * FROM usuario where login = ? and senha = ?");
+			
+			st.setString(1, login);
+			st.setString(2, senha);
+			
+			rs = st.executeQuery();
+
+			if (rs.next()) {
+
+				return true;
+			}
+			
+			return false;
+
+		} finally {
+
+			BancoDados.finalizarStatement(st);
+			BancoDados.finalizarResultSet(rs);
+			BancoDados.desconectar();
+		}
+	}
 }
