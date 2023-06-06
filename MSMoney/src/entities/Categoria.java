@@ -7,6 +7,10 @@ public class Categoria {
 		this.id_Categoria = id_Categoria;
 	}
 	
+	public Categoria(String nome) {
+		this.nome = nome;
+	}
+	
 	public Categoria(String nome, int id_Categoria) {
 		super();
 		this.nome = nome;
@@ -26,10 +30,6 @@ public class Categoria {
 		return nome;
 	}
 	public void setNome(String nome) {
-		this.nome = nome;
-	}
-	
-	public Categoria(String nome) {
 		this.nome = nome;
 	}
 }
