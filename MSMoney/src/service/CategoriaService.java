@@ -15,4 +15,10 @@ public class CategoriaService {
 		Connection conn = BancoDados.conectar();
 		new CategoriaDAO(conn).inserirCategoria(categoria);
 	}
+	
+	public int excluirCategoria(Integer id_categoria) throws SQLException, IOException {
+		
+		Connection conn = BancoDados.conectar();
+		return new CategoriaDAO(conn).excluirCategoria(id_categoria);
+	}
 }
