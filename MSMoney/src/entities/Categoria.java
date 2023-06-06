@@ -22,10 +22,7 @@ public class Categoria {
 		this.nome = nome;
 	}
 	
-	public Categoria(int id_Categoria, String nome) {
-		this.id_Categoria = id_Categoria;
+	public Categoria(String nome) {
 		this.nome = nome;
 	}
-	
-	
 }
