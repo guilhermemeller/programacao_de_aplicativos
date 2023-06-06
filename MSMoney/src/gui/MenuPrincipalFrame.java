@@ -37,8 +37,16 @@ public class MenuPrincipalFrame extends JFrame {
         exitMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Fechar o programa
-                System.exit(0);
+            	// Fechar a janela
+                dispose(); 
+
+                // Abrir a tela de Login
+                SwingUtilities.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        new LoginCadastroFrame();
+                    }
+                });
             }
         });
 
@@ -410,23 +418,7 @@ public class MenuPrincipalFrame extends JFrame {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                // Criar uma instância da tela de login
-                LoginCadastroFrame loginTela = new LoginCadastroFrame();
-                loginTela.setVisible(true);
-
-                // Esperar até que o login seja efetuado ou um cadastro seja realizado
-                while (!loginTela.isLoginEfetuado() && !loginTela.isCadastroRealizado()) {
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                // Se o login for efetuado ou um cadastro for realizado, exibir a tela do menu principal
-                if (loginTela.isLoginEfetuado() || loginTela.isCadastroRealizado()) {
-                    new MenuPrincipalFrame();
-                }
+                new LoginCadastroFrame();
             }
         });
     }
