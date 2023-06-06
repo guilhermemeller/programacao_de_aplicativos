@@ -13,7 +13,9 @@ import javax.swing.border.TitledBorder;
 
 import entities.Usuario;
 import entities.Categoria;
+import entities.Financa;
 import service.CategoriaService;
+import service.FinancaService;
 import service.UsuarioService;
 
 import javax.swing.JLabel;
@@ -32,6 +34,10 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 import java.awt.event.ActionEvent;
+import javax.swing.DefaultComboBoxModel;
+
+import utils.DadosUsuario;
+import utils.Mes;
 
 public class CadastrarFinancaFrame extends JFrame {
 
@@ -54,6 +60,9 @@ public class CadastrarFinancaFrame extends JFrame {
 	private JButton btnCadastrarFinanca;
 	private JButton btnCancelar;
 	public ButtonGroup buttonGroup;
+	
+	
+	private String tipoFinanca;
 
 	/**
 	 * Launch the application.
@@ -79,6 +88,7 @@ public class CadastrarFinancaFrame extends JFrame {
 	}
 	
 	public CadastrarFinancaFrame(String tipoFinanca) {
+		setTipoFinanca(tipoFinanca);
 		initComponents(tipoFinanca);
 	}
 	/*
@@ -198,9 +208,10 @@ public class CadastrarFinancaFrame extends JFrame {
 		mesPanel.setLayout(null);
 		
 		cbMes = new JComboBox();
+		cbMes.setModel(new DefaultComboBoxModel(Mes.values()));
 		cbMes.setBounds(16, 20, 143, 30);
 		mesPanel.add(cbMes);
-		cbMes.setEnabled(false);
+		cbMes.setEnabled(true);
 		
 		if (tipoFinanca.equals("Fundo para Despesas Ocasionais")) {
 			tipoPanel.setVisible(false);
@@ -208,6 +219,11 @@ public class CadastrarFinancaFrame extends JFrame {
 		}
 		
 		btnCadastrarFinanca = new JButton("Cadastrar");
+		btnCadastrarFinanca.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnCadastrarFinancaActionPerformed();
+			}
+		});
 		btnCadastrarFinanca.setBackground(new Color(221, 249, 226));
 		btnCadastrarFinanca.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btnCadastrarFinanca.setBounds(28, 385, 115, 30);
@@ -245,7 +261,7 @@ public class CadastrarFinancaFrame extends JFrame {
 	    }
 	}
 	
-	public void atualizarCategorias(){
+	public List<Categoria> atualizarCategorias(){
 		CategoriaService cService = new CategoriaService();
 		cbCategoria.removeAllItems();
 		
@@ -257,10 +273,61 @@ public class CadastrarFinancaFrame extends JFrame {
 			}
 			cbCategoria.revalidate();
 			cbCategoria.repaint();
+			return categorias;
 		} catch (SQLException | IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public int buscarIdCategoria(List<Categoria> categorias, String nome) {
+		
+		for(Categoria categoria: categorias) {
+			if(categoria.getNome().equals(nome)) {
+				return categoria.getId_Categoria();
+			}
+		}
+		return -1;
+	}
+	
+	public void btnCadastrarFinancaActionPerformed() {
+		
+		String categoria;
+		int id_categoria;
+		List<Categoria> categorias = atualizarCategorias();
+		
+		FinancaService service =  new FinancaService();
+		Financa financa = new Financa();
+		
+		if(getTipoFinanca().equals("Rendimento") || getTipoFinanca().equals("Despesa")) {
+			
+			if(this.rdbtnMensal.isSelected()) {
+				
+				financa.setNome(txtNomeFinanca.getText());
+				financa.setTotal(Double.parseDouble(txtValorFinanca.getText()));
+				categoria = (String) cbCategoria.getSelectedItem();
+				id_categoria = buscarIdCategoria(categorias, financa.getNome());
+				financa.setCategoria(new Categoria(id_categoria));
+				financa.setMensal_Ocasional(true);
+				
+				DadosUsuario dadosUsuario = DadosUsuario.getInstance();
+				
+				try {
+					service.inserirFinanca(financa, dadosUsuario.getId());
+				} catch (SQLException | IOException e) {
+					JOptionPane.showMessageDialog(null, e.getMessage());
+				}				
+			}
+		} else {
+			System.out.println("teste");
 		}
 	}
 
+	public String getTipoFinanca() {
+		return tipoFinanca;
+	}
+
+	public void setTipoFinanca(String tipoFinanca) {
+		this.tipoFinanca = tipoFinanca;
+	}
 }
