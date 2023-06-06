@@ -8,6 +8,7 @@ import java.sql.SQLException;
 
 import database.BancoDados;
 import entities.Usuario;
+import utils.DadosUsuario;
 
 public class UsuarioDAO {
 
@@ -39,22 +40,25 @@ public class UsuarioDAO {
 		}
 	}
 
-	public void atualizarIdUsuario(Usuario usuario) throws SQLException, IOException {
+	public void atualizarIdUsuario(String login, String senha) throws SQLException, IOException {
 
 		PreparedStatement st = null;
 		ResultSet rs = null;
 
 		try {
 
-			st = conn.prepareStatement("SELECT id from usuario where login = ?");
+			st = conn.prepareStatement("SELECT id from usuario where login = ? and senha = ?");
 
-			st.setString(1, usuario.getLogin());
+			st.setString(1, login);
+			st.setString(2, senha);
 
+			DadosUsuario dadosUsuario = DadosUsuario.getInstance();
+			
 			rs = st.executeQuery();
 
 			if (rs.next()) {
 
-				usuario.setId(rs.getInt("id"));
+				dadosUsuario.setId(rs.getInt("id"));
 			}
 
 		} finally {

@@ -16,10 +16,10 @@ public class UsuarioService {
 		new UsuarioDAO(conn).cadastrarUsuario(usuario);
 	}
 	
-	public void atualizarIdUsuario(Usuario usuario) throws SQLException, IOException {
+	public void atualizarIdUsuario(String login, String senha) throws SQLException, IOException {
 		
 		Connection conn = BancoDados.conectar();
-		new UsuarioDAO(conn).atualizarIdUsuario(usuario);
+		new UsuarioDAO(conn).atualizarIdUsuario(login, senha);
 	}
 	
 	public boolean verificarLogin(String login, String senha) throws SQLException, IOException {
