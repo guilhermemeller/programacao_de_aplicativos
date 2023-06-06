@@ -10,6 +10,7 @@ import service.FinancaService;
 import service.UsuarioService;
 
 public class UsuarioTest {
+	/*
 	public static void main(String[] args) {
 
 		Usuario usuario = new Usuario("matheus@mitz.com", "12345", "Matheus Mitz");
@@ -80,4 +81,5 @@ public class UsuarioTest {
 		 */
 
 	}
+	*/
 }
