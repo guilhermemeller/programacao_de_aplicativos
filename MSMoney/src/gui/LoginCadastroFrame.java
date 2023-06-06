@@ -50,6 +50,15 @@ public class LoginCadastroFrame extends JFrame {
                 nomeLabel.setBounds(45, 25, 50, 14);
                 dadoscadastroPanel.add(nomeLabel);
                 nomeField = new JTextField();
+                nomeField.addKeyListener(new KeyAdapter() {
+                	@Override
+                	public void keyPressed(KeyEvent e) {
+                		if(e.getKeyCode() == KeyEvent.VK_ENTER)
+                        {
+                            cadastrarUsuario();
+                        }
+                	}
+                });
                 nomeField.setBounds(88, 22, 206, 20);
                 dadoscadastroPanel.add(nomeField);
                 nomeField.setColumns(25);
@@ -58,6 +67,15 @@ public class LoginCadastroFrame extends JFrame {
                         novoUsernameLabel.setBounds(35, 56, 50, 14);
                         dadoscadastroPanel.add(novoUsernameLabel);
                         novoUsernameField = new JTextField();
+                        novoUsernameField.addKeyListener(new KeyAdapter() {
+                        	@Override
+                        	public void keyPressed(KeyEvent e) {
+                        		if(e.getKeyCode() == KeyEvent.VK_ENTER)
+                                {
+                                    cadastrarUsuario();
+                                }
+                        	}
+                        });
                         novoUsernameField.setBounds(88, 53, 206, 20);
                         dadoscadastroPanel.add(novoUsernameField);
                         novoUsernameField.setColumns(25);
@@ -66,6 +84,15 @@ public class LoginCadastroFrame extends JFrame {
                                 novoPasswordLabel.setBounds(43, 87, 50, 14);
                                 dadoscadastroPanel.add(novoPasswordLabel);
                                 novoPasswordField = new JPasswordField();
+                                novoPasswordField.addKeyListener(new KeyAdapter() {
+                                	@Override
+                                	public void keyPressed(KeyEvent e) {
+                                		if(e.getKeyCode() == KeyEvent.VK_ENTER)
+                                        {
+                                            cadastrarUsuario();
+                                        }
+                                	}
+                                });
                                 novoPasswordField.setBounds(88, 84, 206, 20);
                                 dadoscadastroPanel.add(novoPasswordField);
                                 novoPasswordField.setColumns(25);
@@ -168,30 +195,7 @@ public class LoginCadastroFrame extends JFrame {
                 cadastrarUsuarioButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        // Implemente aqui a lógica de cadastro do usuário
-                        String nome = nomeField.getText();
-                        String novoUsername = novoUsernameField.getText();
-                        String novaSenha = new String(novoPasswordField.getPassword());
-
-                        Usuario usuario = new Usuario(novoUsername, novaSenha, nome);
-                        UsuarioService uService = new UsuarioService();
-                        try {
-							uService.cadastrarUsuario(usuario);
-							JOptionPane.showMessageDialog(null, "Cadastro realizado com sucesso!");
-	                        cadastroRealizado = true;
-						} catch (SQLException | IOException e1) {
-							// TODO Auto-generated catch block
-							JOptionPane.showMessageDialog(null,e1.getMessage());
-						}
-
-                        // Limpar os campos após o cadastro
-                        nomeField.setText("");
-                        novoUsernameField.setText("");
-                        novoPasswordField.setText("");
-
-                        // Alternar para a tela de login após o cadastro
-                        cadastroPanel.setVisible(false);
-                        loginPanel.setVisible(true);
+                        cadastrarUsuario();
                     }
                 });
 
@@ -210,6 +214,33 @@ public class LoginCadastroFrame extends JFrame {
         return cadastroRealizado;
     }
 
+    public void cadastrarUsuario() {
+    	// Implemente aqui a lógica de cadastro do usuário
+        String nome = nomeField.getText();
+        String novoUsername = novoUsernameField.getText();
+        String novaSenha = new String(novoPasswordField.getPassword());
+
+        Usuario usuario = new Usuario(novoUsername, novaSenha, nome);
+        UsuarioService uService = new UsuarioService();
+        try {
+			uService.cadastrarUsuario(usuario);
+			JOptionPane.showMessageDialog(null, "Cadastro realizado com sucesso!");
+            cadastroRealizado = true;
+		} catch (SQLException | IOException e1) {
+			// TODO Auto-generated catch block
+			JOptionPane.showMessageDialog(null,e1.getMessage());
+		}
+
+        // Limpar os campos após o cadastro
+        nomeField.setText("");
+        novoUsernameField.setText("");
+        novoPasswordField.setText("");
+
+        // Alternar para a tela de login após o cadastro
+        cadastroPanel.setVisible(false);
+        loginPanel.setVisible(true);
+    }
+    
     public void logarSistema() {
         // Verificar a autenticação do usuário
         String username = usernameField.getText();
@@ -233,13 +264,4 @@ public class LoginCadastroFrame extends JFrame {
             JOptionPane.showMessageDialog(null, "Usuário ou senha estão incorretos. Por favor, verifique suas informações e tente novamente!\nCaso ainda não possua cadastro pressione o botão \"Cadastre-se\".", "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
-    /*public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new LoginCadastroFrame();
-            }
-        });
-    }*/
 }
