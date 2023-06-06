@@ -10,16 +10,26 @@ import javax.swing.JRadioButton;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import javax.swing.border.TitledBorder;
+
+import entities.Usuario;
+import entities.Categoria;
+import service.CategoriaService;
+import service.UsuarioService;
+
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.border.BevelBorder;
 import javax.swing.JComboBox;
 import javax.swing.border.EtchedBorder;
 import java.awt.Color;
+
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 
 public class CadastrarFinancaFrame extends JFrame {
@@ -42,11 +52,12 @@ public class CadastrarFinancaFrame extends JFrame {
 	private JComboBox cbMes;
 	private JButton btnCadastrarFinanca;
 	private JButton btnCancelar;
+	public ButtonGroup buttonGroup;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -59,7 +70,7 @@ public class CadastrarFinancaFrame extends JFrame {
 			}
 		});
 	}
-	
+	*/
 
 	
 	public CadastrarFinancaFrame() {
@@ -77,7 +88,7 @@ public class CadastrarFinancaFrame extends JFrame {
 		
 		setTitle("Cadastro de "+tipoFinanca);
 		setResizable(false);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 500);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -139,6 +150,10 @@ public class CadastrarFinancaFrame extends JFrame {
 		btnEditarCategoria.setBackground(new Color(191, 214, 255));
 		botoesPanel.add(btnEditarCategoria);
 		
+		if (tipoFinanca.equals("Investimento a Longo Prazo") || tipoFinanca.equals("Fundo para Despesas Ocasionais")) {
+		    categoriaPanel.setVisible(false);
+		}
+		
 		tipoPanel = new JPanel();
 		tipoPanel.setBounds(10, 124, 177, 70);
 		cadastrofinancaPanel.add(tipoPanel);
@@ -146,10 +161,30 @@ public class CadastrarFinancaFrame extends JFrame {
 		tipoPanel.setLayout(new GridLayout(0, 1, 0, 0));
 		
 		rdbtnMensal = new JRadioButton("Mensal");
-		tipoPanel.add(rdbtnMensal);
 		
 		rdbtnOcasional = new JRadioButton("Ocasional");
+		
+		buttonGroup = new ButtonGroup();
+		
+		buttonGroup.add(rdbtnMensal);
+		buttonGroup.add(rdbtnOcasional);
+		
+		tipoPanel.add(rdbtnMensal);
 		tipoPanel.add(rdbtnOcasional);
+		
+		rdbtnMensal.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cbMes.setEnabled(false);
+            }
+        });
+		
+		rdbtnOcasional.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cbMes.setEnabled(true);
+            }
+        });
 		
 		mesPanel = new JPanel();
 		mesPanel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "M\u00EAs", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
@@ -160,6 +195,12 @@ public class CadastrarFinancaFrame extends JFrame {
 		cbMes = new JComboBox();
 		cbMes.setBounds(16, 20, 143, 30);
 		mesPanel.add(cbMes);
+		cbMes.setEnabled(false);
+		
+		if (tipoFinanca.equals("Fundo para Despesas Ocasionais")) {
+			tipoPanel.setVisible(false);
+			mesPanel.setVisible(false);
+		}
 		
 		btnCadastrarFinanca = new JButton("Cadastrar");
 		btnCadastrarFinanca.setBackground(new Color(221, 249, 226));
@@ -182,6 +223,20 @@ public class CadastrarFinancaFrame extends JFrame {
 	}
 	
 	public void btnCadastrarCategoriaActionPerformed() {
-		String categoria = JOptionPane.showInputDialog(null, "Digite o nome da nova categoria:","Cadastrar Categoria", JOptionPane.INFORMATION_MESSAGE);
+	    String nomeCategoria = JOptionPane.showInputDialog(null, "Digite o nome da nova categoria:", "Cadastrar Categoria", JOptionPane.INFORMATION_MESSAGE);
+	    if (nomeCategoria != null) {
+	        Categoria categoria = new Categoria(nomeCategoria);
+	        CategoriaService cService = new CategoriaService();
+	        try {
+	            cService.inserirCategoria(categoria);
+	            JOptionPane.showMessageDialog(null, "Cadastro realizado com sucesso!");
+	        } catch (SQLException | IOException e1) {
+	            JOptionPane.showMessageDialog(null, e1.getMessage());
+	        }
+	    } else {
+	        // Usuário cancelou a operação
+	        JOptionPane.showMessageDialog(null, "Operação cancelada!");
+	    }
 	}
+
 }

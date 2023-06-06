@@ -222,6 +222,11 @@ public class MenuPrincipalFrame extends JFrame {
         botPanelDespesas.setLayout(new FlowLayout(FlowLayout.CENTER, 100, 5));
         
         btnCadastrarDespesas = new JButton("Cadastrar");
+        btnCadastrarDespesas.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		btnCadastrarDespesasActionPerformed();
+        	}
+        });
         btnCadastrarDespesas.setBackground(new Color(221, 249, 226));
         btnCadastrarDespesas.setIcon(new ImageIcon(MenuPrincipalFrame.class.getResource("/images/cadastrar40.png")));
         btnCadastrarDespesas.setFont(new Font("Tahoma", Font.BOLD, 16));
@@ -270,6 +275,11 @@ public class MenuPrincipalFrame extends JFrame {
         botPanelInvestimento.setLayout(new FlowLayout(FlowLayout.CENTER, 100, 5));
         
         btnCadastrarInvestimento = new JButton("Cadastrar");
+        btnCadastrarInvestimento.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		btnCadastrarInvestimentoActionPerformed();
+        	}
+        });
         btnCadastrarInvestimento.setBackground(new Color(221, 249, 226));
         btnCadastrarInvestimento.setIcon(new ImageIcon(MenuPrincipalFrame.class.getResource("/images/cadastrar40.png")));
         btnCadastrarInvestimento.setFont(new Font("Tahoma", Font.BOLD, 16));
@@ -318,6 +328,11 @@ public class MenuPrincipalFrame extends JFrame {
         botPanelFundoDespesas.setLayout(new FlowLayout(FlowLayout.CENTER, 100, 5));
         
         btnCadastrarFundoDespesas = new JButton("Cadastrar");
+        btnCadastrarFundoDespesas.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		btnCadastrarFundoDespesasActionPerformed();
+        	}
+        });
         btnCadastrarFundoDespesas.setIcon(new ImageIcon(MenuPrincipalFrame.class.getResource("/images/cadastrar40.png")));
         btnCadastrarFundoDespesas.setBackground(new Color(221, 249, 226));
         btnCadastrarFundoDespesas.setFont(new Font("Tahoma", Font.BOLD, 16));
@@ -495,7 +510,26 @@ public class MenuPrincipalFrame extends JFrame {
     
     public void btnCadastrarRendimentoActionPerformed() {
     		cadastrarFinanca = new CadastrarFinancaFrame("Rendimento");
+    		cadastrarFinanca.setLocationRelativeTo(null);
     		cadastrarFinanca.setVisible(true);
+    }
+    
+    public void btnCadastrarDespesasActionPerformed() {
+		cadastrarFinanca = new CadastrarFinancaFrame("Despesa");
+		cadastrarFinanca.setLocationRelativeTo(null);
+		cadastrarFinanca.setVisible(true);
+    }
+    
+    public void btnCadastrarInvestimentoActionPerformed() {
+		cadastrarFinanca = new CadastrarFinancaFrame("Investimento a Longo Prazo");
+		cadastrarFinanca.setLocationRelativeTo(null);
+		cadastrarFinanca.setVisible(true);
+    }
+    
+    public void btnCadastrarFundoDespesasActionPerformed() {
+		cadastrarFinanca = new CadastrarFinancaFrame("Fundo para Despesas Ocasionais");
+		cadastrarFinanca.setLocationRelativeTo(null);
+		cadastrarFinanca.setVisible(true);
     }
     
     public static void main(String[] args) {
