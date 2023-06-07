@@ -284,7 +284,7 @@ public class CadastrarFinancaFrame extends JFrame {
 		        	
 		        } else if(nomeCategoriaE.equals("-1")) {
 		        	try {
-		        		int resposta = JOptionPane.showConfirmDialog(null, "Deseja realmente excluir essa Categoria?\nCaso exclua todas as Finanças vinculadas a essa categoria também serão excluidas", "Confirmação de Exclusão", JOptionPane.YES_NO_OPTION);
+		        		int resposta = JOptionPane.showConfirmDialog(null, "Deseja realmente excluir essa Categoria?\nCaso exclua, todas as Finanças vinculadas a essa categoria também serão excluidas", "Confirmação de Exclusão", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 		        		if (resposta == JOptionPane.YES_OPTION) {
 		        		    int id = buscarIdCategoria(categorias, cSelecionado);
 		        		    cService.excluirCategoria(id);
