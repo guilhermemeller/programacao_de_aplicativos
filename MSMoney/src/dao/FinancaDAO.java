@@ -47,8 +47,6 @@ public class FinancaDAO {
 				String tipo = rs.getString("tipo");
 				int mes = rs.getInt("mes");
 
-				//FinancaEnum tipo = FinancaEnum.valueOf(tipoString);
-
 				Financa financa = new Financa(nome, categoria, mensalOcasional, total, tipo, mes);
 
 				financas.add(financa);
@@ -178,21 +176,25 @@ public class FinancaDAO {
 		
 		PreparedStatement st = null;
 		
-		try {
+		for (int i = 0; i < 12; i++) {
+			
+			try {
 
-			st = conn.prepareStatement(
-					"INSERT INTO fundo_despesas (nome, total, usuario_id) VALUES (?, ?, ?)");
+				st = conn.prepareStatement(
+						"INSERT INTO fundo_despesas (nome, total, mes, usuario_id) VALUES (?, ?, ?, ?)");
 
-			st.setString(1, financa.getNome());					
-			st.setDouble(3, financa.getTotal());
-			st.setInt(6, usuarioId);
+				st.setString(1, financa.getNome());					
+				st.setDouble(2, financa.getTotal());
+				st.setInt(3, i+1);
+				st.setInt(4, usuarioId);
 
-			st.executeUpdate();
+				st.executeUpdate();
 
-		} finally {
+			} finally {
 
-			BancoDados.finalizarStatement(st);
-			BancoDados.desconectar();
-		}		
+				BancoDados.finalizarStatement(st);
+			}			
+		}
+		BancoDados.desconectar();	
 	}
 }
