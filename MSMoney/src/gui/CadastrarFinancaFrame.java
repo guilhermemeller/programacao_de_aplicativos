@@ -347,19 +347,22 @@ public class CadastrarFinancaFrame extends JFrame {
 		
 		String categoria;
 		int id_categoria;
+		categoria = (String) cbCategoria.getSelectedItem();
 		List<Categoria> categorias = atualizarCategorias();
 		
 		FinancaService service =  new FinancaService();
 		Financa financa = new Financa();
 		
+		System.out.println(getTipoFinanca());
 		if(getTipoFinanca().equals("Rendimento") || getTipoFinanca().equals("Despesa")) {
 			
 			if(this.rdbtnMensal.isSelected()) {
 				
 				financa.setNome(txtNomeFinanca.getText());
 				financa.setTotal(Double.parseDouble(txtValorFinanca.getText()));
-				categoria = (String) cbCategoria.getSelectedItem();
-				id_categoria = buscarIdCategoria(categorias, financa.getNome());
+				//categoria = (String) cbCategoria.getSelectedItem();
+				financa.setTipo(getTipoFinanca());
+				id_categoria = buscarIdCategoria(categorias, categoria);
 				financa.setCategoria(new Categoria(id_categoria));
 				financa.setMensal_Ocasional(true);
 				

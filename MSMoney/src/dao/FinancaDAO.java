@@ -11,7 +11,6 @@ import database.BancoDados;
 import java.util.ArrayList;
 
 import entities.Financa;
-import entities.Financa.FinancaEnum;
 import entities.Categoria;
 
 public class FinancaDAO {
@@ -45,10 +44,10 @@ public class FinancaDAO {
 				Categoria categoria = new Categoria(rs.getInt("categoria"));
 				boolean mensalOcasional = rs.getBoolean("mensal_Ocasional");
 				double total = rs.getDouble("total");
-				String tipoString = rs.getString("tipo");
+				String tipo = rs.getString("tipo");
 				int mes = rs.getInt("mes");
 
-				FinancaEnum tipo = FinancaEnum.valueOf(tipoString);
+				//FinancaEnum tipo = FinancaEnum.valueOf(tipoString);
 
 				Financa financa = new Financa(nome, categoria, mensalOcasional, total, tipo, mes);
 
@@ -74,17 +73,17 @@ public class FinancaDAO {
 			for (int i = 0; i < 12; i++) {
 				Financa aux = new Financa(financa.getNome(), financa.getCategoria(), financa.isMensal_Ocasional(),
 						financa.getTotal(), financa.getTipo(), i + 1);
-
+				
 				try {
-
+					
 					st = conn.prepareStatement(
 							"INSERT INTO financa (nome, categoria, mensal_ocasional, total, tipo, mes, usuario_id) VALUES (?, ?, ?, ?, ?, ?, ?)");
 
-					st.setString(1, aux.getNome());
+					st.setString(1, aux.getNome());					
 					st.setInt(2, aux.getCategoria().getId_Categoria());
 					st.setBoolean(3, aux.isMensal_Ocasional());
 					st.setDouble(4, aux.getTotal());
-					st.setString(5, aux.getTipo().name());
+					st.setString(5, aux.getTipo());
 					st.setInt(6, aux.getMes());
 					st.setInt(7, usuarioId);
 
@@ -107,7 +106,7 @@ public class FinancaDAO {
 				st.setInt(2, financa.getCategoria().getId_Categoria());
 				st.setBoolean(3, financa.isMensal_Ocasional());
 				st.setDouble(4, financa.getTotal());
-				st.setString(5, financa.getTipo().name());
+				st.setString(5, financa.getTipo());
 				st.setInt(6, financa.getMes());
 				st.setInt(7, usuarioId);
 
