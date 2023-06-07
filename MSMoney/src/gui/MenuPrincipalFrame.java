@@ -1,7 +1,7 @@
 package gui;
 
 import javax.swing.*;
-
+import service.FinancaService;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,10 +12,14 @@ import java.util.List;
 import javax.swing.border.TitledBorder;
 
 import entities.Categoria;
+import entities.Financa;
 import service.CategoriaService;
 
 import javax.swing.border.EtchedBorder;
+
+import utils.DadosUsuario;
 import utils.Mes;
+import javax.swing.table.DefaultTableModel;
 
 public class MenuPrincipalFrame extends JFrame {
     private JPanel mainPanel;
@@ -95,12 +99,15 @@ public class MenuPrincipalFrame extends JFrame {
     private JPanel centerPanelRelatorioanual;
     private JPanel botPanelRelatorioAnual;
     private JButton btnGerarRelatorioAnual;
-    private JMenu optionsMenu;
-    
+    private JMenu optionsMenu;    
     public CadastrarFinancaFrame cadastrarFinanca;
-
+    private JScrollPane scrollPaneRendimento;
+    public DadosUsuario dadosUsuario;
+    
     public MenuPrincipalFrame() {
+    	dadosUsuario = DadosUsuario.getInstance();
     	initComponents();
+    	this.buscarRendimento();
     }
     public void initComponents() {
     	setResizable(false);
@@ -162,6 +169,11 @@ public class MenuPrincipalFrame extends JFrame {
         topPanelRendimento.add(cbRendimento);
         
         btnPesquisarRendimento = new JButton("");
+        btnPesquisarRendimento.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		buscarRendimento();
+        	}
+        });
         btnPesquisarRendimento.setIcon(new ImageIcon(MenuPrincipalFrame.class.getResource("/images/pesquisar20.png")));
         topPanelRendimento.add(btnPesquisarRendimento);
         
@@ -170,8 +182,20 @@ public class MenuPrincipalFrame extends JFrame {
         rendimentoPanel.add(centerPanelRendimento, BorderLayout.CENTER);
         
         tableRendimento = new JTable();
+        tableRendimento.setModel(new DefaultTableModel(
+        	new Object[][] {
+        	},
+        	new String[] {
+        		"Categoria", "Rendimento", "Mensal", "Ocasional", "Total Ano"
+        	}
+        ));
         tableRendimento.setBounds(10, 11, 727, 302);
-        centerPanelRendimento.add(tableRendimento);
+        
+        scrollPaneRendimento = new JScrollPane();
+        scrollPaneRendimento.setBounds(10, 11, 727, 302);
+        centerPanelRendimento.add(scrollPaneRendimento);
+        
+        scrollPaneRendimento.setViewportView(tableRendimento);
         
         botPanelRendimento = new JPanel();
         rendimentoPanel.add(botPanelRendimento, BorderLayout.SOUTH);
@@ -564,6 +588,47 @@ public class MenuPrincipalFrame extends JFrame {
 			e.printStackTrace();
 		}
 	}
+    
+    private void buscarRendimento() {
+    	DefaultTableModel modelo = (DefaultTableModel) tableRendimento.getModel();
+        modelo.fireTableDataChanged();
+        modelo.setRowCount(0);
+
+        List<Financa> financas;
+        FinancaService service =  new FinancaService();
+        try {
+        	financas = service.buscarRendimentoPorUsuario(dadosUsuario.getId(), (cbRendimento.getSelectedIndex()+1));
+        	String nomeCategoria = "";
+			try {
+				CategoriaService catS = new CategoriaService();
+				for(Financa financa: financas) {
+					nomeCategoria = catS.buscarNomeCategoria(financa.getCategoria().getId_Categoria());
+					financa.setCategoria(null);
+				}
+			} catch (SQLException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+            for (Financa financa : financas) {
+                if(financa.isMensal_Ocasional()) {
+	            	modelo.addRow(new Object[] { financa.getCategoria().getNome(), financa.getNome(), financa.getTotal(),"",
+	                        (financa.getTotal()*12)
+	                });
+            	}else {
+            		modelo.addRow(new Object[] { financa.getCategoria().getNome(), financa.getNome(), "", financa.getTotal(),
+	                        (financa.getTotal()*12)
+	                });
+            	}
+            }
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            JOptionPane.showMessageDialog(null, "Erro ao carregar Rendimentos!\n"+e.getMessage(),"ERRO",JOptionPane.ERROR_MESSAGE);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            JOptionPane.showMessageDialog(null, "Erro ao carregar Rendimentos!\n"+e.getMessage(),"ERRO",JOptionPane.ERROR_MESSAGE);
+        }
+
+    }
     
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {

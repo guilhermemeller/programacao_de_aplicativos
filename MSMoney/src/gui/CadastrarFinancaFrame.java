@@ -66,25 +66,6 @@ public class CadastrarFinancaFrame extends JFrame {
 	
 	
 	private String tipoFinanca;
-
-	/**
-	 * Launch the application.
-	 */
-	/*public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					String tipo = "";
-					CadastrarFinancaFrame frame = new CadastrarFinancaFrame(tipo);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-	*/
-
 	
 	public CadastrarFinancaFrame() {
 		initComponents("");
