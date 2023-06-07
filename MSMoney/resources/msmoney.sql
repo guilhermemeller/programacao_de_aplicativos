@@ -41,7 +41,7 @@ CREATE TABLE `categoria` (
 CREATE TABLE `fundo_despesas` (
   `id` int(11) NOT NULL,
   `usuario_id` int(11) NOT NULL,
-  `nome` int(11) NOT NULL,
+  `nome` varchar(240) NOT NULL,
   `total` double(10,2) NOT NULL,
   `mes` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
