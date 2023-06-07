@@ -4,12 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import entities.Financa;
-import entities.Financa.FinancaEnum;
 import service.FinancaService;
 
 public class UsuarioUtils {
 
-	// Função para inserir uma finança na lista de finanças
+	/*// Função para inserir uma finança na lista de finanças
 	public List<Financa> inserirFinanca(List<Financa> listaFinanca, Financa financa) {
 		if (listaFinanca == null) {
 			listaFinanca = new ArrayList<Financa>();
@@ -83,6 +82,6 @@ public class UsuarioUtils {
 		listaResumo.add(listaLongoPrazo);
 		listaResumo.add(listaDespesasOcasionais);
 		return listaResumo;
-	}
+	}*/
 
 }
