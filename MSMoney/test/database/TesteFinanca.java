@@ -19,7 +19,7 @@ public class TesteFinanca {
 		Financa financa = new Financa("Combustivel", categoria, false, 240.00, "Despesa", 3);
 		
 		try {
-			service.inserirFinanca(financa, 10);
+			service.inserirRedimentoDespesa(financa, 10);
 			System.out.println("Deu certo");
 		} catch (SQLException | IOException e) {
 			System.out.println(e.getMessage());

@@ -11,11 +11,24 @@ import entities.Financa;
 
 public class FinancaService {
 
-	public void inserirFinanca(Financa financa, int usuarioId) throws SQLException, IOException {
+	public void inserirRedimentoDespesa(Financa financa, int usuarioId) throws SQLException, IOException {
 
 		Connection conn = BancoDados.conectar();
-		new FinancaDAO(conn).inserirFinanca(financa, usuarioId);
+		new FinancaDAO(conn).inserirRedimentoDespesa(financa, usuarioId);
 	}
+	
+	public void inserirInvestimento(Financa financa, int usuarioId) throws SQLException, IOException {
+
+		Connection conn = BancoDados.conectar();
+		new FinancaDAO(conn).inserirInvestimento(financa, usuarioId);
+	}
+	
+	public void inserirFundoParaDespesas(Financa financa, int usuarioId) throws SQLException, IOException {
+		
+		Connection conn = BancoDados.conectar();
+		new FinancaDAO(conn).inserirFundoParaDespesas(financa, usuarioId);
+	}
+
 
 	public List<Financa> buscarFinancasPorUsuario(int usuarioId) throws SQLException, IOException {
 
