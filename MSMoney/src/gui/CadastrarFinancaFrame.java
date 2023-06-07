@@ -426,6 +426,20 @@ public class CadastrarFinancaFrame extends JFrame {
 					JOptionPane.showMessageDialog(null, e.getMessage());
 				}
 			}
+		}else if(getTipoFinanca().equals("Fundo para Despesas Ocasionais")) {
+			financa.setNome(txtNomeFinanca.getText());
+			financa.setTotal(Double.parseDouble(txtValorFinanca.getText()));
+			financa.setTipo(getTipoFinanca());
+			
+			DadosUsuario dadosUsuario = DadosUsuario.getInstance();
+			
+			try {
+				service.inserirFundoParaDespesas(financa, dadosUsuario.getId());
+				JOptionPane.showMessageDialog(null, "Cadastrado com sucesso!");
+				limparCampos();
+			} catch (SQLException | IOException e) {
+				JOptionPane.showMessageDialog(null, e.getMessage());
+			}				
 		}
 	}
 	
