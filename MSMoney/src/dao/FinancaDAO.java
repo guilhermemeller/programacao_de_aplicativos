@@ -1,6 +1,8 @@
 package dao;
 
+import java.io.IOException;
 import java.sql.Connection;
+import service.CategoriaService;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,7 +24,7 @@ public class FinancaDAO {
 		this.conn = conn;
 	}
 
-	public List<Financa> buscarFinancasPorUsuario(int usuarioId) throws SQLException {
+	public List<Financa> buscarRendimentoPorUsuario(int usuarioId, int mes) throws SQLException {
 
 		PreparedStatement st = null;
 		ResultSet rs = null;
@@ -30,9 +32,11 @@ public class FinancaDAO {
 		try {
 
 			st = conn.prepareStatement("SELECT nome, categoria, mensal_ocasional, total, tipo, mes "
-					+ "FROM Financa WHERE usuario_id = ?");
+					+ "FROM rendimento_despesa WHERE usuario_id = ? AND tipo = ? AND mes = ?");
 
 			st.setInt(1, usuarioId);
+			st.setString(2, "Rendimento");
+			st.setInt(3, mes);
 
 			rs = st.executeQuery();
 
@@ -45,9 +49,9 @@ public class FinancaDAO {
 				boolean mensalOcasional = rs.getBoolean("mensal_Ocasional");
 				double total = rs.getDouble("total");
 				String tipo = rs.getString("tipo");
-				int mes = rs.getInt("mes");
+				int mesAux = rs.getInt("mes");
 
-				Financa financa = new Financa(nome, categoria, mensalOcasional, total, tipo, mes);
+				Financa financa = new Financa(nome, categoria, mensalOcasional, total, tipo, mesAux);
 
 				financas.add(financa);
 

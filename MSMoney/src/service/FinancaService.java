@@ -30,9 +30,9 @@ public class FinancaService {
 	}
 
 
-	public List<Financa> buscarFinancasPorUsuario(int usuarioId) throws SQLException, IOException {
+	public List<Financa> buscarRendimentoPorUsuario(int usuarioId, int mes) throws SQLException, IOException {
 
 		Connection conn = BancoDados.conectar();
-		return new FinancaDAO(conn).buscarFinancasPorUsuario(usuarioId);
+		return new FinancaDAO(conn).buscarRendimentoPorUsuario(usuarioId, mes);
 	}
 }
