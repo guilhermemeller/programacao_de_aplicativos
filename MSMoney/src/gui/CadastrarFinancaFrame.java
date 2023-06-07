@@ -353,7 +353,6 @@ public class CadastrarFinancaFrame extends JFrame {
 		FinancaService service =  new FinancaService();
 		Financa financa = new Financa();
 		
-		System.out.println(getTipoFinanca());
 		if(getTipoFinanca().equals("Rendimento") || getTipoFinanca().equals("Despesa")) {
 			
 			if(this.rdbtnMensal.isSelected()) {
@@ -368,13 +367,13 @@ public class CadastrarFinancaFrame extends JFrame {
 				DadosUsuario dadosUsuario = DadosUsuario.getInstance();
 				
 				try {
-					service.inserirFinanca(financa, dadosUsuario.getId());
+					service.inserirRedimentoDespesa(financa, dadosUsuario.getId());
 					JOptionPane.showMessageDialog(null, "Cadastrado com sucesso!");
 					limparCampos();
 				} catch (SQLException | IOException e) {
 					JOptionPane.showMessageDialog(null, e.getMessage());
 				}				
-			}else {
+			} else {
 				financa.setNome(txtNomeFinanca.getText());
 				financa.setTotal(Double.parseDouble(txtValorFinanca.getText()));
 				financa.setTipo(getTipoFinanca());
@@ -386,14 +385,14 @@ public class CadastrarFinancaFrame extends JFrame {
 				DadosUsuario dadosUsuario = DadosUsuario.getInstance();
 				
 				try {
-					service.inserirFinanca(financa, dadosUsuario.getId());
+					service.inserirRedimentoDespesa(financa, dadosUsuario.getId());
 					JOptionPane.showMessageDialog(null, "Cadastrado com sucesso!");
 					limparCampos();
 				} catch (SQLException | IOException e) {
 					JOptionPane.showMessageDialog(null, e.getMessage());
 				}
 			}
-		}else if(getTipoFinanca().equals("Investimento a Longo Prazo")) {
+		} else if(getTipoFinanca().equals("Investimento a Longo Prazo")) {
 			if(this.rdbtnMensal.isSelected()) {
 				
 				financa.setNome(txtNomeFinanca.getText());
@@ -404,7 +403,7 @@ public class CadastrarFinancaFrame extends JFrame {
 				DadosUsuario dadosUsuario = DadosUsuario.getInstance();
 				
 				try {
-					service.inserirFinanca(financa, dadosUsuario.getId());
+					service.inserirInvestimento(financa, dadosUsuario.getId());
 					JOptionPane.showMessageDialog(null, "Cadastrado com sucesso!");
 					limparCampos();
 				} catch (SQLException | IOException e) {
@@ -420,7 +419,7 @@ public class CadastrarFinancaFrame extends JFrame {
 				DadosUsuario dadosUsuario = DadosUsuario.getInstance();
 				
 				try {
-					service.inserirFinanca(financa, dadosUsuario.getId());
+					service.inserirInvestimento(financa, dadosUsuario.getId());
 					JOptionPane.showMessageDialog(null, "Cadastrado com sucesso!");
 					limparCampos();
 				} catch (SQLException | IOException e) {
