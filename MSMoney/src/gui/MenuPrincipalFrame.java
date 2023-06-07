@@ -601,10 +601,11 @@ public class MenuPrincipalFrame extends JFrame {
         	String nomeCategoria = "";
 			try {
 				CategoriaService catS = new CategoriaService();
-				for(Financa financa: financas) {
-					nomeCategoria = catS.buscarNomeCategoria(financa.getCategoria().getId_Categoria());
-					financa.setCategoria(null);
+				for(int i = 0; i < financas.size() ; i++) {
+					nomeCategoria = catS.buscarNomeCategoria(financas.get(i).getCategoria().getId_Categoria());
+					financas.get(i).getCategoria().setNome(nomeCategoria);
 				}
+				
 			} catch (SQLException | IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
