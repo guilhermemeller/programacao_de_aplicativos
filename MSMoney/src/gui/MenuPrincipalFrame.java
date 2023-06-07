@@ -616,7 +616,7 @@ public class MenuPrincipalFrame extends JFrame {
 	                });
             	}else {
             		modelo.addRow(new Object[] { financa.getCategoria().getNome(), financa.getNome(), "", financa.getTotal(),
-	                        (financa.getTotal()*12)
+	                        (financa.getTotal())
 	                });
             	}
             }
