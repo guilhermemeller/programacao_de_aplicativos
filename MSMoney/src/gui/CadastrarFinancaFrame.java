@@ -30,8 +30,11 @@ import javax.swing.JButton;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.DefaultComboBoxModel;
@@ -67,7 +70,7 @@ public class CadastrarFinancaFrame extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	/*public static void main(String[] args) {
+	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -80,7 +83,7 @@ public class CadastrarFinancaFrame extends JFrame {
 			}
 		});
 	}
-	*/
+	
 
 	
 	public CadastrarFinancaFrame() {
@@ -161,6 +164,11 @@ public class CadastrarFinancaFrame extends JFrame {
 		botoesPanel.add(btnCadastrarCategoria);
 		
 		btnEditarCategoria = new JButton("Editar Categoria");
+		btnEditarCategoria.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnEditarCategoriaActionPerformed();
+			}
+		});
 		btnEditarCategoria.setFont(new Font("Tahoma", Font.BOLD, 11));
 		btnEditarCategoria.setBackground(new Color(191, 214, 255));
 		botoesPanel.add(btnEditarCategoria);
@@ -186,6 +194,7 @@ public class CadastrarFinancaFrame extends JFrame {
 		
 		tipoPanel.add(rdbtnMensal);
 		tipoPanel.add(rdbtnOcasional);
+		rdbtnMensal.setSelected(true);
 		
 		rdbtnMensal.addActionListener(new ActionListener() {
             @Override
@@ -211,7 +220,7 @@ public class CadastrarFinancaFrame extends JFrame {
 		cbMes.setModel(new DefaultComboBoxModel(Mes.values()));
 		cbMes.setBounds(16, 20, 143, 30);
 		mesPanel.add(cbMes);
-		cbMes.setEnabled(true);
+		cbMes.setEnabled(false);
 		
 		if (tipoFinanca.equals("Fundo para Despesas Ocasionais")) {
 			tipoPanel.setVisible(false);
@@ -259,6 +268,50 @@ public class CadastrarFinancaFrame extends JFrame {
 	        // Usuário cancelou a operação
 	        JOptionPane.showMessageDialog(null, "Operação cancelada!");
 	    }
+	}
+	
+	public void btnEditarCategoriaActionPerformed() {
+		String cSelecionado = (String) cbCategoria.getSelectedItem();
+		List<Categoria> categorias = atualizarCategorias();
+		CategoriaService cService = new CategoriaService();
+		EditarExcluirCategoriaDialog dialog = new EditarExcluirCategoriaDialog(cSelecionado);
+		dialog.setLocationRelativeTo(null);
+		dialog.addWindowListener(new WindowAdapter() {
+		    @Override
+		    public void windowClosed(WindowEvent e) {
+		        String nomeCategoriaE = dialog.getCategoriaEditada();
+		        if (nomeCategoriaE == null) {
+		        	
+		        } else if(nomeCategoriaE.equals("-1")) {
+		        	try {
+		        		int resposta = JOptionPane.showConfirmDialog(null, "Deseja realmente excluir essa Categoria?\nCaso exclua, todas as Finanças vinculadas a essa categoria também serão excluidas", "Confirmação de Exclusão", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+		        		if (resposta == JOptionPane.YES_OPTION) {
+		        		    int id = buscarIdCategoria(categorias, cSelecionado);
+		        		    cService.excluirCategoria(id);
+		        		    JOptionPane.showMessageDialog(null, "Excluído com sucesso!");
+		        		    atualizarCategorias();
+		        		}
+					} catch (SQLException | IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+		        						
+		        }else {
+		        	try {
+		        		int id = buscarIdCategoria(categorias, cSelecionado);
+			        	Categoria cate = new Categoria(id, nomeCategoriaE);
+						cService.editarCategoria(cate);
+						JOptionPane.showMessageDialog(null, "Editado com sucesso!");
+						atualizarCategorias();
+					} catch (SQLException | IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+		        	
+		        }
+		    }
+		});
+		dialog.setVisible(true);	    
 	}
 	
 	public List<Categoria> atualizarCategorias(){
