@@ -70,7 +70,7 @@ public class CadastrarFinancaFrame extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -83,7 +83,7 @@ public class CadastrarFinancaFrame extends JFrame {
 			}
 		});
 	}
-	
+	*/
 
 	
 	public CadastrarFinancaFrame() {
@@ -360,7 +360,6 @@ public class CadastrarFinancaFrame extends JFrame {
 				
 				financa.setNome(txtNomeFinanca.getText());
 				financa.setTotal(Double.parseDouble(txtValorFinanca.getText()));
-				//categoria = (String) cbCategoria.getSelectedItem();
 				financa.setTipo(getTipoFinanca());
 				id_categoria = buscarIdCategoria(categorias, categoria);
 				financa.setCategoria(new Categoria(id_categoria));
@@ -370,13 +369,22 @@ public class CadastrarFinancaFrame extends JFrame {
 				
 				try {
 					service.inserirFinanca(financa, dadosUsuario.getId());
+					JOptionPane.showMessageDialog(null, "Cadastrado com sucesso!");
+					limparCampos();
 				} catch (SQLException | IOException e) {
 					JOptionPane.showMessageDialog(null, e.getMessage());
 				}				
+			}else {
+				System.out.println("Ocasional");
 			}
-		} else {
-			System.out.println("teste");
 		}
+	}
+	
+	public void limparCampos() {
+		txtNomeFinanca.setText("");
+		txtValorFinanca.setText("");
+		rdbtnMensal.setSelected(true);
+		txtNomeFinanca.requestFocus();
 	}
 
 	public String getTipoFinanca() {
