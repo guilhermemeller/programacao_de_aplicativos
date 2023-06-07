@@ -40,6 +40,25 @@ public class CategoriaDAO {
 		}	
 	}
 	
+	public void editarCategoria(Categoria categoria) throws SQLException {
+		PreparedStatement st = null;
+		
+		try {
+
+			st = conn.prepareStatement(
+					"UPDATE categoria SET nome_categoria = ? WHERE id_categoria = ?");
+
+			st.setString(1, categoria.getNome());
+			st.setInt(2, categoria.getId_Categoria());
+			st.executeUpdate();
+
+		} finally {
+
+			BancoDados.finalizarStatement(st);
+			BancoDados.desconectar();
+		}	
+	}
+	
 	public int excluirCategoria(Integer id_categoria) throws SQLException {
 		
 		PreparedStatement st = null;

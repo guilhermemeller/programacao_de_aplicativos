@@ -17,6 +17,12 @@ public class CategoriaService {
 		new CategoriaDAO(conn).inserirCategoria(categoria);
 	}
 	
+	public void editarCategoria(Categoria categoria) throws SQLException, IOException {
+
+		Connection conn = BancoDados.conectar();
+		new CategoriaDAO(conn).editarCategoria(categoria);
+	}
+	
 	public int excluirCategoria(Integer id_categoria) throws SQLException, IOException {
 		
 		Connection conn = BancoDados.conectar();
