@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 07/06/2023 às 23:36
+-- Tempo de geração: 08/06/2023 às 00:20
 -- Versão do servidor: 10.4.28-MariaDB
 -- Versão do PHP: 8.2.4
 
@@ -42,7 +42,8 @@ CREATE TABLE `fundo_despesas` (
   `id` int(11) NOT NULL,
   `usuario_id` int(11) NOT NULL,
   `nome` int(11) NOT NULL,
-  `total` double(10,2) NOT NULL
+  `total` double(10,2) NOT NULL,
+  `mes` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
