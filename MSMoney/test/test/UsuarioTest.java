@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import entities.Financa;
-import entities.Financa.FinancaEnum;
 import entities.Usuario;
 import service.FinancaService;
 import service.UsuarioService;

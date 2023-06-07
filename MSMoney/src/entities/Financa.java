@@ -5,14 +5,14 @@ public class Financa {
 	private Categoria categoria;
 	private boolean mensal_Ocasional;
 	private Double total;
-	private FinancaEnum tipo;
+	private String tipo;
 	private int mes;
 
 	
 	public Financa() {
 	}
 	
-	public Financa(String nome, Categoria categoria, boolean mensal_Ocasional, Double total, FinancaEnum tipo,
+	public Financa(String nome, Categoria categoria, boolean mensal_Ocasional, Double total, String tipo,
 			int mes) {
 		this.nome = nome;
 		this.categoria = categoria;
@@ -20,13 +20,6 @@ public class Financa {
 		this.total = total;
 		this.tipo = tipo;
 		this.mes = mes;
-	}
-
-	public enum FinancaEnum {
-		REDIMENTO,
-		DESPESAS,
-		LONGO_PRAZO,
-		DESPESAS_OCASIONAIS
 	}
 
 	public String getNome() {
@@ -61,11 +54,11 @@ public class Financa {
 		this.total = total;
 	}
 
-	public FinancaEnum getTipo() {
+	public String getTipo() {
 		return tipo;
 	}
 
-	public void setTipo(FinancaEnum tipo) {
+	public void setTipo(String tipo) {
 		this.tipo = tipo;
 	}
 

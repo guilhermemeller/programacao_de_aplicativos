@@ -1,7 +1,6 @@
 package database;
 
 import entities.Financa;
-import entities.Financa.FinancaEnum;
 import service.FinancaService;
 
 import java.io.IOException;
@@ -17,7 +16,7 @@ public class TesteFinanca {
 		
 		Categoria categoria = new Categoria(1);
 		
-		Financa financa = new Financa("Combustivel", categoria, false, 240.00, FinancaEnum.DESPESAS, 3);
+		Financa financa = new Financa("Combustivel", categoria, false, 240.00, "Despesa", 3);
 		
 		try {
 			service.inserirFinanca(financa, 10);
