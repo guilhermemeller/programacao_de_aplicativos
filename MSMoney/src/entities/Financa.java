@@ -21,6 +21,15 @@ public class Financa {
 		this.tipo = tipo;
 		this.mes = mes;
 	}
+	
+	public Financa(String nome, boolean mensal_Ocasional, Double total, String tipo, int mes) {
+		super();
+		this.nome = nome;
+		this.mensal_Ocasional = mensal_Ocasional;
+		this.total = total;
+		this.tipo = tipo;
+		this.mes = mes;
+	}
 
 	public String getNome() {
 		return nome;
