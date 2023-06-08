@@ -108,7 +108,7 @@ public class MenuPrincipalFrame extends JFrame {
     public MenuPrincipalFrame() {
     	dadosUsuario = DadosUsuario.getInstance();
     	initComponents();
-    	initTables();
+    	buscarRendimentoDespesa(1);
     }
     public void initComponents() {    
     	setResizable(false);
@@ -172,7 +172,7 @@ public class MenuPrincipalFrame extends JFrame {
         btnPesquisarRendimento = new JButton("");
         btnPesquisarRendimento.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		initTables();
+        		buscarRendimentoDespesa(1);
         	}
         });
         btnPesquisarRendimento.setIcon(new ImageIcon(MenuPrincipalFrame.class.getResource("/images/pesquisar20.png")));
@@ -242,7 +242,7 @@ public class MenuPrincipalFrame extends JFrame {
         btnPesquisarDespesas = new JButton("");
         btnPesquisarDespesas.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		initTables();
+        		buscarRendimentoDespesa(2);
         	}
         });
         btnPesquisarDespesas.setIcon(new ImageIcon(MenuPrincipalFrame.class.getResource("/images/pesquisar20.png")));
