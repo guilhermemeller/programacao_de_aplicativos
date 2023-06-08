@@ -103,13 +103,14 @@ public class MenuPrincipalFrame extends JFrame {
     public CadastrarFinancaFrame cadastrarFinanca;
     private JScrollPane scrollPaneRendimento;
     public DadosUsuario dadosUsuario;
+    private JScrollPane scrollPaneDespesas;
     
     public MenuPrincipalFrame() {
     	dadosUsuario = DadosUsuario.getInstance();
     	initComponents();
-    	this.buscarRendimento();
+    	initTables();
     }
-    public void initComponents() {
+    public void initComponents() {    
     	setResizable(false);
         // Configurações da janela principal
         setTitle("Sistema de Gestão de Finanças");
@@ -171,7 +172,7 @@ public class MenuPrincipalFrame extends JFrame {
         btnPesquisarRendimento = new JButton("");
         btnPesquisarRendimento.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		buscarRendimento();
+        		initTables();
         	}
         });
         btnPesquisarRendimento.setIcon(new ImageIcon(MenuPrincipalFrame.class.getResource("/images/pesquisar20.png")));
@@ -239,6 +240,11 @@ public class MenuPrincipalFrame extends JFrame {
         topPanelDespesas.add(cbDespesas);
         
         btnPesquisarDespesas = new JButton("");
+        btnPesquisarDespesas.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		initTables();
+        	}
+        });
         btnPesquisarDespesas.setIcon(new ImageIcon(MenuPrincipalFrame.class.getResource("/images/pesquisar20.png")));
         topPanelDespesas.add(btnPesquisarDespesas);
         
@@ -247,8 +253,21 @@ public class MenuPrincipalFrame extends JFrame {
         centerPanelDespesas.setLayout(null);
         
         tableDespesas = new JTable();
+        tableDespesas.setModel(new DefaultTableModel(
+            	new Object[][] {
+            	},
+            	new String[] {
+            		"Categoria", "Despesa", "Mensal", "Ocasional", "Total Ano"
+            	}
+            ));
+
         tableDespesas.setBounds(10, 11, 727, 302);
-        centerPanelDespesas.add(tableDespesas);
+        
+        scrollPaneDespesas = new JScrollPane();
+        scrollPaneDespesas.setBounds(10, 11, 727, 302);
+        centerPanelDespesas.add(scrollPaneDespesas);
+        
+        scrollPaneDespesas.setViewportView(tableDespesas);
         
         botPanelDespesas = new JPanel();
         despesasPanel.add(botPanelDespesas, BorderLayout.SOUTH);
@@ -589,46 +608,94 @@ public class MenuPrincipalFrame extends JFrame {
 		}
 	}
     
-    private void buscarRendimento() {
-    	DefaultTableModel modelo = (DefaultTableModel) tableRendimento.getModel();
-        modelo.fireTableDataChanged();
-        modelo.setRowCount(0);
+    private void buscarRendimentoDespesa(int type) {
+    	DefaultTableModel modeloR = (DefaultTableModel) tableRendimento.getModel();
+        modeloR.fireTableDataChanged();
+        modeloR.setRowCount(0);
+        
+        DefaultTableModel modeloD = (DefaultTableModel) tableDespesas.getModel();
+        modeloD.fireTableDataChanged();
+        modeloD.setRowCount(0);
 
         List<Financa> financas;
         FinancaService service =  new FinancaService();
-        try {
-        	financas = service.buscarRendimentoPorUsuario(dadosUsuario.getId(), (cbRendimento.getSelectedIndex()+1));
-        	String nomeCategoria = "";
-			try {
-				CategoriaService catS = new CategoriaService();
-				for(int i = 0; i < financas.size() ; i++) {
-					nomeCategoria = catS.buscarNomeCategoria(financas.get(i).getCategoria().getId_Categoria());
-					financas.get(i).getCategoria().setNome(nomeCategoria);
-				}
-				
-			} catch (SQLException | IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-            for (Financa financa : financas) {
-                if(financa.isMensal_Ocasional()) {
-	            	modelo.addRow(new Object[] { financa.getCategoria().getNome(), financa.getNome(), financa.getTotal(),"",
-	                        (financa.getTotal()*12)
-	                });
-            	}else {
-            		modelo.addRow(new Object[] { financa.getCategoria().getNome(), financa.getNome(), "", financa.getTotal(),
-	                        (financa.getTotal())
-	                });
-            	}
+        if (type == 1) {
+        	try {
+            	financas = service.buscarRendimentoDespesaPorUsuario(dadosUsuario.getId(), (cbRendimento.getSelectedIndex()+1), "Rendimento");
+            	String nomeCategoria = "";
+    			try {
+    				CategoriaService catS = new CategoriaService();
+    				for(int i = 0; i < financas.size() ; i++) {
+    					nomeCategoria = catS.buscarNomeCategoria(financas.get(i).getCategoria().getId_Categoria());
+    					financas.get(i).getCategoria().setNome(nomeCategoria);
+    				}
+    				
+    			} catch (SQLException | IOException e) {
+    				// TODO Auto-generated catch block
+    				e.printStackTrace();
+    			}
+                for (Financa financa : financas) {
+                    if(financa.isMensal_Ocasional()) {
+    	            	modeloR.addRow(new Object[] { financa.getCategoria().getNome(), financa.getNome(), financa.getTotal(),"",
+    	                        (financa.getTotal()*12)
+    	                });
+                	}else {
+                		modeloR.addRow(new Object[] { financa.getCategoria().getNome(), financa.getNome(), "", financa.getTotal(),
+    	                        (financa.getTotal())
+    	                });
+                	}
+                }
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                JOptionPane.showMessageDialog(null, "Erro ao carregar Rendimentos!\n"+e.getMessage(),"ERRO",JOptionPane.ERROR_MESSAGE);
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                JOptionPane.showMessageDialog(null, "Erro ao carregar Rendimentos!\n"+e.getMessage(),"ERRO",JOptionPane.ERROR_MESSAGE);
             }
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            JOptionPane.showMessageDialog(null, "Erro ao carregar Rendimentos!\n"+e.getMessage(),"ERRO",JOptionPane.ERROR_MESSAGE);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            JOptionPane.showMessageDialog(null, "Erro ao carregar Rendimentos!\n"+e.getMessage(),"ERRO",JOptionPane.ERROR_MESSAGE);
+        }else {
+        	try {
+            	financas = service.buscarRendimentoDespesaPorUsuario(dadosUsuario.getId(), (cbRendimento.getSelectedIndex()+1), "Despesa");
+            	String nomeCategoria = "";
+    			try {
+    				CategoriaService catS = new CategoriaService();
+    				for(int i = 0; i < financas.size() ; i++) {
+    					nomeCategoria = catS.buscarNomeCategoria(financas.get(i).getCategoria().getId_Categoria());
+    					financas.get(i).getCategoria().setNome(nomeCategoria);
+    				}
+    				
+    			} catch (SQLException | IOException e) {
+    				// TODO Auto-generated catch block
+    				e.printStackTrace();
+    			}
+                for (Financa financa : financas) {
+                    if(financa.isMensal_Ocasional()) {
+    	            	modeloD.addRow(new Object[] { financa.getCategoria().getNome(), financa.getNome(), financa.getTotal(),"",
+    	                        (financa.getTotal()*12)
+    	                });
+                	}else {
+                		modeloD.addRow(new Object[] { financa.getCategoria().getNome(), financa.getNome(), "", financa.getTotal(),
+    	                        (financa.getTotal())
+    	                });
+                	}
+                }
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                JOptionPane.showMessageDialog(null, "Erro ao carregar Rendimentos!\n"+e.getMessage(),"ERRO",JOptionPane.ERROR_MESSAGE);
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                JOptionPane.showMessageDialog(null, "Erro ao carregar Rendimentos!\n"+e.getMessage(),"ERRO",JOptionPane.ERROR_MESSAGE);
+            }
         }
+        
 
+    }
+    
+    public void initTables(){
+    	Thread thread1 = new Thread(() -> buscarRendimentoDespesa(1));
+        Thread thread2 = new Thread(() -> buscarRendimentoDespesa(2));
+        
+        thread1.start();
+        thread2.start();
     }
     
     public static void main(String[] args) {

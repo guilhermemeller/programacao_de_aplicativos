@@ -24,7 +24,7 @@ public class FinancaDAO {
 		this.conn = conn;
 	}
 
-	public List<Financa> buscarRendimentoPorUsuario(int usuarioId, int mes) throws SQLException {
+	public List<Financa> buscarRendimentoDespesaPorUsuario(int usuarioId, int mes, String tipoFinanca) throws SQLException {
 
 		PreparedStatement st = null;
 		ResultSet rs = null;
@@ -35,7 +35,7 @@ public class FinancaDAO {
 					+ "FROM rendimento_despesa WHERE usuario_id = ? AND tipo = ? AND mes = ?");
 
 			st.setInt(1, usuarioId);
-			st.setString(2, "Rendimento");
+			st.setString(2, tipoFinanca);
 			st.setInt(3, mes);
 
 			rs = st.executeQuery();
