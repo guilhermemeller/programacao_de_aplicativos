@@ -89,6 +89,7 @@ public class CadastrarFinancaFrame extends JFrame {
 		setTipoFinanca(tipoFinanca);
 		setFinanca(financa);
 		getFinanca().setNome(financa.getNome());
+		getFinanca().setMensal_Ocasional(financa.isMensal_Ocasional());
 		initComponents(tipoFinanca, cadastro_edicao);
 		preencherCampos(financa);
 	}
@@ -382,7 +383,12 @@ public class CadastrarFinancaFrame extends JFrame {
 				id_categoria = buscarIdCategoria(categorias, categoria);
 				financa.setCategoria(new Categoria(id_categoria));
 				financa.setMensal_Ocasional(true);
-
+				try {
+					financa.setId(service.buscarIdRendimentoDespesaPorNome(dadosUsuario.getId(), financa.getNome(), financa.getMes()));
+				} catch (SQLException | IOException e1) {
+					// TODO Auto-generated catch block
+					JOptionPane.showMessageDialog(null, e1.getMessage());
+				}
 				
 				if (cadastro_edicao.equals("Cadastrar")) {
 					try {
@@ -394,7 +400,14 @@ public class CadastrarFinancaFrame extends JFrame {
 					}
 				} else {
 					try {
-						service.editarRendimentoDespesas(financa,getFinanca().getNome());
+						if(getFinanca().isMensal_Ocasional() == financa.isMensal_Ocasional()) {
+							//Era mensal - virou mensal
+							service.editarRendimentoDespesas(financa,getFinanca().getNome());
+						}else {
+							service.excluirFinanca(getFinanca());
+							service.inserirRedimentoDespesa(financa, dadosUsuario.getId());
+						}
+						
 						JOptionPane.showMessageDialog(null, "Edição com sucesso!");
 						this.dispose();
 					} catch (SQLException | IOException e) {
@@ -425,7 +438,13 @@ public class CadastrarFinancaFrame extends JFrame {
 				}else {
 					financa.setId(getFinanca().getId());
 					try {
-						service.editarRendimentoDespesas(financa,"");
+						if(getFinanca().isMensal_Ocasional() == financa.isMensal_Ocasional()) {
+							service.editarRendimentoDespesas(financa,"");
+						}else {
+							service.excluirFinanca(getFinanca());
+							service.inserirRedimentoDespesa(financa, dadosUsuario.getId());
+						}
+						
 						JOptionPane.showMessageDialog(null, "Edição com sucesso!");
 						this.dispose();
 					} catch (SQLException | IOException e) {

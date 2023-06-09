@@ -230,6 +230,11 @@ public class MenuPrincipalFrame extends JFrame {
         botPanelRendimento.add(btnEditarRendimento);
         
         btnExcluirRendimento = new JButton("Excluir");
+        btnExcluirRendimento.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		btnExcluirRendimentoActionPerformed();
+        	}
+        });
         btnExcluirRendimento.setIcon(new ImageIcon(MenuPrincipalFrame.class.getResource("/images/excluir40.png")));
         btnExcluirRendimento.setBackground(new Color(255, 176, 176));
         btnExcluirRendimento.setFont(new Font("Tahoma", Font.BOLD, 16));
@@ -756,14 +761,65 @@ public class MenuPrincipalFrame extends JFrame {
 				financa.setTipo("Rendimento");
 				financa.setMes(cbRendimento.getSelectedIndex());
 				CadastrarFinancaFrame editarFinancaFrame = new CadastrarFinancaFrame("Rendimento","Editar", financa);
+				
 				editarFinancaFrame.setVisible(true);
+				
+				editarFinancaFrame.addWindowListener(new WindowAdapter() {
+			        @Override
+			        public void windowClosed(WindowEvent e) {
+			            buscarRendimentoDespesa(1);
+			        }
+			    });
 			} catch (SQLException | IOException e) {
 				JOptionPane.showMessageDialog(null, "Erro ao editar a finança!\n"+e.getMessage(),"ERRO",JOptionPane.ERROR_MESSAGE);
 			}
     		
     		
-    	}
+    	}else {
+			 JOptionPane.showMessageDialog(null, "Nenhuma linha da tabela selecionada","Erro de Edição",JOptionPane.ERROR_MESSAGE);
+		}
     	
+    }
+    
+    public void btnExcluirRendimentoActionPerformed() {
+    	int linhaTabela = tableRendimento.getSelectedRow();
+    	if(linhaTabela!=-1) {
+
+    		FinancaService finService = new FinancaService();
+    		
+    		Financa financa = new Financa();
+    		int resposta = 1;
+    		try {
+				String nomeFinanca = (String) tableRendimento.getModel().getValueAt(linhaTabela,1);
+				int id = finService.buscarIdRendimentoDespesaPorNome(dadosUsuario.getId(), nomeFinanca, cbRendimento.getSelectedIndex()+1);
+				financa.setId(id);
+				financa.setNome(nomeFinanca);
+	
+				if(tableRendimento.getModel().getValueAt(linhaTabela,2) instanceof Double) {
+					financa.setMensal_Ocasional(true);
+					 resposta = JOptionPane.showConfirmDialog(null, "Deseja realmente excluir essa Financa Mensal?\nCaso exclua, ela será apagada de todos os meses!","Confirmação de Exclusão",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
+					if(resposta == JOptionPane.YES_OPTION) {
+						finService.excluirFinanca(financa);
+					}
+				}else {
+					financa.setMensal_Ocasional(false);
+					resposta = JOptionPane.showConfirmDialog(null, "Deseja realmente excluir ?","Confirmação de Exclusão",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
+					if(resposta == JOptionPane.YES_OPTION) {
+						finService.excluirFinanca(financa);
+					}
+				}
+				
+				
+				
+				buscarRendimentoDespesa(1);
+			} catch (SQLException | IOException e) {
+				JOptionPane.showMessageDialog(null, "Erro ao editar a finança!\n"+e.getMessage(),"ERRO",JOptionPane.ERROR_MESSAGE);
+			}
+    		
+    		
+    	}else {
+			 JOptionPane.showMessageDialog(null, "Nenhuma linha da tabela selecionada","Erro de Exclusão",JOptionPane.ERROR_MESSAGE);
+		}
     }
     
     public static void main(String[] args) {

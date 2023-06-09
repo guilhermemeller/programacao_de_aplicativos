@@ -48,4 +48,9 @@ public class FinancaService {
 		
 	}
 	
+	public void excluirFinanca(Financa financa) throws SQLException, IOException {
+		Connection conn = BancoDados.conectar();
+		new FinancaDAO(conn).excluirFinanca(financa);
+	}
+	
 }

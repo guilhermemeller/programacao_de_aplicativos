@@ -237,28 +237,29 @@ public class FinancaDAO {
 		try {
 
 			if (!financaNova.isMensal_Ocasional()) {
-				st = conn.prepareStatement("UPDATE rendimento_despesa SET nome = ?, categoria = ?, mensal_ocasional = ?, total = ?, mes = ? WHERE id = ?");
+				st = conn.prepareStatement(
+						"UPDATE rendimento_despesa SET nome = ?, categoria = ?, mensal_ocasional = ?, total = ?, mes = ? WHERE id = ?");
 
 				st.setString(1, financaNova.getNome());
 				st.setInt(2, financaNova.getCategoria().getId_Categoria());
 				st.setBoolean(3, financaNova.isMensal_Ocasional());
 				st.setDouble(4, financaNova.getTotal());
 				System.out.println(financaNova.getMes());
-				
+
 				st.setInt(5, financaNova.getMes());
-				
 
 				st.setInt(6, financaNova.getId());
 				st.executeUpdate();
-			}else {
-				
-				st = conn.prepareStatement("UPDATE rendimento_despesa SET nome = ?, categoria = ?, mensal_ocasional = ?, total = ? WHERE nome = ?");
+			} else {
+
+				st = conn.prepareStatement(
+						"UPDATE rendimento_despesa SET nome = ?, categoria = ?, mensal_ocasional = ?, total = ? WHERE nome = ?");
 
 				st.setString(1, financaNova.getNome());
 				st.setInt(2, financaNova.getCategoria().getId_Categoria());
 				st.setBoolean(3, financaNova.isMensal_Ocasional());
-				st.setDouble(4,financaNova.getTotal());
-				
+				st.setDouble(4, financaNova.getTotal());
+
 				st.setString(5, nome);
 
 				st.executeUpdate();
@@ -266,6 +267,29 @@ public class FinancaDAO {
 
 		} finally {
 
+			BancoDados.finalizarStatement(st);
+			BancoDados.desconectar();
+		}
+	}
+
+	public void excluirFinanca(Financa financa) throws SQLException {
+		PreparedStatement st = null;
+
+		try {
+			if(!financa.isMensal_Ocasional()) {
+				st = conn.prepareStatement("DELETE FROM rendimento_despesa WHERE id = ?");
+
+				st.setInt(1, financa.getId());
+			}else {
+				st = conn.prepareStatement("DELETE FROM rendimento_despesa WHERE nome = ?");
+
+				st.setString(1, financa.getNome());
+			}
+			
+
+			st.executeUpdate();
+
+		} finally {
 			BancoDados.finalizarStatement(st);
 			BancoDados.desconectar();
 		}
