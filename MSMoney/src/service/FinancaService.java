@@ -60,6 +60,12 @@ public class FinancaService {
 		return new FinancaDAO(conn).buscarIdInvestimentoPorNome(usuarioId, nome, mes);
 	}
 	
+	public int buscarIdFundoDespesasPorNome(int usuarioId, String nome, int mes) throws SQLException, IOException {
+
+		Connection conn = BancoDados.conectar();
+		return new FinancaDAO(conn).buscarIdInvestimentoPorNome(usuarioId, nome, mes);
+	}
+	
 	public void editarRendimentoDespesas(Financa financa, String nome) throws SQLException, IOException {
 		Connection conn = BancoDados.conectar();
 		new FinancaDAO(conn).editarRendimentoDespesas(financa, nome);
@@ -69,6 +75,12 @@ public class FinancaService {
 	public void editarInvestimento(Financa financa, String nome) throws SQLException, IOException {
 		Connection conn = BancoDados.conectar();
 		new FinancaDAO(conn).editarInvestimento(financa, nome);
+		
+	}
+	
+	public void editarFundoDespesas(Financa financa, String nome) throws SQLException, IOException {
+		Connection conn = BancoDados.conectar();
+		new FinancaDAO(conn).editarFundoDespesas(financa, nome);
 		
 	}
 	

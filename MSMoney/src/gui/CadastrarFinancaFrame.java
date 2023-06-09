@@ -539,6 +539,16 @@ public class CadastrarFinancaFrame extends JFrame {
 				} catch (SQLException | IOException e) {
 					JOptionPane.showMessageDialog(null, e.getMessage());
 				}
+			}else {
+				try {
+					service.editarFundoDespesas(financa, getFinanca().getNome());
+					
+					JOptionPane.showMessageDialog(null, "Edição com sucesso!");
+					this.dispose();
+				} catch (SQLException | IOException e) {
+					// TODO Auto-generated catch block
+					JOptionPane.showMessageDialog(null, e.getMessage());
+				}
 			}
 		}
 	}
@@ -584,6 +594,9 @@ public class CadastrarFinancaFrame extends JFrame {
 				cbMes.setEnabled(true);
 				cbMes.setSelectedIndex(financa.getMes());
 			}
+		}else {
+			txtNomeFinanca.setText(financa.getNome());
+			txtValorFinanca.setText(String.valueOf(financa.getTotal() / 12));
 		}
 		
 	}

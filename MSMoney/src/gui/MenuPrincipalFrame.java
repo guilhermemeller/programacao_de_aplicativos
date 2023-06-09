@@ -454,12 +454,22 @@ public class MenuPrincipalFrame extends JFrame {
 		botPanelFundoDespesas.add(btnCadastrarFundoDespesas);
 
 		btnEditarFundoDespesas = new JButton("Editar");
+		btnEditarFundoDespesas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnEditarFundoDespesasActionPerformed();
+			}
+		});
 		btnEditarFundoDespesas.setIcon(new ImageIcon(MenuPrincipalFrame.class.getResource("/images/editar40.png")));
 		btnEditarFundoDespesas.setBackground(new Color(191, 214, 255));
 		btnEditarFundoDespesas.setFont(new Font("Tahoma", Font.BOLD, 16));
 		botPanelFundoDespesas.add(btnEditarFundoDespesas);
 
 		btnExcluirFundoDespesas = new JButton("Excluir");
+		btnExcluirFundoDespesas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnExcluirFundoDespesasActionPerformed();
+			}
+		});
 		btnExcluirFundoDespesas.setIcon(new ImageIcon(MenuPrincipalFrame.class.getResource("/images/excluir40.png")));
 		btnExcluirFundoDespesas.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btnExcluirFundoDespesas.setBackground(new Color(255, 176, 176));
@@ -1131,6 +1141,79 @@ public class MenuPrincipalFrame extends JFrame {
 				}
 
 				buscarInvestimento();
+			} catch (SQLException | IOException e) {
+				JOptionPane.showMessageDialog(null, "Erro ao excluir a finança!\n" + e.getMessage(), "ERRO",
+						JOptionPane.ERROR_MESSAGE);
+			}
+
+		} else {
+			JOptionPane.showMessageDialog(null, "Nenhuma linha da tabela selecionada", "Erro de Exclusão",
+					JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	
+	public void btnEditarFundoDespesasActionPerformed() {
+		int linhaTabela = tableFundoDespesas.getSelectedRow();
+		if (linhaTabela != -1) {
+			FinancaService finService = new FinancaService();
+
+			Financa financa = new Financa();
+
+			try {
+				String nomeFinanca = (String) tableFundoDespesas.getModel().getValueAt(linhaTabela, 0);
+				int id = finService.buscarIdFundoDespesasPorNome(dadosUsuario.getId(), nomeFinanca,
+						cbFundoDespesas.getSelectedIndex() + 1);
+				financa.setId(id);
+				financa.setNome(nomeFinanca);
+				financa.setTotal((Double) tableFundoDespesas.getModel().getValueAt(linhaTabela, 2));
+				financa.setTipo("Fundo para Despesas Ocasionais");
+				CadastrarFinancaFrame editarFinancaFrame = new CadastrarFinancaFrame("Fundo para Despesas Ocasionais", "Editar", financa);
+				editarFinancaFrame.setLocationRelativeTo(null);
+				editarFinancaFrame.setVisible(true);
+
+				editarFinancaFrame.addWindowListener(new WindowAdapter() {
+					@Override
+					public void windowClosed(WindowEvent e) {
+						buscarFundoDespesas();
+					}
+				});
+			} catch (SQLException | IOException e) {
+				JOptionPane.showMessageDialog(null, "Erro ao editar a finança!\n" + e.getMessage(), "ERRO",
+						JOptionPane.ERROR_MESSAGE);
+			}
+
+		} else {
+			JOptionPane.showMessageDialog(null, "Nenhuma linha da tabela selecionada", "Erro de Edição",
+					JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	public void btnExcluirFundoDespesasActionPerformed() {
+		int linhaTabela = tableFundoDespesas.getSelectedRow();
+		if (linhaTabela != -1) {
+
+			FinancaService finService = new FinancaService();
+
+			Financa financa = new Financa();
+			int resposta = 1;
+			try {
+				String nomeFinanca = (String) tableFundoDespesas.getModel().getValueAt(linhaTabela, 0);
+				int id = finService.buscarIdFundoDespesasPorNome(dadosUsuario.getId(), nomeFinanca,
+						cbFundoDespesas.getSelectedIndex() + 1);
+				financa.setId(id);
+				financa.setNome(nomeFinanca);
+				financa.setTipo("Fundo para Despesas Ocasionais");
+
+					resposta = JOptionPane.showConfirmDialog(null,
+							"Deseja realmente excluir essa Financa Mensal?\nCaso exclua, ela será apagada de todos os meses!",
+							"Confirmação de Exclusão", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+					if (resposta == JOptionPane.YES_OPTION) {
+						finService.excluirFinanca(financa, "fundo_despesas");
+					}
+				
+
+				buscarFundoDespesas();
 			} catch (SQLException | IOException e) {
 				JOptionPane.showMessageDialog(null, "Erro ao excluir a finança!\n" + e.getMessage(), "ERRO",
 						JOptionPane.ERROR_MESSAGE);

@@ -198,6 +198,33 @@ public class FinancaDAO {
 		}
 		return -1;
 	}
+	
+	public int buscarIdFundoDespesasPorNome(int usuarioId, String nome, int mes) throws SQLException {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+
+		try {
+
+			st = conn.prepareStatement(
+					"SELECT id FROM fundo_despesas WHERE usuario_id = ? AND nome LIKE ? AND mes = ?");
+
+			st.setInt(1, usuarioId);
+			st.setString(2, nome);
+			st.setInt(3, mes);
+			rs = st.executeQuery();
+
+			if (rs.next()) {
+				return rs.getInt("id");
+			}
+
+		} finally {
+
+			BancoDados.finalizarStatement(st);
+			BancoDados.finalizarResultSet(rs);
+			BancoDados.desconectar();
+		}
+		return -1;
+	}
 
 	public void inserirRedimentoDespesa(Financa financa, int usuarioId) throws SQLException {
 
@@ -414,18 +441,38 @@ public class FinancaDAO {
 			BancoDados.desconectar();
 		}
 	}
-
-	public void excluirFinanca(Financa financa, String table) throws SQLException {
+	
+	public void editarFundoDespesas(Financa financaNova, String nome) throws SQLException {
 		PreparedStatement st = null;
 
 		try {
-			if(!financa.isMensal_Ocasional()) {
+			st = conn.prepareStatement(
+					"UPDATE fundo_despesas SET nome = ?, total = ? WHERE nome = ? AND tipo = ?");
+
+			st.setString(1, financaNova.getNome());
+			st.setDouble(2, financaNova.getTotal());
+
+			st.setString(3, nome);
+			st.setString(4, financaNova.getTipo());
+
+			st.executeUpdate();
+			
+		} finally {
+
+			BancoDados.finalizarStatement(st);
+			BancoDados.desconectar();
+		}
+	}
+
+	public void excluirFinanca(Financa financa, String table) throws SQLException {
+		PreparedStatement st = null;
+		try {
+			if((!financa.isMensal_Ocasional())&&(!table.equals("fundo_despesas"))) {
 				st = conn.prepareStatement("DELETE FROM " + table + " WHERE id = ?");
 
 				st.setInt(1, financa.getId());
 			}else {
 				st = conn.prepareStatement("DELETE FROM " + table + " WHERE nome = ? AND tipo = ?");
-
 				st.setString(1, financa.getNome());
 				st.setString(2, financa.getTipo());
 			}
