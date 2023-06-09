@@ -65,6 +65,7 @@ public class CadastrarFinancaFrame extends JFrame {
 	public ButtonGroup buttonGroup;
 
 	private String tipoFinanca;
+	
 	private Financa financa;
 
 	public Financa getFinanca() {
@@ -87,6 +88,7 @@ public class CadastrarFinancaFrame extends JFrame {
 	public CadastrarFinancaFrame(String tipoFinanca, String cadastro_edicao, Financa financa) {
 		setTipoFinanca(tipoFinanca);
 		setFinanca(financa);
+		getFinanca().setNome(financa.getNome());
 		initComponents(tipoFinanca, cadastro_edicao);
 		preencherCampos(financa);
 	}
@@ -366,7 +368,7 @@ public class CadastrarFinancaFrame extends JFrame {
 		int id_categoria;
 		categoria = (String) cbCategoria.getSelectedItem();
 		List<Categoria> categorias = atualizarCategorias();
-
+		DadosUsuario dadosUsuario = DadosUsuario.getInstance();
 		FinancaService service = new FinancaService();
 		Financa financa = new Financa();
 
@@ -381,7 +383,7 @@ public class CadastrarFinancaFrame extends JFrame {
 				financa.setCategoria(new Categoria(id_categoria));
 				financa.setMensal_Ocasional(true);
 
-				DadosUsuario dadosUsuario = DadosUsuario.getInstance();
+				
 				if (cadastro_edicao.equals("Cadastrar")) {
 					try {
 						service.inserirRedimentoDespesa(financa, dadosUsuario.getId());
@@ -391,6 +393,14 @@ public class CadastrarFinancaFrame extends JFrame {
 						JOptionPane.showMessageDialog(null, e.getMessage());
 					}
 				} else {
+					try {
+						service.editarRendimentoDespesas(financa,getFinanca().getNome());
+						JOptionPane.showMessageDialog(null, "Edição com sucesso!");
+						this.dispose();
+					} catch (SQLException | IOException e) {
+						// TODO Auto-generated catch block
+						JOptionPane.showMessageDialog(null, e.getMessage());
+					}
 					
 				}
 
@@ -402,7 +412,7 @@ public class CadastrarFinancaFrame extends JFrame {
 				financa.setCategoria(new Categoria(id_categoria));
 				financa.setMensal_Ocasional(false);
 				financa.setMes(cbMes.getSelectedIndex() + 1);
-				DadosUsuario dadosUsuario = DadosUsuario.getInstance();
+				
 				if (cadastro_edicao == "Cadastrar") {
 					try {
 						service.inserirRedimentoDespesa(financa, dadosUsuario.getId());
@@ -411,10 +421,11 @@ public class CadastrarFinancaFrame extends JFrame {
 					} catch (SQLException | IOException e) {
 						JOptionPane.showMessageDialog(null, e.getMessage());
 					}
+					
 				}else {
 					financa.setId(getFinanca().getId());
 					try {
-						service.editarRendimentoDespesas(financa);
+						service.editarRendimentoDespesas(financa,"");
 						JOptionPane.showMessageDialog(null, "Edição com sucesso!");
 						this.dispose();
 					} catch (SQLException | IOException e) {
@@ -434,7 +445,6 @@ public class CadastrarFinancaFrame extends JFrame {
 				financa.setTipo(getTipoFinanca());
 				financa.setMensal_Ocasional(true);
 
-				DadosUsuario dadosUsuario = DadosUsuario.getInstance();
 
 				if (cadastro_edicao == "Cadastrar") {
 					try {
@@ -452,7 +462,6 @@ public class CadastrarFinancaFrame extends JFrame {
 				financa.setMensal_Ocasional(false);
 				financa.setMes(cbMes.getSelectedIndex() + 1);
 
-				DadosUsuario dadosUsuario = DadosUsuario.getInstance();
 
 				if (cadastro_edicao == "Cadastrar") {
 					try {
@@ -469,7 +478,6 @@ public class CadastrarFinancaFrame extends JFrame {
 			financa.setTotal(Double.parseDouble(txtValorFinanca.getText()));
 			financa.setTipo(getTipoFinanca());
 
-			DadosUsuario dadosUsuario = DadosUsuario.getInstance();
 
 			if (cadastro_edicao == "Cadastrar") {
 				try {

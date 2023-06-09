@@ -231,25 +231,36 @@ public class FinancaDAO {
 		BancoDados.desconectar();
 	}
 
-	public void editarRendimentoDespesas(Financa financa) throws SQLException {
+	public void editarRendimentoDespesas(Financa financaNova, String nome) throws SQLException {
 		PreparedStatement st = null;
 
 		try {
 
-			if (!financa.isMensal_Ocasional()) {
-				st = conn.prepareStatement("UPDATE rendimento_despesa SET " + "nome = ?, " + "categoria = ?, "
-						+ "mensal_ocasional = ?, " + "total = ?, " + "mes = ? " + "WHERE id = ?");
+			if (!financaNova.isMensal_Ocasional()) {
+				st = conn.prepareStatement("UPDATE rendimento_despesa SET nome = ?, categoria = ?, mensal_ocasional = ?, total = ?, mes = ? WHERE id = ?");
 
-				st.setString(1, financa.getNome());
-				st.setInt(2, financa.getCategoria().getId_Categoria());
-				st.setBoolean(3, financa.isMensal_Ocasional());
-				st.setDouble(4, financa.getTotal());
-				System.out.println(financa.getMes());
+				st.setString(1, financaNova.getNome());
+				st.setInt(2, financaNova.getCategoria().getId_Categoria());
+				st.setBoolean(3, financaNova.isMensal_Ocasional());
+				st.setDouble(4, financaNova.getTotal());
+				System.out.println(financaNova.getMes());
 				
-				st.setInt(5, financa.getMes());
+				st.setInt(5, financaNova.getMes());
 				
 
-				st.setInt(6, financa.getId());
+				st.setInt(6, financaNova.getId());
+				st.executeUpdate();
+			}else {
+				
+				st = conn.prepareStatement("UPDATE rendimento_despesa SET nome = ?, categoria = ?, mensal_ocasional = ?, total = ? WHERE nome = ?");
+
+				st.setString(1, financaNova.getNome());
+				st.setInt(2, financaNova.getCategoria().getId_Categoria());
+				st.setBoolean(3, financaNova.isMensal_Ocasional());
+				st.setDouble(4,financaNova.getTotal());
+				
+				st.setString(5, nome);
+
 				st.executeUpdate();
 			}
 

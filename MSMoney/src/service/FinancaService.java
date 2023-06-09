@@ -42,9 +42,9 @@ public class FinancaService {
 		return new FinancaDAO(conn).buscarIdRendimentoDespesaPorNome(usuarioId, nome, mes);
 	}
 	
-	public void editarRendimentoDespesas(Financa financa) throws SQLException, IOException {
+	public void editarRendimentoDespesas(Financa financa, String nome) throws SQLException, IOException {
 		Connection conn = BancoDados.conectar();
-		new FinancaDAO(conn).editarRendimentoDespesas(financa);
+		new FinancaDAO(conn).editarRendimentoDespesas(financa, nome);
 		
 	}
 	
