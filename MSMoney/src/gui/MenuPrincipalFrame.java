@@ -109,6 +109,7 @@ public class MenuPrincipalFrame extends JFrame {
 	private JScrollPane scrollPaneInvestimento;
 	public DadosUsuario dadosUsuario;
 	private JScrollPane scrollPaneDespesas;
+	private JScrollPane scrollPaneFundoDespesas;
 
 	public MenuPrincipalFrame() {
 		dadosUsuario = DadosUsuario.getInstance();
@@ -412,14 +413,29 @@ public class MenuPrincipalFrame extends JFrame {
 		btnPesquisarFundoDespesas
 				.setIcon(new ImageIcon(MenuPrincipalFrame.class.getResource("/images/pesquisar20.png")));
 		topPanelFundoDespesas.add(btnPesquisarFundoDespesas);
+		
+		btnPesquisarFundoDespesas.setVisible(false);
+		cbFundoDespesas.setVisible(false);
 
 		centerPanelFundoDespesas = new JPanel();
 		centerPanelFundoDespesas.setLayout(null);
 		despesasocasionaisPanel.add(centerPanelFundoDespesas, BorderLayout.CENTER);
 
 		tableFundoDespesas = new JTable();
+		tableFundoDespesas.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"Fundo Ocasional", "Mensal", "Total Anual"
+			}
+		));
 		tableFundoDespesas.setBounds(10, 11, 727, 302);
-		centerPanelFundoDespesas.add(tableFundoDespesas);
+		
+		scrollPaneFundoDespesas = new JScrollPane();
+		scrollPaneFundoDespesas.setBounds(10, 11, 727, 302);
+		centerPanelFundoDespesas.add(scrollPaneFundoDespesas);
+
+		scrollPaneFundoDespesas.setViewportView(tableFundoDespesas);
 
 		botPanelFundoDespesas = new JPanel();
 		despesasocasionaisPanel.add(botPanelFundoDespesas, BorderLayout.SOUTH);
@@ -628,7 +644,7 @@ public class MenuPrincipalFrame extends JFrame {
 					buscarInvestimento();
 				}
 				if (tpSideMenu.getSelectedIndex() == 3) {
-					// Fundo Despesa
+					buscarFundoDespesas();
 				}
 			}
 		});
@@ -680,6 +696,13 @@ public class MenuPrincipalFrame extends JFrame {
 		cadastrarFinanca = new CadastrarFinancaFrame("Fundo para Despesas Ocasionais", "Cadastrar");
 		cadastrarFinanca.setLocationRelativeTo(null);
 		cadastrarFinanca.setVisible(true);
+		
+		cadastrarFinanca.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosed(WindowEvent e) {
+				buscarFundoDespesas();
+			}
+		});
 	}
 
 	public void atualizarCategorias() {
@@ -817,6 +840,32 @@ public class MenuPrincipalFrame extends JFrame {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			JOptionPane.showMessageDialog(null, "Erro ao carregar Investimentos!\n" + e.getMessage(), "ERRO",
+					JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	private void buscarFundoDespesas() {
+		DefaultTableModel modelo = (DefaultTableModel) tableFundoDespesas.getModel();
+		modelo.fireTableDataChanged();
+		modelo.setRowCount(0);
+		
+		List<Financa> financas;
+		FinancaService service = new FinancaService();
+		
+		try {
+			financas = service.buscarFundoDespesasPorUsuario(dadosUsuario.getId(),
+					(cbFundoDespesas.getSelectedIndex() + 1));
+			for (Financa financa : financas) {
+					modelo.addRow(new Object[] { financa.getNome(),
+							financa.getTotal(), (financa.getTotal() * 12) });
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			JOptionPane.showMessageDialog(null, "Erro ao carregar Fundo de Despesas Ocasionais!\n" + e.getMessage(), "ERRO",
+					JOptionPane.ERROR_MESSAGE);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			JOptionPane.showMessageDialog(null, "Erro ao carregar Fundo de Despesas Ocasionais!\n" + e.getMessage(), "ERRO",
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}

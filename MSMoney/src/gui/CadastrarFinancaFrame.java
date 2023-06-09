@@ -531,7 +531,6 @@ public class CadastrarFinancaFrame extends JFrame {
 			financa.setTotal(Double.parseDouble(txtValorFinanca.getText()));
 			financa.setTipo(getTipoFinanca());
 
-
 			if (cadastro_edicao == "Cadastrar") {
 				try {
 					service.inserirFundoParaDespesas(financa, dadosUsuario.getId());

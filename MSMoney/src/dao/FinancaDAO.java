@@ -105,6 +105,44 @@ public class FinancaDAO {
 			BancoDados.desconectar();
 		}
 	}
+	
+	public List<Financa> buscarFundoDespesasPorUsuario(int usuarioId, int mes) throws SQLException {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+
+		try {
+
+			st = conn.prepareStatement("SELECT nome, total, tipo, mes "
+					+ "FROM fundo_despesas WHERE usuario_id = ? AND mes = ?");
+
+			st.setInt(1, usuarioId);
+			st.setInt(2, mes);
+
+			rs = st.executeQuery();
+
+			List<Financa> financas = new ArrayList<>();
+
+			while (rs.next()) {
+
+				String nome = rs.getString("nome");
+				double total = rs.getDouble("total");
+				String tipo = rs.getString("tipo");
+				int mesAux = rs.getInt("mes");
+
+				Financa financa = new Financa(nome, total, tipo, mesAux);
+
+				financas.add(financa);
+
+			}
+			return financas;
+
+		} finally {
+
+			BancoDados.finalizarStatement(st);
+			BancoDados.finalizarResultSet(rs);
+			BancoDados.desconectar();
+		}
+	}
 
 	public int buscarIdRendimentoDespesaPorNome(int usuarioId, String nome, int mes) throws SQLException {
 
@@ -280,12 +318,13 @@ public class FinancaDAO {
 			try {
 
 				st = conn.prepareStatement(
-						"INSERT INTO fundo_despesas (nome, total, mes, usuario_id) VALUES (?, ?, ?, ?)");
+						"INSERT INTO fundo_despesas (nome, total, tipo, mes, usuario_id) VALUES (?, ?, ?, ?, ?)");
 
 				st.setString(1, financa.getNome());
 				st.setDouble(2, financa.getTotal());
-				st.setInt(3, i + 1);
-				st.setInt(4, usuarioId);
+				st.setString(3, financa.getTipo());
+				st.setInt(4, i + 1);
+				st.setInt(5, usuarioId);
 
 				st.executeUpdate();
 
@@ -310,7 +349,6 @@ public class FinancaDAO {
 				st.setInt(2, financaNova.getCategoria().getId_Categoria());
 				st.setBoolean(3, financaNova.isMensal_Ocasional());
 				st.setDouble(4, financaNova.getTotal());
-				System.out.println(financaNova.getMes());
 
 				st.setInt(5, financaNova.getMes());
 

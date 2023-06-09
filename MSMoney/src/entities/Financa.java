@@ -40,6 +40,14 @@ public class Financa {
 		this.tipo = tipo;
 		this.mes = mes;
 	}
+	
+	public Financa(String nome, Double total, String tipo, int mes) {
+		super();
+		this.nome = nome;
+		this.total = total;
+		this.tipo = tipo;
+		this.mes = mes;
+	}
 
 	public String getNome() {
 		return nome;
