@@ -20,6 +20,8 @@ import javax.swing.border.EtchedBorder;
 import utils.DadosUsuario;
 import utils.Mes;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
 
 public class MenuPrincipalFrame extends JFrame {
     private JPanel mainPanel;
@@ -151,6 +153,7 @@ public class MenuPrincipalFrame extends JFrame {
         mainPanel.setLayout(null);
         
         tpSideMenu = new JTabbedPane(JTabbedPane.TOP);
+        
         tpSideMenu.setFont(new Font("Tahoma", Font.BOLD, 15));
         tpSideMenu.setBounds(10, 11, 764, 517);
         mainPanel.add(tpSideMenu);
@@ -554,6 +557,23 @@ public class MenuPrincipalFrame extends JFrame {
         tableResumoAnual = new JTable();
         tableResumoAnual.setBounds(10, 11, 570, 324);
         centerPanelResumoanual.add(tableResumoAnual);
+        
+        tpSideMenu.addChangeListener(new ChangeListener() {
+        	public void stateChanged(ChangeEvent e) {
+        		if (tpSideMenu.getSelectedIndex()==0){
+        			buscarRendimentoDespesa(1);
+        		}
+        		if (tpSideMenu.getSelectedIndex()==1){
+        			buscarRendimentoDespesa(2);
+        		}
+        		if (tpSideMenu.getSelectedIndex()==2){
+        			//Investimento
+        		}
+        		if (tpSideMenu.getSelectedIndex()==3){
+        			//Fundo Despesa
+        		}
+        	}
+        });
 
         // Exibir a janela
         setVisible(true);
@@ -688,14 +708,6 @@ public class MenuPrincipalFrame extends JFrame {
         }
         
 
-    }
-    
-    public void initTables(){
-    	Thread thread1 = new Thread(() -> buscarRendimentoDespesa(1));
-        Thread thread2 = new Thread(() -> buscarRendimentoDespesa(2));
-        
-        thread1.start();
-        thread2.start();
     }
     
     public static void main(String[] args) {
