@@ -5,6 +5,8 @@ import service.FinancaService;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
@@ -583,12 +585,26 @@ public class MenuPrincipalFrame extends JFrame {
     		cadastrarFinanca = new CadastrarFinancaFrame("Rendimento");
     		cadastrarFinanca.setLocationRelativeTo(null);
     		cadastrarFinanca.setVisible(true);
+    		
+    		cadastrarFinanca.addWindowListener(new WindowAdapter() {
+    	        @Override
+    	        public void windowClosed(WindowEvent e) {
+    	            buscarRendimentoDespesa(1);
+    	        }
+    	    });
     }
     
     public void btnCadastrarDespesasActionPerformed() {
 		cadastrarFinanca = new CadastrarFinancaFrame("Despesa");
 		cadastrarFinanca.setLocationRelativeTo(null);
 		cadastrarFinanca.setVisible(true);
+		
+		cadastrarFinanca.addWindowListener(new WindowAdapter() {
+	        @Override
+	        public void windowClosed(WindowEvent e) {
+	            buscarRendimentoDespesa(2);
+	        }
+	    });
     }
     
     public void btnCadastrarInvestimentoActionPerformed() {
@@ -674,7 +690,7 @@ public class MenuPrincipalFrame extends JFrame {
             }
         }else {
         	try {
-            	financas = service.buscarRendimentoDespesaPorUsuario(dadosUsuario.getId(), (cbRendimento.getSelectedIndex()+1), "Despesa");
+            	financas = service.buscarRendimentoDespesaPorUsuario(dadosUsuario.getId(), (cbDespesas.getSelectedIndex()+1), "Despesa");
             	String nomeCategoria = "";
     			try {
     				CategoriaService catS = new CategoriaService();
