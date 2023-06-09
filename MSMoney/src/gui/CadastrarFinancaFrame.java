@@ -63,25 +63,46 @@ public class CadastrarFinancaFrame extends JFrame {
 	private JButton btnCadastrarFinanca;
 	private JButton btnCancelar;
 	public ButtonGroup buttonGroup;
-	
-	
+
 	private String tipoFinanca;
-	
-	public CadastrarFinancaFrame() {
-		initComponents("");
+	private Financa financa;
+
+	public Financa getFinanca() {
+		return financa;
 	}
-	
-	public CadastrarFinancaFrame(String tipoFinanca) {
+
+	public void setFinanca(Financa financa) {
+		this.financa = financa;
+	}
+
+	public CadastrarFinancaFrame() {
+		initComponents("", "");
+	}
+
+	public CadastrarFinancaFrame(String tipoFinanca, String cadastro_edicao) {
 		setTipoFinanca(tipoFinanca);
-		initComponents(tipoFinanca);
+		initComponents(tipoFinanca, cadastro_edicao);
+	}
+
+	public CadastrarFinancaFrame(String tipoFinanca, String cadastro_edicao, Financa financa) {
+		setTipoFinanca(tipoFinanca);
+		setFinanca(financa);
+		initComponents(tipoFinanca, cadastro_edicao);
+		preencherCampos(financa);
 	}
 	/*
-	  Create the frame.
+	 * Create the frame.
 	 */
-	
-	public void initComponents(String tipoFinanca) {
-		
-		setTitle("Cadastro de "+tipoFinanca);
+
+	public void initComponents(String tipoFinanca, String cadastro_edicao) {
+		if (cadastro_edicao == "Editar") {
+			setTitle("Edição de Finança");
+			btnCadastrarFinanca = new JButton("Editar");
+		} else {
+			setTitle("Cadastro de " + tipoFinanca);
+			btnCadastrarFinanca = new JButton("Cadastrar");
+		}
+
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 500);
@@ -90,50 +111,52 @@ public class CadastrarFinancaFrame extends JFrame {
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
+
 		cadastrofinancaPanel = new JPanel();
 		cadastrofinancaPanel.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		cadastrofinancaPanel.setBounds(10, 11, 414, 441);
 		contentPane.add(cadastrofinancaPanel);
 		cadastrofinancaPanel.setLayout(null);
-		
+
 		lblNomeFinanca = new JLabel("Nome");
 		lblNomeFinanca.setBounds(10, 11, 65, 14);
 		cadastrofinancaPanel.add(lblNomeFinanca);
-		
+
 		txtNomeFinanca = new JTextField();
 		txtNomeFinanca.setBounds(10, 29, 390, 30);
 		cadastrofinancaPanel.add(txtNomeFinanca);
 		txtNomeFinanca.setColumns(10);
-		
+
 		lblValorFinanca = new JLabel("Valor");
 		lblValorFinanca.setBounds(10, 66, 65, 14);
 		cadastrofinancaPanel.add(lblValorFinanca);
-		
+
 		txtValorFinanca = new JTextField();
 		txtValorFinanca.setColumns(10);
 		txtValorFinanca.setBounds(10, 84, 175, 30);
 		cadastrofinancaPanel.add(txtValorFinanca);
-		
+
 		categoriaPanel = new JPanel();
 		categoriaPanel.setLayout(null);
-		categoriaPanel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Categoria", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		categoriaPanel.setBorder(new TitledBorder(
+				new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Categoria",
+				TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		categoriaPanel.setBounds(196, 66, 207, 128);
 		cadastrofinancaPanel.add(categoriaPanel);
-		
+
 		cbCategoria = new JComboBox<>();
 		cbCategoria.setEditable(false);
-		
+
 		atualizarCategorias();
-		
+
 		cbCategoria.setBounds(16, 20, 175, 30);
 		categoriaPanel.add(cbCategoria);
-		
+
 		botoesPanel = new JPanel();
 		botoesPanel.setBounds(7, 57, 190, 63);
 		categoriaPanel.add(botoesPanel);
 		botoesPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		
+
 		btnCadastrarCategoria = new JButton("Cadastrar nova Categoria");
 		btnCadastrarCategoria.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -143,7 +166,7 @@ public class CadastrarFinancaFrame extends JFrame {
 		btnCadastrarCategoria.setFont(new Font("Tahoma", Font.BOLD, 11));
 		btnCadastrarCategoria.setBackground(new Color(221, 249, 226));
 		botoesPanel.add(btnCadastrarCategoria);
-		
+
 		btnEditarCategoria = new JButton("Editar Categoria");
 		btnEditarCategoria.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -153,108 +176,115 @@ public class CadastrarFinancaFrame extends JFrame {
 		btnEditarCategoria.setFont(new Font("Tahoma", Font.BOLD, 11));
 		btnEditarCategoria.setBackground(new Color(191, 214, 255));
 		botoesPanel.add(btnEditarCategoria);
-		
+
 		if (tipoFinanca.equals("Investimento a Longo Prazo") || tipoFinanca.equals("Fundo para Despesas Ocasionais")) {
-		    categoriaPanel.setVisible(false);
+			categoriaPanel.setVisible(false);
 		}
-		
+
 		tipoPanel = new JPanel();
 		tipoPanel.setBounds(10, 124, 177, 70);
 		cadastrofinancaPanel.add(tipoPanel);
-		tipoPanel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Tipo", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		tipoPanel.setBorder(new TitledBorder(
+				new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Tipo",
+				TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		tipoPanel.setLayout(new GridLayout(0, 1, 0, 0));
-		
+
 		rdbtnMensal = new JRadioButton("Mensal");
-		
+
 		rdbtnOcasional = new JRadioButton("Ocasional");
-		
+
 		buttonGroup = new ButtonGroup();
-		
+
 		buttonGroup.add(rdbtnMensal);
 		buttonGroup.add(rdbtnOcasional);
-		
+
 		tipoPanel.add(rdbtnMensal);
 		tipoPanel.add(rdbtnOcasional);
 		rdbtnMensal.setSelected(true);
-		
+
 		rdbtnMensal.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cbMes.setEnabled(false);
-            }
-        });
-		
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				cbMes.setEnabled(false);
+			}
+		});
+
 		rdbtnOcasional.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cbMes.setEnabled(true);
-            }
-        });
-		
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				cbMes.setEnabled(true);
+			}
+		});
+
 		mesPanel = new JPanel();
-		mesPanel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "M\u00EAs", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		mesPanel.setBorder(new TitledBorder(
+				new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "M\u00EAs",
+				TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		mesPanel.setBounds(10, 205, 177, 70);
 		cadastrofinancaPanel.add(mesPanel);
 		mesPanel.setLayout(null);
-		
+
 		cbMes = new JComboBox();
 		cbMes.setModel(new DefaultComboBoxModel(Mes.values()));
 		cbMes.setBounds(16, 20, 143, 30);
 		mesPanel.add(cbMes);
 		cbMes.setEnabled(false);
-		
+
 		if (tipoFinanca.equals("Fundo para Despesas Ocasionais")) {
 			tipoPanel.setVisible(false);
 			mesPanel.setVisible(false);
 		}
-		
-		btnCadastrarFinanca = new JButton("Cadastrar");
+
 		btnCadastrarFinanca.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if((!txtNomeFinanca.getText().equals(""))&&(!txtValorFinanca.getText().equals(""))) {
-					btnCadastrarFinancaActionPerformed();
-				}else {
-					JOptionPane.showMessageDialog(null, "Os campo devem estar preenchidos!", "Erro", JOptionPane.ERROR_MESSAGE);
+				if ((!txtNomeFinanca.getText().equals("")) && (!txtValorFinanca.getText().equals(""))) {
+					cadastrarFinancaActionPerformed(cadastro_edicao);
+
+				} else {
+					JOptionPane.showMessageDialog(null, "Os campo devem estar preenchidos!", "Erro",
+							JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
 		btnCadastrarFinanca.setBackground(new Color(221, 249, 226));
 		btnCadastrarFinanca.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btnCadastrarFinanca.setBounds(28, 385, 115, 30);
+
 		cadastrofinancaPanel.add(btnCadastrarFinanca);
-		
+
 		btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Fechar a tela
-            	dispose();
-            }
-        });
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Fechar a tela
+				dispose();
+			}
+		});
 		btnCancelar.setBackground(new Color(255, 176, 176));
 		btnCancelar.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btnCancelar.setBounds(270, 385, 115, 30);
 		cadastrofinancaPanel.add(btnCancelar);
 	}
-	
+
 	public void btnCadastrarCategoriaActionPerformed() {
-	    String nomeCategoria = JOptionPane.showInputDialog(null, "Digite o nome da nova categoria:", "Cadastrar Categoria", JOptionPane.INFORMATION_MESSAGE);
-	    if (nomeCategoria != null) {
-	        Categoria categoria = new Categoria(nomeCategoria);
-	        CategoriaService cService = new CategoriaService();
-	        try {
-	            cService.inserirCategoria(categoria);
-	            JOptionPane.showMessageDialog(null, "Cadastro realizado com sucesso!");
-	            atualizarCategorias();
-	        } catch (SQLException | IOException e1) {
-	            JOptionPane.showMessageDialog(null, e1.getMessage());
-	        }
-	    } else {
-	        // Usuário cancelou a operação
-	        JOptionPane.showMessageDialog(null, "Operação cancelada!");
-	    }
+		String nomeCategoria = JOptionPane.showInputDialog(null, "Digite o nome da nova categoria:",
+				"Cadastrar Categoria", JOptionPane.INFORMATION_MESSAGE);
+		if (nomeCategoria != null) {
+			Categoria categoria = new Categoria(nomeCategoria);
+			CategoriaService cService = new CategoriaService();
+			try {
+				cService.inserirCategoria(categoria);
+				JOptionPane.showMessageDialog(null, "Cadastro realizado com sucesso!");
+				atualizarCategorias();
+			} catch (SQLException | IOException e1) {
+				JOptionPane.showMessageDialog(null, e1.getMessage());
+			}
+		} else {
+			// Usuário cancelou a operação
+			JOptionPane.showMessageDialog(null, "Operação cancelada!");
+		}
 	}
-	
+
 	public void btnEditarCategoriaActionPerformed() {
 		String cSelecionado = (String) cbCategoria.getSelectedItem();
 		List<Categoria> categorias = atualizarCategorias();
@@ -262,29 +292,31 @@ public class CadastrarFinancaFrame extends JFrame {
 		EditarExcluirCategoriaDialog dialog = new EditarExcluirCategoriaDialog(cSelecionado);
 		dialog.setLocationRelativeTo(null);
 		dialog.addWindowListener(new WindowAdapter() {
-		    @Override
-		    public void windowClosed(WindowEvent e) {
-		        String nomeCategoriaE = dialog.getCategoriaEditada();
-		        if (nomeCategoriaE == null) {
-		        	
-		        } else if(nomeCategoriaE.equals("-1")) {
-		        	try {
-		        		int resposta = JOptionPane.showConfirmDialog(null, "Deseja realmente excluir essa Categoria?\nCaso exclua, todas as Finanças vinculadas a essa categoria também serão excluidas", "Confirmação de Exclusão", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-		        		if (resposta == JOptionPane.YES_OPTION) {
-		        		    int id = buscarIdCategoria(categorias, cSelecionado);
-		        		    cService.excluirCategoria(id);
-		        		    JOptionPane.showMessageDialog(null, "Excluído com sucesso!");
-		        		    atualizarCategorias();
-		        		}
+			@Override
+			public void windowClosed(WindowEvent e) {
+				String nomeCategoriaE = dialog.getCategoriaEditada();
+				if (nomeCategoriaE == null) {
+
+				} else if (nomeCategoriaE.equals("-1")) {
+					try {
+						int resposta = JOptionPane.showConfirmDialog(null,
+								"Deseja realmente excluir essa Categoria?\nCaso exclua, todas as Finanças vinculadas a essa categoria também serão excluidas",
+								"Confirmação de Exclusão", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+						if (resposta == JOptionPane.YES_OPTION) {
+							int id = buscarIdCategoria(categorias, cSelecionado);
+							cService.excluirCategoria(id);
+							JOptionPane.showMessageDialog(null, "Excluído com sucesso!");
+							atualizarCategorias();
+						}
 					} catch (SQLException | IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-		        						
-		        }else {
-		        	try {
-		        		int id = buscarIdCategoria(categorias, cSelecionado);
-			        	Categoria cate = new Categoria(id, nomeCategoriaE);
+
+				} else {
+					try {
+						int id = buscarIdCategoria(categorias, cSelecionado);
+						Categoria cate = new Categoria(id, nomeCategoriaE);
 						cService.editarCategoria(cate);
 						JOptionPane.showMessageDialog(null, "Editado com sucesso!");
 						atualizarCategorias();
@@ -292,17 +324,17 @@ public class CadastrarFinancaFrame extends JFrame {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-		        	
-		        }
-		    }
+
+				}
+			}
 		});
-		dialog.setVisible(true);	    
+		dialog.setVisible(true);
 	}
-	
-	public List<Categoria> atualizarCategorias(){
+
+	public List<Categoria> atualizarCategorias() {
 		CategoriaService cService = new CategoriaService();
 		cbCategoria.removeAllItems();
-		
+
 		List<Categoria> categorias;
 		try {
 			categorias = cService.buscarCategorias();
@@ -317,47 +349,51 @@ public class CadastrarFinancaFrame extends JFrame {
 			return null;
 		}
 	}
-	
+
 	public int buscarIdCategoria(List<Categoria> categorias, String nome) {
-		
-		for(Categoria categoria: categorias) {
-			if(categoria.getNome().equals(nome)) {
+
+		for (Categoria categoria : categorias) {
+			if (categoria.getNome().equals(nome)) {
 				return categoria.getId_Categoria();
 			}
 		}
 		return -1;
 	}
-	
-	public void btnCadastrarFinancaActionPerformed() {
-		
+
+	public void cadastrarFinancaActionPerformed(String cadastro_edicao) {
+
 		String categoria;
 		int id_categoria;
 		categoria = (String) cbCategoria.getSelectedItem();
 		List<Categoria> categorias = atualizarCategorias();
-		
-		FinancaService service =  new FinancaService();
+
+		FinancaService service = new FinancaService();
 		Financa financa = new Financa();
-		
-		if(getTipoFinanca().equals("Rendimento") || getTipoFinanca().equals("Despesa")) {
-			
-			if(this.rdbtnMensal.isSelected()) {
-				
+
+		if (getTipoFinanca().equals("Rendimento") || getTipoFinanca().equals("Despesa")) {
+
+			if (this.rdbtnMensal.isSelected()) {
+
 				financa.setNome(txtNomeFinanca.getText());
 				financa.setTotal(Double.parseDouble(txtValorFinanca.getText()));
 				financa.setTipo(getTipoFinanca());
 				id_categoria = buscarIdCategoria(categorias, categoria);
 				financa.setCategoria(new Categoria(id_categoria));
 				financa.setMensal_Ocasional(true);
-				
+
 				DadosUsuario dadosUsuario = DadosUsuario.getInstance();
-				
-				try {
-					service.inserirRedimentoDespesa(financa, dadosUsuario.getId());
-					JOptionPane.showMessageDialog(null, "Cadastrado com sucesso!");
-					limparCampos();
-				} catch (SQLException | IOException e) {
-					JOptionPane.showMessageDialog(null, e.getMessage());
-				}				
+				if (cadastro_edicao.equals("Cadastrar")) {
+					try {
+						service.inserirRedimentoDespesa(financa, dadosUsuario.getId());
+						JOptionPane.showMessageDialog(null, "Cadastrado com sucesso!");
+						limparCampos();
+					} catch (SQLException | IOException e) {
+						JOptionPane.showMessageDialog(null, e.getMessage());
+					}
+				} else {
+					
+				}
+
 			} else {
 				financa.setNome(txtNomeFinanca.getText());
 				financa.setTotal(Double.parseDouble(txtValorFinanca.getText()));
@@ -365,75 +401,115 @@ public class CadastrarFinancaFrame extends JFrame {
 				id_categoria = buscarIdCategoria(categorias, categoria);
 				financa.setCategoria(new Categoria(id_categoria));
 				financa.setMensal_Ocasional(false);
-				financa.setMes(cbMes.getSelectedIndex()+1);
-				
+				financa.setMes(cbMes.getSelectedIndex() + 1);
 				DadosUsuario dadosUsuario = DadosUsuario.getInstance();
-				
-				try {
-					service.inserirRedimentoDespesa(financa, dadosUsuario.getId());
-					JOptionPane.showMessageDialog(null, "Cadastrado com sucesso!");
-					limparCampos();
-				} catch (SQLException | IOException e) {
-					JOptionPane.showMessageDialog(null, e.getMessage());
+				if (cadastro_edicao == "Cadastrar") {
+					try {
+						service.inserirRedimentoDespesa(financa, dadosUsuario.getId());
+						JOptionPane.showMessageDialog(null, "Cadastrado com sucesso!");
+						limparCampos();
+					} catch (SQLException | IOException e) {
+						JOptionPane.showMessageDialog(null, e.getMessage());
+					}
+				}else {
+					financa.setId(getFinanca().getId());
+					try {
+						service.editarRendimentoDespesas(financa);
+						JOptionPane.showMessageDialog(null, "Edição com sucesso!");
+						this.dispose();
+					} catch (SQLException | IOException e) {
+						// TODO Auto-generated catch block
+						JOptionPane.showMessageDialog(null, e.getMessage());
+					}
+					
+					
 				}
+
 			}
-		} else if(getTipoFinanca().equals("Investimento a Longo Prazo")) {
-			if(this.rdbtnMensal.isSelected()) {
-				
+		} else if (getTipoFinanca().equals("Investimento a Longo Prazo")) {
+			if (this.rdbtnMensal.isSelected()) {
+
 				financa.setNome(txtNomeFinanca.getText());
 				financa.setTotal(Double.parseDouble(txtValorFinanca.getText()));
 				financa.setTipo(getTipoFinanca());
 				financa.setMensal_Ocasional(true);
-				
+
 				DadosUsuario dadosUsuario = DadosUsuario.getInstance();
-				
-				try {
-					service.inserirInvestimento(financa, dadosUsuario.getId());
-					JOptionPane.showMessageDialog(null, "Cadastrado com sucesso!");
-					limparCampos();
-				} catch (SQLException | IOException e) {
-					JOptionPane.showMessageDialog(null, e.getMessage());
-				}				
-			}else {
+
+				if (cadastro_edicao == "Cadastrar") {
+					try {
+						service.inserirInvestimento(financa, dadosUsuario.getId());
+						JOptionPane.showMessageDialog(null, "Cadastrado com sucesso!");
+						limparCampos();
+					} catch (SQLException | IOException e) {
+						JOptionPane.showMessageDialog(null, e.getMessage());
+					}
+				}
+			} else {
 				financa.setNome(txtNomeFinanca.getText());
 				financa.setTotal(Double.parseDouble(txtValorFinanca.getText()));
 				financa.setTipo(getTipoFinanca());
 				financa.setMensal_Ocasional(false);
-				financa.setMes(cbMes.getSelectedIndex()+1);
-				
+				financa.setMes(cbMes.getSelectedIndex() + 1);
+
 				DadosUsuario dadosUsuario = DadosUsuario.getInstance();
-				
+
+				if (cadastro_edicao == "Cadastrar") {
+					try {
+						service.inserirInvestimento(financa, dadosUsuario.getId());
+						JOptionPane.showMessageDialog(null, "Cadastrado com sucesso!");
+						limparCampos();
+					} catch (SQLException | IOException e) {
+						JOptionPane.showMessageDialog(null, e.getMessage());
+					}
+				}
+			}
+		} else if (getTipoFinanca().equals("Fundo para Despesas Ocasionais")) {
+			financa.setNome(txtNomeFinanca.getText());
+			financa.setTotal(Double.parseDouble(txtValorFinanca.getText()));
+			financa.setTipo(getTipoFinanca());
+
+			DadosUsuario dadosUsuario = DadosUsuario.getInstance();
+
+			if (cadastro_edicao == "Cadastrar") {
 				try {
-					service.inserirInvestimento(financa, dadosUsuario.getId());
+					service.inserirFundoParaDespesas(financa, dadosUsuario.getId());
 					JOptionPane.showMessageDialog(null, "Cadastrado com sucesso!");
 					limparCampos();
 				} catch (SQLException | IOException e) {
 					JOptionPane.showMessageDialog(null, e.getMessage());
 				}
 			}
-		}else if(getTipoFinanca().equals("Fundo para Despesas Ocasionais")) {
-			financa.setNome(txtNomeFinanca.getText());
-			financa.setTotal(Double.parseDouble(txtValorFinanca.getText()));
-			financa.setTipo(getTipoFinanca());
-			
-			DadosUsuario dadosUsuario = DadosUsuario.getInstance();
-			
-			try {
-				service.inserirFundoParaDespesas(financa, dadosUsuario.getId());
-				JOptionPane.showMessageDialog(null, "Cadastrado com sucesso!");
-				limparCampos();
-			} catch (SQLException | IOException e) {
-				JOptionPane.showMessageDialog(null, e.getMessage());
-			}				
 		}
 	}
-	
+
 	public void limparCampos() {
 		txtNomeFinanca.setText("");
 		txtValorFinanca.setText("");
 		rdbtnMensal.setSelected(true);
 		txtNomeFinanca.requestFocus();
 		cbMes.setEnabled(false);
+	}
+
+	public void preencherCampos(Financa financa) {
+		txtNomeFinanca.setText(financa.getNome());
+		for(int i = 0; i < cbCategoria.getItemCount();i++) {
+			if(cbCategoria.getItemAt(i).equals(financa.getCategoria().getNome())) {
+				cbCategoria.setSelectedIndex(i);
+			}
+		}
+		
+		
+		if (financa.isMensal_Ocasional()) {
+			rdbtnMensal.setSelected(true);
+			txtValorFinanca.setText(String.valueOf(financa.getTotal() / 12));
+			cbMes.setEnabled(false);
+		} else {
+			txtValorFinanca.setText(String.valueOf(financa.getTotal()));
+			rdbtnOcasional.setSelected(true);
+			cbMes.setEnabled(true);
+			cbMes.setSelectedIndex(financa.getMes());
+		}
 	}
 
 	public String getTipoFinanca() {

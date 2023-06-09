@@ -138,4 +138,31 @@ public class CategoriaDAO {
 			BancoDados.desconectar();
 		}
 	}
+	
+	public int buscarIdCategoria(String nomeCategoria) throws SQLException, IOException {
+		int idCategoria = -1;
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		
+		try {
+			
+			st = conn.prepareStatement("SELECT id_categoria FROM categoria WHERE nome_categoria = ?");
+			
+			st.setString(1, nomeCategoria);
+			
+			rs = st.executeQuery();
+			
+			if(rs.next()) {
+				idCategoria = rs.getInt("id_categoria");
+			}
+			
+			return idCategoria;
+			
+		} finally {
+			
+			BancoDados.finalizarStatement(st);
+			BancoDados.finalizarResultSet(rs);
+			BancoDados.desconectar();
+		}
+	}
 }

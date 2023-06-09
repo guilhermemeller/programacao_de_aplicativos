@@ -35,4 +35,17 @@ public class FinancaService {
 		Connection conn = BancoDados.conectar();
 		return new FinancaDAO(conn).buscarRendimentoDespesaPorUsuario(usuarioId, mes, tipoFinanca);
 	}
+	
+	public int buscarIdRendimentoDespesaPorNome(int usuarioId, String nome, int mes) throws SQLException, IOException {
+
+		Connection conn = BancoDados.conectar();
+		return new FinancaDAO(conn).buscarIdRendimentoDespesaPorNome(usuarioId, nome, mes);
+	}
+	
+	public void editarRendimentoDespesas(Financa financa) throws SQLException, IOException {
+		Connection conn = BancoDados.conectar();
+		new FinancaDAO(conn).editarRendimentoDespesas(financa);
+		
+	}
+	
 }

@@ -7,11 +7,21 @@ public class Financa {
 	private Double total;
 	private String tipo;
 	private int mes;
+	private int id;
 
 	
 	public Financa() {
+		
 	}
 	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public Financa(String nome, Categoria categoria, boolean mensal_Ocasional, Double total, String tipo,
 			int mes) {
 		this.nome = nome;

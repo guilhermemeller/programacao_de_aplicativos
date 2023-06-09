@@ -219,6 +219,11 @@ public class MenuPrincipalFrame extends JFrame {
         botPanelRendimento.add(btnCadastrarRendimento);
         
         btnEditarRendimento = new JButton("Editar");
+        btnEditarRendimento.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		btnEditarRendimentoActionPerformed();
+        	}
+        });
         btnEditarRendimento.setIcon(new ImageIcon(MenuPrincipalFrame.class.getResource("/images/editar40.png")));
         btnEditarRendimento.setBackground(new Color(191, 214, 255));
         btnEditarRendimento.setFont(new Font("Tahoma", Font.BOLD, 16));
@@ -582,7 +587,7 @@ public class MenuPrincipalFrame extends JFrame {
     }
     
     public void btnCadastrarRendimentoActionPerformed() {
-    		cadastrarFinanca = new CadastrarFinancaFrame("Rendimento");
+    		cadastrarFinanca = new CadastrarFinancaFrame("Rendimento","Cadastrar");
     		cadastrarFinanca.setLocationRelativeTo(null);
     		cadastrarFinanca.setVisible(true);
     		
@@ -595,7 +600,7 @@ public class MenuPrincipalFrame extends JFrame {
     }
     
     public void btnCadastrarDespesasActionPerformed() {
-		cadastrarFinanca = new CadastrarFinancaFrame("Despesa");
+		cadastrarFinanca = new CadastrarFinancaFrame("Despesa","Cadastrar");
 		cadastrarFinanca.setLocationRelativeTo(null);
 		cadastrarFinanca.setVisible(true);
 		
@@ -608,13 +613,13 @@ public class MenuPrincipalFrame extends JFrame {
     }
     
     public void btnCadastrarInvestimentoActionPerformed() {
-		cadastrarFinanca = new CadastrarFinancaFrame("Investimento a Longo Prazo");
+		cadastrarFinanca = new CadastrarFinancaFrame("Investimento a Longo Prazo","Cadastrar");
 		cadastrarFinanca.setLocationRelativeTo(null);
 		cadastrarFinanca.setVisible(true);
     }
     
     public void btnCadastrarFundoDespesasActionPerformed() {
-		cadastrarFinanca = new CadastrarFinancaFrame("Fundo para Despesas Ocasionais");
+		cadastrarFinanca = new CadastrarFinancaFrame("Fundo para Despesas Ocasionais","Cadastrar");
 		cadastrarFinanca.setLocationRelativeTo(null);
 		cadastrarFinanca.setVisible(true);
     }
@@ -724,6 +729,41 @@ public class MenuPrincipalFrame extends JFrame {
         }
         
 
+    }
+    
+    public void btnEditarRendimentoActionPerformed() {
+    	int linhaTabela = tableRendimento.getSelectedRow();
+    	if(linhaTabela!=-1) {
+    		CategoriaService catService = new CategoriaService();
+    		FinancaService finService = new FinancaService();
+    		
+    		Financa financa = new Financa();
+    		String nomeCategoria = (String) tableRendimento.getModel().getValueAt(linhaTabela,0);
+    		
+    		try {
+				Categoria categoria = new Categoria(nomeCategoria,catService.buscarIdCategoria((String) tableRendimento.getModel().getValueAt(linhaTabela,0)));
+				String nomeFinanca = (String) tableRendimento.getModel().getValueAt(linhaTabela,1);
+				int id = finService.buscarIdRendimentoDespesaPorNome(dadosUsuario.getId(), nomeFinanca, cbRendimento.getSelectedIndex()+1);
+				financa.setId(id);
+				financa.setNome(nomeFinanca);
+				financa.setCategoria(categoria);
+				if(tableRendimento.getModel().getValueAt(linhaTabela,2) instanceof Double) {
+					financa.setMensal_Ocasional(true);
+				}else {
+					financa.setMensal_Ocasional(false);
+				}
+				financa.setTotal((Double) tableRendimento.getModel().getValueAt(linhaTabela,4));
+				financa.setTipo("Rendimento");
+				financa.setMes(cbRendimento.getSelectedIndex());
+				CadastrarFinancaFrame editarFinancaFrame = new CadastrarFinancaFrame("Rendimento","Editar", financa);
+				editarFinancaFrame.setVisible(true);
+			} catch (SQLException | IOException e) {
+				JOptionPane.showMessageDialog(null, "Erro ao editar a finança!\n"+e.getMessage(),"ERRO",JOptionPane.ERROR_MESSAGE);
+			}
+    		
+    		
+    	}
+    	
     }
     
     public static void main(String[] args) {

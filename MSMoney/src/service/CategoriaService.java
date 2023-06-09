@@ -39,4 +39,9 @@ public class CategoriaService {
 		Connection conn = BancoDados.conectar();
 		return new CategoriaDAO(conn).buscarNomeCategoria(id);
 	}
+	
+	public int buscarIdCategoria(String nomeCategoria) throws SQLException, IOException {
+		Connection conn = BancoDados.conectar();
+		return new CategoriaDAO(conn).buscarIdCategoria(nomeCategoria);
+	}
 }
