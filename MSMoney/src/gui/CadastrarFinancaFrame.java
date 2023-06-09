@@ -90,8 +90,9 @@ public class CadastrarFinancaFrame extends JFrame {
 		setFinanca(financa);
 		getFinanca().setNome(financa.getNome());
 		getFinanca().setMensal_Ocasional(financa.isMensal_Ocasional());
+		getFinanca().setTipo(tipoFinanca);
 		initComponents(tipoFinanca, cadastro_edicao);
-		preencherCampos(financa);
+		preencherCampos(financa, financa.getTipo());
 	}
 	/*
 	 * Create the frame.
@@ -404,7 +405,7 @@ public class CadastrarFinancaFrame extends JFrame {
 							//Era mensal - virou mensal
 							service.editarRendimentoDespesas(financa,getFinanca().getNome());
 						}else {
-							service.excluirFinanca(getFinanca());
+							service.excluirFinanca(getFinanca(), "rendimento_despesa");
 							service.inserirRedimentoDespesa(financa, dadosUsuario.getId());
 						}
 						
@@ -441,7 +442,7 @@ public class CadastrarFinancaFrame extends JFrame {
 						if(getFinanca().isMensal_Ocasional() == financa.isMensal_Ocasional()) {
 							service.editarRendimentoDespesas(financa,"");
 						}else {
-							service.excluirFinanca(getFinanca());
+							service.excluirFinanca(getFinanca(), "rendimento_despesa");
 							service.inserirRedimentoDespesa(financa, dadosUsuario.getId());
 						}
 						
@@ -473,6 +474,22 @@ public class CadastrarFinancaFrame extends JFrame {
 					} catch (SQLException | IOException e) {
 						JOptionPane.showMessageDialog(null, e.getMessage());
 					}
+				}else {
+					//Se for edição de mensal
+					try {
+						if(getFinanca().isMensal_Ocasional() == financa.isMensal_Ocasional()) {
+							service.editarInvestimento(financa, getFinanca().getNome());
+						}else {
+							service.excluirFinanca(getFinanca(), "investimento");
+							service.inserirInvestimento(financa, dadosUsuario.getId());
+						}
+						
+						JOptionPane.showMessageDialog(null, "Edição com sucesso!");
+						this.dispose();
+					} catch (SQLException | IOException e) {
+						// TODO Auto-generated catch block
+						JOptionPane.showMessageDialog(null, e.getMessage());
+					}
 				}
 			} else {
 				financa.setNome(txtNomeFinanca.getText());
@@ -488,6 +505,23 @@ public class CadastrarFinancaFrame extends JFrame {
 						JOptionPane.showMessageDialog(null, "Cadastrado com sucesso!");
 						limparCampos();
 					} catch (SQLException | IOException e) {
+						JOptionPane.showMessageDialog(null, e.getMessage());
+					}
+				}else {
+					financa.setId(getFinanca().getId());
+					//Se for edição de ocasional					
+					try {
+						if(getFinanca().isMensal_Ocasional() == financa.isMensal_Ocasional()) {
+							service.editarInvestimento(financa, "");
+						}else {
+							service.excluirFinanca(getFinanca(), "investimento");
+							service.inserirInvestimento(financa, dadosUsuario.getId());
+						}
+						
+						JOptionPane.showMessageDialog(null, "Edição com sucesso!");
+						this.dispose();
+					} catch (SQLException | IOException e) {
+						// TODO Auto-generated catch block
 						JOptionPane.showMessageDialog(null, e.getMessage());
 					}
 				}
@@ -518,25 +552,41 @@ public class CadastrarFinancaFrame extends JFrame {
 		cbMes.setEnabled(false);
 	}
 
-	public void preencherCampos(Financa financa) {
-		txtNomeFinanca.setText(financa.getNome());
-		for(int i = 0; i < cbCategoria.getItemCount();i++) {
-			if(cbCategoria.getItemAt(i).equals(financa.getCategoria().getNome())) {
-				cbCategoria.setSelectedIndex(i);
+	public void preencherCampos(Financa financa, String tipo) {
+		if((tipo.equals("Despesa")) || (tipo.equals("Rendimento"))) {
+			txtNomeFinanca.setText(financa.getNome());
+			for(int i = 0; i < cbCategoria.getItemCount();i++) {
+				if(cbCategoria.getItemAt(i).equals(financa.getCategoria().getNome())) {
+					cbCategoria.setSelectedIndex(i);
+				}
+			}
+			
+			
+			if (financa.isMensal_Ocasional()) {
+				rdbtnMensal.setSelected(true);
+				txtValorFinanca.setText(String.valueOf(financa.getTotal() / 12));
+				cbMes.setEnabled(false);
+			} else {
+				txtValorFinanca.setText(String.valueOf(financa.getTotal()));
+				rdbtnOcasional.setSelected(true);
+				cbMes.setEnabled(true);
+				cbMes.setSelectedIndex(financa.getMes());
+			}
+		}else if(tipo.equals("Investimento a Longo Prazo")) {
+			txtNomeFinanca.setText(financa.getNome());			
+			
+			if (financa.isMensal_Ocasional()) {
+				rdbtnMensal.setSelected(true);
+				txtValorFinanca.setText(String.valueOf(financa.getTotal() / 12));
+				cbMes.setEnabled(false);
+			} else {
+				txtValorFinanca.setText(String.valueOf(financa.getTotal()));
+				rdbtnOcasional.setSelected(true);
+				cbMes.setEnabled(true);
+				cbMes.setSelectedIndex(financa.getMes());
 			}
 		}
 		
-		
-		if (financa.isMensal_Ocasional()) {
-			rdbtnMensal.setSelected(true);
-			txtValorFinanca.setText(String.valueOf(financa.getTotal() / 12));
-			cbMes.setEnabled(false);
-		} else {
-			txtValorFinanca.setText(String.valueOf(financa.getTotal()));
-			rdbtnOcasional.setSelected(true);
-			cbMes.setEnabled(true);
-			cbMes.setSelectedIndex(financa.getMes());
-		}
 	}
 
 	public String getTipoFinanca() {

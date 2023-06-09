@@ -66,6 +66,45 @@ public class FinancaDAO {
 			BancoDados.desconectar();
 		}
 	}
+	
+	public List<Financa> buscarInvestimentoPorUsuario(int usuarioId, int mes) throws SQLException {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+
+		try {
+
+			st = conn.prepareStatement("SELECT nome, mensal_ocasional, total, tipo, mes "
+					+ "FROM investimento WHERE usuario_id = ? AND mes = ?");
+
+			st.setInt(1, usuarioId);
+			st.setInt(2, mes);
+
+			rs = st.executeQuery();
+
+			List<Financa> financas = new ArrayList<>();
+
+			while (rs.next()) {
+
+				String nome = rs.getString("nome");
+				boolean mensalOcasional = rs.getBoolean("mensal_Ocasional");
+				double total = rs.getDouble("total");
+				String tipo = rs.getString("tipo");
+				int mesAux = rs.getInt("mes");
+
+				Financa financa = new Financa(nome, mensalOcasional, total, tipo, mesAux);
+
+				financas.add(financa);
+
+			}
+			return financas;
+
+		} finally {
+
+			BancoDados.finalizarStatement(st);
+			BancoDados.finalizarResultSet(rs);
+			BancoDados.desconectar();
+		}
+	}
 
 	public int buscarIdRendimentoDespesaPorNome(int usuarioId, String nome, int mes) throws SQLException {
 
@@ -76,6 +115,33 @@ public class FinancaDAO {
 
 			st = conn.prepareStatement(
 					"SELECT id FROM rendimento_despesa WHERE usuario_id = ? AND nome LIKE ? AND mes = ?");
+
+			st.setInt(1, usuarioId);
+			st.setString(2, nome);
+			st.setInt(3, mes);
+			rs = st.executeQuery();
+
+			if (rs.next()) {
+				return rs.getInt("id");
+			}
+
+		} finally {
+
+			BancoDados.finalizarStatement(st);
+			BancoDados.finalizarResultSet(rs);
+			BancoDados.desconectar();
+		}
+		return -1;
+	}
+	
+	public int buscarIdInvestimentoPorNome(int usuarioId, String nome, int mes) throws SQLException {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+
+		try {
+
+			st = conn.prepareStatement(
+					"SELECT id FROM investimento WHERE usuario_id = ? AND nome LIKE ? AND mes = ?");
 
 			st.setInt(1, usuarioId);
 			st.setString(2, nome);
@@ -272,17 +338,55 @@ public class FinancaDAO {
 			BancoDados.desconectar();
 		}
 	}
+	
+	public void editarInvestimento(Financa financaNova, String nome) throws SQLException {
+		PreparedStatement st = null;
 
-	public void excluirFinanca(Financa financa) throws SQLException {
+		try {
+
+			if (!financaNova.isMensal_Ocasional()) {
+				st = conn.prepareStatement(
+						"UPDATE investimento SET nome = ?, mensal_ocasional = ?, total = ?, mes = ? WHERE id = ?");
+
+				st.setString(1, financaNova.getNome());
+				st.setBoolean(2, financaNova.isMensal_Ocasional());
+				st.setDouble(3, financaNova.getTotal());
+				st.setInt(4, financaNova.getMes());
+
+				st.setInt(5, financaNova.getId());
+				st.executeUpdate();
+			} else {
+
+				st = conn.prepareStatement(
+						"UPDATE investimento SET nome = ?, mensal_ocasional = ?, total = ? WHERE nome = ? AND tipo = ?");
+
+				st.setString(1, financaNova.getNome());
+				st.setBoolean(2, financaNova.isMensal_Ocasional());
+				st.setDouble(3, financaNova.getTotal());
+
+				st.setString(4, nome);
+				st.setString(5, financaNova.getTipo());
+
+				st.executeUpdate();
+			}
+
+		} finally {
+
+			BancoDados.finalizarStatement(st);
+			BancoDados.desconectar();
+		}
+	}
+
+	public void excluirFinanca(Financa financa, String table) throws SQLException {
 		PreparedStatement st = null;
 
 		try {
 			if(!financa.isMensal_Ocasional()) {
-				st = conn.prepareStatement("DELETE FROM rendimento_despesa WHERE id = ?");
+				st = conn.prepareStatement("DELETE FROM " + table + " WHERE id = ?");
 
 				st.setInt(1, financa.getId());
 			}else {
-				st = conn.prepareStatement("DELETE FROM rendimento_despesa WHERE nome = ? AND tipo = ?");
+				st = conn.prepareStatement("DELETE FROM " + table + " WHERE nome = ? AND tipo = ?");
 
 				st.setString(1, financa.getNome());
 				st.setString(2, financa.getTipo());
