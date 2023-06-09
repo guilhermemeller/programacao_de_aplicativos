@@ -253,7 +253,7 @@ public class FinancaDAO {
 			} else {
 
 				st = conn.prepareStatement(
-						"UPDATE rendimento_despesa SET nome = ?, categoria = ?, mensal_ocasional = ?, total = ? WHERE nome = ?");
+						"UPDATE rendimento_despesa SET nome = ?, categoria = ?, mensal_ocasional = ?, total = ? WHERE nome = ? AND tipo = ?");
 
 				st.setString(1, financaNova.getNome());
 				st.setInt(2, financaNova.getCategoria().getId_Categoria());
@@ -261,6 +261,7 @@ public class FinancaDAO {
 				st.setDouble(4, financaNova.getTotal());
 
 				st.setString(5, nome);
+				st.setString(6, financaNova.getTipo());
 
 				st.executeUpdate();
 			}
@@ -281,9 +282,10 @@ public class FinancaDAO {
 
 				st.setInt(1, financa.getId());
 			}else {
-				st = conn.prepareStatement("DELETE FROM rendimento_despesa WHERE nome = ?");
+				st = conn.prepareStatement("DELETE FROM rendimento_despesa WHERE nome = ? AND tipo = ?");
 
 				st.setString(1, financa.getNome());
+				st.setString(2, financa.getTipo());
 			}
 			
 
