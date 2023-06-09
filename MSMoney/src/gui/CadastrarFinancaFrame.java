@@ -211,7 +211,11 @@ public class CadastrarFinancaFrame extends JFrame {
 		btnCadastrarFinanca = new JButton("Cadastrar");
 		btnCadastrarFinanca.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				btnCadastrarFinancaActionPerformed();
+				if((!txtNomeFinanca.getText().equals(""))&&(!txtValorFinanca.getText().equals(""))) {
+					btnCadastrarFinancaActionPerformed();
+				}else {
+					JOptionPane.showMessageDialog(null, "Os campo devem estar preenchidos!", "Erro", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
 		btnCadastrarFinanca.setBackground(new Color(221, 249, 226));

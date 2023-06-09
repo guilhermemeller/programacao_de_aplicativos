@@ -141,7 +141,11 @@ public class LoginCadastroFrame extends JFrame {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					cadastrarUsuario();
+					if((!nomeField.getText().equals(""))&&(!novoUsernameField.getText().equals(""))&&(novoPasswordField.getPassword()!= null)&&(novoPasswordField.getPassword().length != 0)) {
+						cadastrarUsuario();
+					}else {
+						JOptionPane.showMessageDialog(null, "Os campo devem estar preenchidos!", "Erro", JOptionPane.ERROR_MESSAGE);
+					}
 				}
 			}
 		});
@@ -157,7 +161,11 @@ public class LoginCadastroFrame extends JFrame {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					cadastrarUsuario();
+					if((!nomeField.getText().equals(""))&&(!novoUsernameField.getText().equals(""))&&(novoPasswordField.getPassword()!= null)&&(novoPasswordField.getPassword().length != 0)) {
+						cadastrarUsuario();
+					}else {
+						JOptionPane.showMessageDialog(null, "Os campo devem estar preenchidos!", "Erro", JOptionPane.ERROR_MESSAGE);
+					}
 				}
 			}
 		});
@@ -173,7 +181,11 @@ public class LoginCadastroFrame extends JFrame {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					cadastrarUsuario();
+					if((!nomeField.getText().equals(""))&&(!novoUsernameField.getText().equals(""))&&(novoPasswordField.getPassword()!= null)&&(novoPasswordField.getPassword().length != 0)) {
+						cadastrarUsuario();
+					}else {
+						JOptionPane.showMessageDialog(null, "Os campo devem estar preenchidos!", "Erro", JOptionPane.ERROR_MESSAGE);
+					}
 				}
 			}
 		});
@@ -197,7 +209,11 @@ public class LoginCadastroFrame extends JFrame {
 			@Override
 			public void keyPressed(KeyEvent evt) {
 				if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-					logarSistema();
+					if((!usernameField.getText().equals(""))&&(passwordField.getPassword()!= null)&&(passwordField.getPassword().length != 0)) {
+						logarSistema();
+					}else {
+						JOptionPane.showMessageDialog(nomeField, "Os campo devem estar preenchidos!", "Erro", JOptionPane.ERROR_MESSAGE);
+					}
 				}
 			}
 		});
@@ -217,7 +233,11 @@ public class LoginCadastroFrame extends JFrame {
 			@Override
 			public void keyPressed(KeyEvent evt) {
 				if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-					logarSistema();
+					if((!usernameField.getText().equals(""))&&(passwordField.getPassword()!= null)&&(passwordField.getPassword().length != 0)) {
+						logarSistema();
+					}else {
+						JOptionPane.showMessageDialog(nomeField, "Os campo devem estar preenchidos!", "Erro", JOptionPane.ERROR_MESSAGE);
+					}
 				}
 			}
 		});
@@ -239,7 +259,11 @@ public class LoginCadastroFrame extends JFrame {
 		loginButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				logarSistema();
+				if((!usernameField.getText().equals(""))&&(passwordField.getPassword()!= null)&&(passwordField.getPassword().length != 0)) {
+					logarSistema();
+				}else {
+					JOptionPane.showMessageDialog(nomeField, "Os campo devem estar preenchidos!", "Erro", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
 
@@ -277,7 +301,11 @@ public class LoginCadastroFrame extends JFrame {
 		cadastrarUsuarioButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				cadastrarUsuario();
+				if((!nomeField.getText().equals(""))&&(!novoUsernameField.getText().equals(""))&&(novoPasswordField.getPassword()!= null)&&(novoPasswordField.getPassword().length != 0)) {
+					cadastrarUsuario();
+				}else {
+					JOptionPane.showMessageDialog(null, "Os campo devem estar preenchidos!", "Erro", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
 
