@@ -66,7 +66,7 @@ public class FinancaDAO {
 			BancoDados.desconectar();
 		}
 	}
-	
+
 	public List<Financa> buscarInvestimentoPorUsuario(int usuarioId, int mes) throws SQLException {
 		PreparedStatement st = null;
 		ResultSet rs = null;
@@ -105,15 +105,15 @@ public class FinancaDAO {
 			BancoDados.desconectar();
 		}
 	}
-	
+
 	public List<Financa> buscarFundoDespesasPorUsuario(int usuarioId, int mes) throws SQLException {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 
 		try {
 
-			st = conn.prepareStatement("SELECT nome, total, tipo, mes "
-					+ "FROM fundo_despesas WHERE usuario_id = ? AND mes = ?");
+			st = conn.prepareStatement(
+					"SELECT nome, total, tipo, mes " + "FROM fundo_despesas WHERE usuario_id = ? AND mes = ?");
 
 			st.setInt(1, usuarioId);
 			st.setInt(2, mes);
@@ -171,15 +171,44 @@ public class FinancaDAO {
 		}
 		return -1;
 	}
-	
+
+	public Double buscarTotalporMes(int usuarioId, String table, String tipo, int mes) throws SQLException {
+
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		Double totalFinal = 0.0;
+
+		try {
+
+			st = conn.prepareStatement(
+					"SELECT total FROM " + table + " WHERE usuario_id = ? AND mes = ? AND tipo LIKE ?");
+
+			st.setInt(1, usuarioId);
+			st.setInt(2, mes);
+			st.setString(3, tipo);
+
+			rs = st.executeQuery();
+
+			while (rs.next()) {
+				totalFinal += rs.getDouble("total");
+			}
+
+			return totalFinal;
+
+		} finally {
+			BancoDados.finalizarStatement(st);
+			BancoDados.finalizarResultSet(rs);
+			BancoDados.desconectar();
+		}
+	}
+
 	public int buscarIdInvestimentoPorNome(int usuarioId, String nome, int mes) throws SQLException {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 
 		try {
 
-			st = conn.prepareStatement(
-					"SELECT id FROM investimento WHERE usuario_id = ? AND nome LIKE ? AND mes = ?");
+			st = conn.prepareStatement("SELECT id FROM investimento WHERE usuario_id = ? AND nome LIKE ? AND mes = ?");
 
 			st.setInt(1, usuarioId);
 			st.setString(2, nome);
@@ -198,15 +227,15 @@ public class FinancaDAO {
 		}
 		return -1;
 	}
-	
+
 	public int buscarIdFundoDespesasPorNome(int usuarioId, String nome, int mes) throws SQLException {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 
 		try {
 
-			st = conn.prepareStatement(
-					"SELECT id FROM fundo_despesas WHERE usuario_id = ? AND nome LIKE ? AND mes = ?");
+			st = conn
+					.prepareStatement("SELECT id FROM fundo_despesas WHERE usuario_id = ? AND nome LIKE ? AND mes = ?");
 
 			st.setInt(1, usuarioId);
 			st.setString(2, nome);
@@ -403,7 +432,7 @@ public class FinancaDAO {
 			BancoDados.desconectar();
 		}
 	}
-	
+
 	public void editarInvestimento(Financa financaNova, String nome) throws SQLException {
 		PreparedStatement st = null;
 
@@ -441,13 +470,12 @@ public class FinancaDAO {
 			BancoDados.desconectar();
 		}
 	}
-	
+
 	public void editarFundoDespesas(Financa financaNova, String nome) throws SQLException {
 		PreparedStatement st = null;
 
 		try {
-			st = conn.prepareStatement(
-					"UPDATE fundo_despesas SET nome = ?, total = ? WHERE nome = ? AND tipo = ?");
+			st = conn.prepareStatement("UPDATE fundo_despesas SET nome = ?, total = ? WHERE nome = ? AND tipo = ?");
 
 			st.setString(1, financaNova.getNome());
 			st.setDouble(2, financaNova.getTotal());
@@ -456,7 +484,7 @@ public class FinancaDAO {
 			st.setString(4, financaNova.getTipo());
 
 			st.executeUpdate();
-			
+
 		} finally {
 
 			BancoDados.finalizarStatement(st);
@@ -467,16 +495,15 @@ public class FinancaDAO {
 	public void excluirFinanca(Financa financa, String table) throws SQLException {
 		PreparedStatement st = null;
 		try {
-			if((!financa.isMensal_Ocasional())&&(!table.equals("fundo_despesas"))) {
+			if ((!financa.isMensal_Ocasional()) && (!table.equals("fundo_despesas"))) {
 				st = conn.prepareStatement("DELETE FROM " + table + " WHERE id = ?");
 
 				st.setInt(1, financa.getId());
-			}else {
+			} else {
 				st = conn.prepareStatement("DELETE FROM " + table + " WHERE nome = ? AND tipo = ?");
 				st.setString(1, financa.getNome());
 				st.setString(2, financa.getTipo());
 			}
-			
 
 			st.executeUpdate();
 

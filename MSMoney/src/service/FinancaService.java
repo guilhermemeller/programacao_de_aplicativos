@@ -89,4 +89,10 @@ public class FinancaService {
 		new FinancaDAO(conn).excluirFinanca(financa, table);
 	}
 	
+	public Double buscarTotalporMes(int usuarioId, String table,String tipo,  int mes) throws SQLException, IOException {
+		Connection conn = BancoDados.conectar();
+		return new FinancaDAO(conn).buscarTotalporMes(usuarioId, table, tipo, mes);
+	}
+	
+	
 }
