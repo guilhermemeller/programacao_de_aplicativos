@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 09/06/2023 às 23:49
+-- Tempo de geração: 13/06/2023 às 01:43
 -- Versão do servidor: 10.4.28-MariaDB
 -- Versão do PHP: 8.2.4
 
@@ -44,7 +44,8 @@ CREATE TABLE `fundo_despesas` (
   `nome` varchar(240) NOT NULL,
   `total` double(10,2) NOT NULL,
   `tipo` varchar(240) NOT NULL,
-  `mes` int(11) NOT NULL
+  `mes` int(11) NOT NULL,
+  `ano` int(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
@@ -60,7 +61,8 @@ CREATE TABLE `investimento` (
   `mensal_ocasional` tinyint(1) NOT NULL,
   `total` double(10,2) NOT NULL,
   `tipo` varchar(240) NOT NULL,
-  `mes` int(11) NOT NULL
+  `mes` int(11) NOT NULL,
+  `ano` int(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
@@ -77,7 +79,8 @@ CREATE TABLE `rendimento_despesa` (
   `mensal_ocasional` tinyint(1) NOT NULL,
   `total` double(10,2) NOT NULL,
   `tipo` varchar(240) NOT NULL,
-  `mes` int(11) NOT NULL
+  `mes` int(11) NOT NULL,
+  `ano` int(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
@@ -139,31 +142,31 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de tabela `categoria`
 --
 ALTER TABLE `categoria`
-  MODIFY `id_categoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id_categoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT de tabela `fundo_despesas`
 --
 ALTER TABLE `fundo_despesas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=109;
 
 --
 -- AUTO_INCREMENT de tabela `investimento`
 --
 ALTER TABLE `investimento`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
 
 --
 -- AUTO_INCREMENT de tabela `rendimento_despesa`
 --
 ALTER TABLE `rendimento_despesa`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=237;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=413;
 
 --
 -- AUTO_INCREMENT de tabela `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- Restrições para tabelas despejadas
