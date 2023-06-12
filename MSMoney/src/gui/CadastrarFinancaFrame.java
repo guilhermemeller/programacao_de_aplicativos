@@ -67,6 +67,8 @@ public class CadastrarFinancaFrame extends JFrame {
 	private String tipoFinanca;
 	
 	private Financa financa;
+	private JPanel anoPanel;
+	private JComboBox cbAno;
 
 	public Financa getFinanca() {
 		return financa;
@@ -186,7 +188,7 @@ public class CadastrarFinancaFrame extends JFrame {
 		}
 
 		tipoPanel = new JPanel();
-		tipoPanel.setBounds(10, 124, 177, 70);
+		tipoPanel.setBounds(8, 205, 177, 70);
 		cadastrofinancaPanel.add(tipoPanel);
 		tipoPanel.setBorder(new TitledBorder(
 				new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Tipo",
@@ -224,7 +226,7 @@ public class CadastrarFinancaFrame extends JFrame {
 		mesPanel.setBorder(new TitledBorder(
 				new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "M\u00EAs",
 				TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		mesPanel.setBounds(10, 205, 177, 70);
+		mesPanel.setBounds(8, 286, 177, 70);
 		cadastrofinancaPanel.add(mesPanel);
 		mesPanel.setLayout(null);
 
@@ -255,19 +257,31 @@ public class CadastrarFinancaFrame extends JFrame {
 		btnCadastrarFinanca.setBounds(28, 385, 115, 30);
 
 		cadastrofinancaPanel.add(btnCadastrarFinanca);
-
-		btnCancelar = new JButton("Cancelar");
-		btnCancelar.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// Fechar a tela
-				dispose();
-			}
-		});
-		btnCancelar.setBackground(new Color(255, 176, 176));
-		btnCancelar.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnCancelar.setBounds(270, 385, 115, 30);
-		cadastrofinancaPanel.add(btnCancelar);
+		
+		anoPanel = new JPanel();
+		anoPanel.setLayout(null);
+		anoPanel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Ano", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		anoPanel.setBounds(10, 124, 175, 70);
+		cadastrofinancaPanel.add(anoPanel);
+		
+		cbAno = new JComboBox();
+		cbAno.setModel(new DefaultComboBoxModel(new String[] {"2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025", "2026", "2027", "2028", "2029", "2030", "2031", "2032", "2033"}));
+		cbAno.setSelectedIndex(10);
+		cbAno.setBounds(16, 20, 143, 30);
+		anoPanel.add(cbAno);
+		
+				btnCancelar = new JButton("Cancelar");
+				btnCancelar.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						// Fechar a tela
+						dispose();
+					}
+				});
+				btnCancelar.setBackground(new Color(255, 176, 176));
+				btnCancelar.setFont(new Font("Tahoma", Font.BOLD, 16));
+				btnCancelar.setBounds(270, 385, 115, 30);
+				cadastrofinancaPanel.add(btnCancelar);
 	}
 
 	public void btnCadastrarCategoriaActionPerformed() {
@@ -384,8 +398,10 @@ public class CadastrarFinancaFrame extends JFrame {
 				id_categoria = buscarIdCategoria(categorias, categoria);
 				financa.setCategoria(new Categoria(id_categoria));
 				financa.setMensal_Ocasional(true);
+				financa.setAno(Integer.parseInt((String) cbAno.getSelectedItem()));
+				
 				try {
-					financa.setId(service.buscarIdRendimentoDespesaPorNome(dadosUsuario.getId(), financa.getNome(), financa.getMes()));
+					financa.setId(service.buscarIdRendimentoDespesaPorNome(dadosUsuario.getId(), financa.getNome(), financa.getMes(), financa.getAno()));
 				} catch (SQLException | IOException e1) {
 					// TODO Auto-generated catch block
 					JOptionPane.showMessageDialog(null, e1.getMessage());
@@ -426,6 +442,7 @@ public class CadastrarFinancaFrame extends JFrame {
 				financa.setCategoria(new Categoria(id_categoria));
 				financa.setMensal_Ocasional(false);
 				financa.setMes(cbMes.getSelectedIndex() + 1);
+				financa.setAno(Integer.parseInt((String) cbAno.getSelectedItem()));
 				
 				if (cadastro_edicao == "Cadastrar") {
 					try {
@@ -464,6 +481,7 @@ public class CadastrarFinancaFrame extends JFrame {
 				financa.setTotal(Double.parseDouble(txtValorFinanca.getText()));
 				financa.setTipo(getTipoFinanca());
 				financa.setMensal_Ocasional(true);
+				financa.setAno(Integer.parseInt((String) cbAno.getSelectedItem()));
 
 
 				if (cadastro_edicao == "Cadastrar") {
@@ -497,6 +515,7 @@ public class CadastrarFinancaFrame extends JFrame {
 				financa.setTipo(getTipoFinanca());
 				financa.setMensal_Ocasional(false);
 				financa.setMes(cbMes.getSelectedIndex() + 1);
+				financa.setAno(Integer.parseInt((String) cbAno.getSelectedItem()));
 
 
 				if (cadastro_edicao == "Cadastrar") {
@@ -530,6 +549,7 @@ public class CadastrarFinancaFrame extends JFrame {
 			financa.setNome(txtNomeFinanca.getText());
 			financa.setTotal(Double.parseDouble(txtValorFinanca.getText()));
 			financa.setTipo(getTipoFinanca());
+			financa.setAno(Integer.parseInt((String) cbAno.getSelectedItem()));
 
 			if (cadastro_edicao == "Cadastrar") {
 				try {
@@ -569,8 +589,6 @@ public class CadastrarFinancaFrame extends JFrame {
 					cbCategoria.setSelectedIndex(i);
 				}
 			}
-			
-			
 			if (financa.isMensal_Ocasional()) {
 				rdbtnMensal.setSelected(true);
 				txtValorFinanca.setText(String.valueOf(financa.getTotal() / 12));
@@ -598,7 +616,11 @@ public class CadastrarFinancaFrame extends JFrame {
 			txtNomeFinanca.setText(financa.getNome());
 			txtValorFinanca.setText(String.valueOf(financa.getTotal() / 12));
 		}
-		
+		for(int i = 0; i < cbAno.getItemCount();i++) {
+			if(cbAno.getItemAt(i).equals(financa.getAno())) {
+				cbAno.setSelectedIndex(i);
+			}
+		}
 	}
 
 	public String getTipoFinanca() {

@@ -8,6 +8,7 @@ public class Financa {
 	private String tipo;
 	private int mes;
 	private int id;
+	private int ano;
 
 	
 	public Financa() {
@@ -21,32 +22,35 @@ public class Financa {
 	public void setId(int id) {
 		this.id = id;
 	}
-
-	public Financa(String nome, Categoria categoria, boolean mensal_Ocasional, Double total, String tipo,
-			int mes) {
+	
+	public Financa(String nome, Categoria categoria, boolean mensal_Ocasional, Double total, String tipo, int mes, int ano) {
+		super();
 		this.nome = nome;
 		this.categoria = categoria;
 		this.mensal_Ocasional = mensal_Ocasional;
 		this.total = total;
 		this.tipo = tipo;
 		this.mes = mes;
+		this.ano = ano;
 	}
 	
-	public Financa(String nome, boolean mensal_Ocasional, Double total, String tipo, int mes) {
+	public Financa(String nome, boolean mensal_Ocasional, Double total, String tipo, int mes, int ano) {
 		super();
 		this.nome = nome;
 		this.mensal_Ocasional = mensal_Ocasional;
 		this.total = total;
 		this.tipo = tipo;
 		this.mes = mes;
+		this.ano = ano;
 	}
 	
-	public Financa(String nome, Double total, String tipo, int mes) {
+	public Financa(String nome, Double total, String tipo, int mes, int ano) {
 		super();
 		this.nome = nome;
 		this.total = total;
 		this.tipo = tipo;
 		this.mes = mes;
+		this.ano = ano;
 	}
 
 	public String getNome() {
@@ -95,6 +99,14 @@ public class Financa {
 
 	public void setMes(int mes) {
 		this.mes = mes;
+	}
+
+	public int getAno() {
+		return ano;
+	}
+
+	public void setAno(int ano) {
+		this.ano = ano;
 	}
 	
 

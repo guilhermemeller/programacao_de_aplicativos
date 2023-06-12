@@ -41,7 +41,7 @@ public class MenuPrincipalFrame extends JFrame {
 	private JTabbedPane tpSideMenu;
 	private JPanel rendimentoPanel;
 	private JPanel topPanelRendimento;
-	private JComboBox cbRendimento;
+	private JComboBox cbRendimentoMensal;
 	private JButton btnPesquisarRendimento;
 	private JPanel centerPanelRendimento;
 	private JPanel botPanelRendimento;
@@ -50,7 +50,7 @@ public class MenuPrincipalFrame extends JFrame {
 	private JButton btnExcluirRendimento;
 	private JPanel despesasPanel;
 	private JPanel topPanelDespesas;
-	private JComboBox cbDespesas;
+	private JComboBox cbDespesasMensal;
 	private JButton btnPesquisarDespesas;
 	private JPanel centerPanelDespesas;
 	private JPanel botPanelDespesas;
@@ -59,7 +59,7 @@ public class MenuPrincipalFrame extends JFrame {
 	private JButton btnExcluirDespesas;
 	private JPanel topPanelInvestimento;
 	private JPanel investimentoPanel;
-	private JComboBox cbInvestimento;
+	private JComboBox cbInvestimentoMensal;
 	private JButton btnPesquisarInvestimento;
 	private JPanel centerPanelInvestimento;
 	private JPanel botPanelInvestimento;
@@ -68,7 +68,7 @@ public class MenuPrincipalFrame extends JFrame {
 	private JButton btnExcluirInvestimento;
 	private JPanel despesasocasionaisPanel;
 	private JPanel topPanelFundoDespesas;
-	private JComboBox cbFundoDespesas;
+	private JComboBox cbFundoDespesasMensal;
 	private JButton btnPesquisarFundoDespesas;
 	private JPanel centerPanelFundoDespesas;
 	private JPanel botPanelFundoDespesas;
@@ -114,6 +114,11 @@ public class MenuPrincipalFrame extends JFrame {
 	private JScrollPane scrollPaneFundoDespesas;
 	private JScrollPane scrollPaneResumoMensal;
 	public DefaultTableCellRenderer estiloCelula;
+	private JComboBox cbRendimentoAnual;
+	private JComboBox cbDespesasAnual;
+	private JComboBox cbFundoDespesasAnual;
+	private JComboBox cbInvestimentoAnual;
+	private JComboBox cbResumoMensalAno;
 
 	public MenuPrincipalFrame() {
 		dadosUsuario = DadosUsuario.getInstance();
@@ -184,10 +189,10 @@ public class MenuPrincipalFrame extends JFrame {
 		rendimentoPanel.add(topPanelRendimento, BorderLayout.NORTH);
 		topPanelRendimento.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 25));
 
-		cbRendimento = new JComboBox();
-		cbRendimento.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		cbRendimento.setModel(new DefaultComboBoxModel(Mes.values()));
-		topPanelRendimento.add(cbRendimento);
+		cbRendimentoMensal = new JComboBox();
+		cbRendimentoMensal.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		cbRendimentoMensal.setModel(new DefaultComboBoxModel(Mes.values()));
+		topPanelRendimento.add(cbRendimentoMensal);
 
 		btnPesquisarRendimento = new JButton("");
 		btnPesquisarRendimento.addActionListener(new ActionListener() {
@@ -195,6 +200,11 @@ public class MenuPrincipalFrame extends JFrame {
 				buscarRendimentoDespesa(1);
 			}
 		});
+		
+		cbRendimentoAnual = new JComboBox();
+		cbRendimentoAnual.setModel(new DefaultComboBoxModel(new String[] {"2023"}));
+		cbRendimentoAnual.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		topPanelRendimento.add(cbRendimentoAnual);
 		btnPesquisarRendimento.setIcon(new ImageIcon(MenuPrincipalFrame.class.getResource("/images/pesquisar20.png")));
 		topPanelRendimento.add(btnPesquisarRendimento);
 
@@ -203,6 +213,7 @@ public class MenuPrincipalFrame extends JFrame {
 		rendimentoPanel.add(centerPanelRendimento, BorderLayout.CENTER);
 
 		tableRendimento = new JTable();
+		tableRendimento.setFont(new Font("Trebuchet MS", Font.PLAIN, 13));
 		tableRendimento.setModel(new DefaultTableModel(new Object[][] {},
 				new String[] { "Categoria", "Rendimento", "Mensal", "Ocasional", "Total Ano" }));
 		tableRendimento.setBounds(10, 11, 727, 302);
@@ -261,10 +272,10 @@ public class MenuPrincipalFrame extends JFrame {
 		despesasPanel.add(topPanelDespesas, BorderLayout.NORTH);
 		topPanelDespesas.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 25));
 
-		cbDespesas = new JComboBox();
-		cbDespesas.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		cbDespesas.setModel(new DefaultComboBoxModel(Mes.values()));
-		topPanelDespesas.add(cbDespesas);
+		cbDespesasMensal = new JComboBox();
+		cbDespesasMensal.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		cbDespesasMensal.setModel(new DefaultComboBoxModel(Mes.values()));
+		topPanelDespesas.add(cbDespesasMensal);
 
 		btnPesquisarDespesas = new JButton("");
 		btnPesquisarDespesas.addActionListener(new ActionListener() {
@@ -272,6 +283,11 @@ public class MenuPrincipalFrame extends JFrame {
 				buscarRendimentoDespesa(2);
 			}
 		});
+		
+		cbDespesasAnual = new JComboBox();
+		cbDespesasAnual.setModel(new DefaultComboBoxModel(new String[] {"2023"}));
+		cbDespesasAnual.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		topPanelDespesas.add(cbDespesasAnual);
 		btnPesquisarDespesas.setIcon(new ImageIcon(MenuPrincipalFrame.class.getResource("/images/pesquisar20.png")));
 		topPanelDespesas.add(btnPesquisarDespesas);
 
@@ -280,6 +296,7 @@ public class MenuPrincipalFrame extends JFrame {
 		centerPanelDespesas.setLayout(null);
 
 		tableDespesas = new JTable();
+		tableDespesas.setFont(new Font("Trebuchet MS", Font.PLAIN, 13));
 		tableDespesas.setModel(new DefaultTableModel(new Object[][] {},
 				new String[] { "Categoria", "Despesa", "Mensal", "Ocasional", "Total Ano" }));
 
@@ -340,10 +357,10 @@ public class MenuPrincipalFrame extends JFrame {
 		investimentoPanel.add(topPanelInvestimento, BorderLayout.NORTH);
 		topPanelInvestimento.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 25));
 
-		cbInvestimento = new JComboBox();
-		cbInvestimento.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		cbInvestimento.setModel(new DefaultComboBoxModel(Mes.values()));
-		topPanelInvestimento.add(cbInvestimento);
+		cbInvestimentoMensal = new JComboBox();
+		cbInvestimentoMensal.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		cbInvestimentoMensal.setModel(new DefaultComboBoxModel(Mes.values()));
+		topPanelInvestimento.add(cbInvestimentoMensal);
 
 		btnPesquisarInvestimento = new JButton("");
 		btnPesquisarInvestimento.addActionListener(new ActionListener() {
@@ -351,6 +368,11 @@ public class MenuPrincipalFrame extends JFrame {
 				buscarInvestimento();
 			}
 		});
+		
+		cbInvestimentoAnual = new JComboBox();
+		cbInvestimentoAnual.setModel(new DefaultComboBoxModel(new String[] {"2023"}));
+		cbInvestimentoAnual.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		topPanelInvestimento.add(cbInvestimentoAnual);
 		btnPesquisarInvestimento
 				.setIcon(new ImageIcon(MenuPrincipalFrame.class.getResource("/images/pesquisar20.png")));
 		topPanelInvestimento.add(btnPesquisarInvestimento);
@@ -360,7 +382,7 @@ public class MenuPrincipalFrame extends JFrame {
 		investimentoPanel.add(centerPanelInvestimento, BorderLayout.CENTER);
 
 		tableInvestimento = new JTable();
-		tableInvestimento.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		tableInvestimento.setFont(new Font("Trebuchet MS", Font.PLAIN, 13));
 		tableInvestimento.setModel(new DefaultTableModel(new Object[][] {},
 				new String[] { "Investimento", "Mensal", "Ocasional", "Total Ano" }));
 		tableInvestimento.setBounds(10, 11, 727, 302);
@@ -419,10 +441,15 @@ public class MenuPrincipalFrame extends JFrame {
 		despesasocasionaisPanel.add(topPanelFundoDespesas, BorderLayout.NORTH);
 		topPanelFundoDespesas.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 25));
 
-		cbFundoDespesas = new JComboBox();
-		cbFundoDespesas.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		cbFundoDespesas.setModel(new DefaultComboBoxModel(Mes.values()));
-		topPanelFundoDespesas.add(cbFundoDespesas);
+		cbFundoDespesasMensal = new JComboBox();
+		cbFundoDespesasMensal.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		cbFundoDespesasMensal.setModel(new DefaultComboBoxModel(Mes.values()));
+		topPanelFundoDespesas.add(cbFundoDespesasMensal);
+		
+		cbFundoDespesasAnual = new JComboBox();
+		cbFundoDespesasAnual.setModel(new DefaultComboBoxModel(new String[] {"2023"}));
+		cbFundoDespesasAnual.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		topPanelFundoDespesas.add(cbFundoDespesasAnual);
 
 		btnPesquisarFundoDespesas = new JButton("");
 		btnPesquisarFundoDespesas
@@ -430,13 +457,14 @@ public class MenuPrincipalFrame extends JFrame {
 		topPanelFundoDespesas.add(btnPesquisarFundoDespesas);
 
 		btnPesquisarFundoDespesas.setVisible(true);
-		cbFundoDespesas.setVisible(true);
+		cbFundoDespesasMensal.setVisible(true);
 
 		centerPanelFundoDespesas = new JPanel();
 		centerPanelFundoDespesas.setLayout(null);
 		despesasocasionaisPanel.add(centerPanelFundoDespesas, BorderLayout.CENTER);
 
 		tableFundoDespesas = new JTable();
+		tableFundoDespesas.setFont(new Font("Trebuchet MS", Font.PLAIN, 13));
 		tableFundoDespesas.setModel(
 				new DefaultTableModel(new Object[][] {}, new String[] { "Fundo Ocasional", "Mensal", "Total Anual" }));
 		tableFundoDespesas.setBounds(10, 11, 727, 302);
@@ -518,6 +546,11 @@ public class MenuPrincipalFrame extends JFrame {
 				btnPesquisarResumoMensalActionPerformed();
 			}
 		});
+		
+		cbResumoMensalAno = new JComboBox();
+		cbResumoMensalAno.setModel(new DefaultComboBoxModel(new String[] {"2023"}));
+		cbResumoMensalAno.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		topPanelResumomensal.add(cbResumoMensalAno);
 		btnPesquisarResumoMensal
 				.setIcon(new ImageIcon(MenuPrincipalFrame.class.getResource("/images/pesquisar20.png")));
 		topPanelResumomensal.add(btnPesquisarResumoMensal);
@@ -586,10 +619,29 @@ public class MenuPrincipalFrame extends JFrame {
 		cbRelatorioMensal.setModel(new DefaultComboBoxModel(Mes.values()));
 		cbRelatorioMensal.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		topPanelRelatoriomensal.add(cbRelatorioMensal);
+		
+		JComboBox cbRelatorioMensalAno = new JComboBox();
+		cbRelatorioMensalAno.setModel(new DefaultComboBoxModel(new String[] {"2023"}));
+		cbRelatorioMensalAno.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		topPanelRelatoriomensal.add(cbRelatorioMensalAno);
+		
+		JCheckBox chckbxRelatorioMensalCategoria = new JCheckBox("Filtrar por Categoria");
+		chckbxRelatorioMensalCategoria.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(chckbxRelatorioMensalCategoria.isSelected()) {
+					cbCategoriaMensal.setEnabled(true);
+				}else {
+					cbCategoriaMensal.setEnabled(false);
+				}
+			}
+		});
+		topPanelRelatoriomensal.add(chckbxRelatorioMensalCategoria);
+		
 
 		cbCategoriaMensal = new JComboBox();
 		cbCategoriaMensal.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		topPanelRelatoriomensal.add(cbCategoriaMensal);
+		cbCategoriaMensal.setEnabled(false);
 
 		btnPesquisarRelatorioMensal = new JButton("");
 		btnPesquisarRelatorioMensal
@@ -632,7 +684,21 @@ public class MenuPrincipalFrame extends JFrame {
 
 		cbCategoriaAnual = new JComboBox();
 		cbCategoriaAnual.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		cbCategoriaAnual.setEnabled(false);
+		
 		atualizarCategorias();
+		
+		JCheckBox chckbxRelatorioAnualCategoria = new JCheckBox("Filtrar por Categoria");
+		chckbxRelatorioAnualCategoria.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+					if(chckbxRelatorioAnualCategoria.isSelected()) {
+						cbCategoriaAnual.setEnabled(true);
+					}else {
+						cbCategoriaAnual.setEnabled(false);
+					}
+			}
+		});
+		topPanelRelatorioanual.add(chckbxRelatorioAnualCategoria);
 		topPanelRelatorioanual.add(cbCategoriaAnual);
 
 		btnPesquisarRelatorioAnual = new JButton("");
@@ -663,6 +729,7 @@ public class MenuPrincipalFrame extends JFrame {
 		resumoanualPanel.add(centerPanelResumoanual, BorderLayout.CENTER);
 
 		tableResumoAnual = new JTable();
+		tableResumoAnual.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
 		tableResumoAnual.setBounds(10, 11, 570, 324);
 		centerPanelResumoanual.add(tableResumoAnual);
 
@@ -679,6 +746,9 @@ public class MenuPrincipalFrame extends JFrame {
 				}
 				if (tpSideMenu.getSelectedIndex() == 3) {
 					buscarFundoDespesas();
+				}
+				if (tpSideMenu.getSelectedIndex() == 4) {
+					btnPesquisarResumoMensalActionPerformed();
 				}
 			}
 		});
@@ -776,6 +846,9 @@ public class MenuPrincipalFrame extends JFrame {
 	}
 
 	private void buscarRendimentoDespesa(int type) {
+		tableRendimento.setRowHeight(20);
+		tableDespesas.setRowHeight(20);
+		
 		DefaultTableModel modeloR = (DefaultTableModel) tableRendimento.getModel();
 		modeloR.fireTableDataChanged();
 		modeloR.setRowCount(0);
@@ -789,7 +862,7 @@ public class MenuPrincipalFrame extends JFrame {
 		if (type == 1) {
 			try {
 				financas = service.buscarRendimentoDespesaPorUsuario(dadosUsuario.getId(),
-						(cbRendimento.getSelectedIndex() + 1), "Rendimento");
+						(cbRendimentoMensal.getSelectedIndex() + 1), Integer.parseInt((String) cbRendimentoAnual.getSelectedItem()), "Rendimento");
 				String nomeCategoria = "";
 				try {
 					CategoriaService catS = new CategoriaService();
@@ -824,7 +897,7 @@ public class MenuPrincipalFrame extends JFrame {
 		} else {
 			try {
 				financas = service.buscarRendimentoDespesaPorUsuario(dadosUsuario.getId(),
-						(cbDespesas.getSelectedIndex() + 1), "Despesa");
+						(cbDespesasMensal.getSelectedIndex() + 1), Integer.parseInt((String) cbDespesasAnual.getSelectedItem()), "Despesa");
 				String nomeCategoria = "";
 				try {
 					CategoriaService catS = new CategoriaService();
@@ -860,6 +933,8 @@ public class MenuPrincipalFrame extends JFrame {
 	}
 
 	private void buscarInvestimento() {
+		tableInvestimento.setRowHeight(20);
+		
 		DefaultTableModel modelo = (DefaultTableModel) tableInvestimento.getModel();
 		modelo.fireTableDataChanged();
 		modelo.setRowCount(0);
@@ -869,7 +944,7 @@ public class MenuPrincipalFrame extends JFrame {
 
 		try {
 			financas = service.buscarInvestimentoPorUsuario(dadosUsuario.getId(),
-					(cbInvestimento.getSelectedIndex() + 1));
+					(cbInvestimentoMensal.getSelectedIndex() + 1), Integer.parseInt((String) cbInvestimentoAnual.getSelectedItem()));
 			for (Financa financa : financas) {
 				if (financa.isMensal_Ocasional()) {
 					modelo.addRow(
@@ -890,6 +965,8 @@ public class MenuPrincipalFrame extends JFrame {
 	}
 
 	private void buscarFundoDespesas() {
+		tableFundoDespesas.setRowHeight(20);
+		
 		DefaultTableModel modelo = (DefaultTableModel) tableFundoDespesas.getModel();
 		modelo.fireTableDataChanged();
 		modelo.setRowCount(0);
@@ -899,7 +976,7 @@ public class MenuPrincipalFrame extends JFrame {
 
 		try {
 			financas = service.buscarFundoDespesasPorUsuario(dadosUsuario.getId(),
-					(cbFundoDespesas.getSelectedIndex() + 1));
+					(cbFundoDespesasMensal.getSelectedIndex() + 1), Integer.parseInt((String) cbFundoDespesasAnual.getSelectedItem()));
 			for (Financa financa : financas) {
 				modelo.addRow(new Object[] { financa.getNome(), "R$ "+financa.getTotal(), "R$ "+(financa.getTotal() * 12) });
 			}
@@ -928,18 +1005,21 @@ public class MenuPrincipalFrame extends JFrame {
 						catService.buscarIdCategoria((String) tableRendimento.getModel().getValueAt(linhaTabela, 0)));
 				String nomeFinanca = (String) tableRendimento.getModel().getValueAt(linhaTabela, 1);
 				int id = finService.buscarIdRendimentoDespesaPorNome(dadosUsuario.getId(), nomeFinanca,
-						cbRendimento.getSelectedIndex() + 1);
+						cbRendimentoMensal.getSelectedIndex() + 1, Integer.parseInt((String) cbRendimentoAnual.getSelectedItem()));
 				financa.setId(id);
 				financa.setNome(nomeFinanca);
 				financa.setCategoria(categoria);
-				if (tableRendimento.getModel().getValueAt(linhaTabela, 2) instanceof Double) {
-					financa.setMensal_Ocasional(true);
-				} else {
+				if ((tableRendimento.getModel().getValueAt(linhaTabela, 2)).equals("")) {
 					financa.setMensal_Ocasional(false);
+				} else {
+					financa.setMensal_Ocasional(true);
 				}
-				financa.setTotal((Double) tableRendimento.getModel().getValueAt(linhaTabela, 4));
+				String valorSelecionado = (String) tableRendimento.getModel().getValueAt(linhaTabela, 4);
+				valorSelecionado = valorSelecionado.replace("R$", "").trim();
+				Double valorDouble = Double.parseDouble(valorSelecionado);
+				financa.setTotal(valorDouble);
 				financa.setTipo("Rendimento");
-				financa.setMes(cbRendimento.getSelectedIndex());
+				financa.setMes(cbRendimentoMensal.getSelectedIndex());
 				CadastrarFinancaFrame editarFinancaFrame = new CadastrarFinancaFrame("Rendimento", "Editar", financa);
 				editarFinancaFrame.setLocationRelativeTo(null);
 				editarFinancaFrame.setVisible(true);
@@ -973,22 +1053,22 @@ public class MenuPrincipalFrame extends JFrame {
 			try {
 				String nomeFinanca = (String) tableRendimento.getModel().getValueAt(linhaTabela, 1);
 				int id = finService.buscarIdRendimentoDespesaPorNome(dadosUsuario.getId(), nomeFinanca,
-						cbRendimento.getSelectedIndex() + 1);
+						cbRendimentoMensal.getSelectedIndex() + 1, Integer.parseInt((String) cbRendimentoAnual.getSelectedItem()));
 				financa.setId(id);
 				financa.setNome(nomeFinanca);
 				financa.setTipo("Rendimento");
 
-				if (tableRendimento.getModel().getValueAt(linhaTabela, 2) instanceof Double) {
-					financa.setMensal_Ocasional(true);
-					resposta = JOptionPane.showConfirmDialog(null,
-							"Deseja realmente excluir essa Financa Mensal?\nCaso exclua, ela será apagada de todos os meses!",
+				if ((tableRendimento.getModel().getValueAt(linhaTabela, 2)).equals("")) {
+					financa.setMensal_Ocasional(false);
+					resposta = JOptionPane.showConfirmDialog(null, "Deseja realmente excluir ?",
 							"Confirmação de Exclusão", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 					if (resposta == JOptionPane.YES_OPTION) {
 						finService.excluirFinanca(financa, "rendimento_despesa");
 					}
 				} else {
-					financa.setMensal_Ocasional(false);
-					resposta = JOptionPane.showConfirmDialog(null, "Deseja realmente excluir ?",
+					financa.setMensal_Ocasional(true);
+					resposta = JOptionPane.showConfirmDialog(null,
+							"Deseja realmente excluir essa Financa Mensal?\nCaso exclua, ela será apagada de todos os meses!",
 							"Confirmação de Exclusão", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 					if (resposta == JOptionPane.YES_OPTION) {
 						finService.excluirFinanca(financa, "rendimento_despesa");
@@ -1021,18 +1101,21 @@ public class MenuPrincipalFrame extends JFrame {
 						catService.buscarIdCategoria((String) tableDespesas.getModel().getValueAt(linhaTabela, 0)));
 				String nomeFinanca = (String) tableDespesas.getModel().getValueAt(linhaTabela, 1);
 				int id = finService.buscarIdRendimentoDespesaPorNome(dadosUsuario.getId(), nomeFinanca,
-						cbRendimento.getSelectedIndex() + 1);
+						cbRendimentoMensal.getSelectedIndex() + 1, Integer.parseInt((String) cbRendimentoAnual.getSelectedItem()));
 				financa.setId(id);
 				financa.setNome(nomeFinanca);
 				financa.setCategoria(categoria);
-				if (tableDespesas.getModel().getValueAt(linhaTabela, 2) instanceof Double) {
-					financa.setMensal_Ocasional(true);
-				} else {
+				if ((tableDespesas.getModel().getValueAt(linhaTabela, 2)).equals("")) {
 					financa.setMensal_Ocasional(false);
+				} else {
+					financa.setMensal_Ocasional(true);
 				}
-				financa.setTotal((Double) tableDespesas.getModel().getValueAt(linhaTabela, 4));
+				String valorSelecionado = (String) tableDespesas.getModel().getValueAt(linhaTabela, 4);
+				valorSelecionado = valorSelecionado.replace("R$", "").trim();
+				Double valorDouble = Double.parseDouble(valorSelecionado);
+				financa.setTotal(valorDouble);
 				financa.setTipo("Despesa");
-				financa.setMes(cbRendimento.getSelectedIndex());
+				financa.setMes(cbRendimentoMensal.getSelectedIndex());
 				CadastrarFinancaFrame editarFinancaFrame = new CadastrarFinancaFrame("Despesa", "Editar", financa);
 				editarFinancaFrame.setLocationRelativeTo(null);
 				editarFinancaFrame.setVisible(true);
@@ -1065,26 +1148,26 @@ public class MenuPrincipalFrame extends JFrame {
 			try {
 				String nomeFinanca = (String) tableDespesas.getModel().getValueAt(linhaTabela, 1);
 				int id = finService.buscarIdRendimentoDespesaPorNome(dadosUsuario.getId(), nomeFinanca,
-						cbRendimento.getSelectedIndex() + 1);
+						cbRendimentoMensal.getSelectedIndex() + 1, Integer.parseInt((String) cbRendimentoAnual.getSelectedItem()));
 				financa.setId(id);
 				financa.setNome(nomeFinanca);
 				financa.setTipo("Despesa");
 
-				if (tableDespesas.getModel().getValueAt(linhaTabela, 2) instanceof Double) {
-					financa.setMensal_Ocasional(true);
-					resposta = JOptionPane.showConfirmDialog(null,
-							"Deseja realmente excluir essa Financa Mensal?\nCaso exclua, ela será apagada de todos os meses!",
-							"Confirmação de Exclusão", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-					if (resposta == JOptionPane.YES_OPTION) {
-						finService.excluirFinanca(financa, "rendimento_despesa");
-					}
-				} else {
+				if ((tableDespesas.getModel().getValueAt(linhaTabela, 2)).equals("")) {
 					financa.setMensal_Ocasional(false);
 					resposta = JOptionPane.showConfirmDialog(null, "Deseja realmente excluir?",
 							"Confirmação de Exclusão", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 					if (resposta == JOptionPane.YES_OPTION) {
 						finService.excluirFinanca(financa, "rendimento_despesa");
 					}
+				} else {
+					financa.setMensal_Ocasional(true);
+					resposta = JOptionPane.showConfirmDialog(null,
+							"Deseja realmente excluir essa Financa Mensal?\nCaso exclua, ela será apagada de todos os meses!",
+							"Confirmação de Exclusão", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+					if (resposta == JOptionPane.YES_OPTION) {
+						finService.excluirFinanca(financa, "rendimento_despesa");
+					}								
 				}
 
 				buscarRendimentoDespesa(2);
@@ -1109,17 +1192,21 @@ public class MenuPrincipalFrame extends JFrame {
 			try {
 				String nomeFinanca = (String) tableInvestimento.getModel().getValueAt(linhaTabela, 0);
 				int id = finService.buscarIdInvestimentoPorNome(dadosUsuario.getId(), nomeFinanca,
-						cbInvestimento.getSelectedIndex() + 1);
+						cbInvestimentoMensal.getSelectedIndex() + 1, Integer.parseInt((String) cbInvestimentoAnual.getSelectedItem()));
 				financa.setId(id);
 				financa.setNome(nomeFinanca);
-				if (tableInvestimento.getModel().getValueAt(linhaTabela, 1) instanceof Double) {
-					financa.setMensal_Ocasional(true);
-				} else {
+				if ((tableInvestimento.getModel().getValueAt(linhaTabela, 1)).equals("")) {
 					financa.setMensal_Ocasional(false);
+				} else {
+					financa.setMensal_Ocasional(true);
 				}
-				financa.setTotal((Double) tableInvestimento.getModel().getValueAt(linhaTabela, 3));
+				
+				String valorSelecionado = (String) tableInvestimento.getModel().getValueAt(linhaTabela, 3);
+				valorSelecionado = valorSelecionado.replace("R$", "").trim();
+				Double valorDouble = Double.parseDouble(valorSelecionado);
+				financa.setTotal(valorDouble);
 				financa.setTipo("Investimento a Longo Prazo");
-				financa.setMes(cbInvestimento.getSelectedIndex());
+				financa.setMes(cbInvestimentoMensal.getSelectedIndex());
 				CadastrarFinancaFrame editarFinancaFrame = new CadastrarFinancaFrame("Investimento a Longo Prazo",
 						"Editar", financa);
 				editarFinancaFrame.setLocationRelativeTo(null);
@@ -1153,26 +1240,26 @@ public class MenuPrincipalFrame extends JFrame {
 			try {
 				String nomeFinanca = (String) tableInvestimento.getModel().getValueAt(linhaTabela, 0);
 				int id = finService.buscarIdInvestimentoPorNome(dadosUsuario.getId(), nomeFinanca,
-						cbRendimento.getSelectedIndex() + 1);
+						cbRendimentoMensal.getSelectedIndex() + 1, Integer.parseInt((String) cbRendimentoAnual.getSelectedItem()));
 				financa.setId(id);
 				financa.setNome(nomeFinanca);
 				financa.setTipo("Investimento a Longo Prazo");
 
-				if (tableInvestimento.getModel().getValueAt(linhaTabela, 1) instanceof Double) {
-					financa.setMensal_Ocasional(true);
-					resposta = JOptionPane.showConfirmDialog(null,
-							"Deseja realmente excluir essa Financa Mensal?\nCaso exclua, ela será apagada de todos os meses!",
-							"Confirmação de Exclusão", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-					if (resposta == JOptionPane.YES_OPTION) {
-						finService.excluirFinanca(financa, "investimento");
-					}
-				} else {
+				if ((tableInvestimento.getModel().getValueAt(linhaTabela, 1)).equals("")) {
 					financa.setMensal_Ocasional(false);
 					resposta = JOptionPane.showConfirmDialog(null, "Deseja realmente excluir?",
 							"Confirmação de Exclusão", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 					if (resposta == JOptionPane.YES_OPTION) {
 						finService.excluirFinanca(financa, "investimento");
 					}
+				} else {
+					financa.setMensal_Ocasional(true);
+					resposta = JOptionPane.showConfirmDialog(null,
+							"Deseja realmente excluir essa Financa Mensal?\nCaso exclua, ela será apagada de todos os meses!",
+							"Confirmação de Exclusão", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+					if (resposta == JOptionPane.YES_OPTION) {
+						finService.excluirFinanca(financa, "investimento");
+					}					
 				}
 
 				buscarInvestimento();
@@ -1197,10 +1284,14 @@ public class MenuPrincipalFrame extends JFrame {
 			try {
 				String nomeFinanca = (String) tableFundoDespesas.getModel().getValueAt(linhaTabela, 0);
 				int id = finService.buscarIdFundoDespesasPorNome(dadosUsuario.getId(), nomeFinanca,
-						cbFundoDespesas.getSelectedIndex() + 1);
+						cbFundoDespesasMensal.getSelectedIndex() + 1, Integer.parseInt((String) cbFundoDespesasAnual.getSelectedItem()));
 				financa.setId(id);
 				financa.setNome(nomeFinanca);
-				financa.setTotal((Double) tableFundoDespesas.getModel().getValueAt(linhaTabela, 2));
+				
+				String valorSelecionado = (String) tableFundoDespesas.getModel().getValueAt(linhaTabela, 2);
+				valorSelecionado = valorSelecionado.replace("R$", "").trim();
+				Double valorDouble = Double.parseDouble(valorSelecionado);
+				financa.setTotal(valorDouble);
 				financa.setTipo("Fundo para Despesas Ocasionais");
 				CadastrarFinancaFrame editarFinancaFrame = new CadastrarFinancaFrame("Fundo para Despesas Ocasionais",
 						"Editar", financa);
@@ -1235,7 +1326,7 @@ public class MenuPrincipalFrame extends JFrame {
 			try {
 				String nomeFinanca = (String) tableFundoDespesas.getModel().getValueAt(linhaTabela, 0);
 				int id = finService.buscarIdFundoDespesasPorNome(dadosUsuario.getId(), nomeFinanca,
-						cbFundoDespesas.getSelectedIndex() + 1);
+						cbFundoDespesasMensal.getSelectedIndex() + 1, Integer.parseInt((String) cbFundoDespesasAnual.getSelectedItem()));
 				financa.setId(id);
 				financa.setNome(nomeFinanca);
 				financa.setTipo("Fundo para Despesas Ocasionais");
@@ -1271,15 +1362,15 @@ public class MenuPrincipalFrame extends JFrame {
 
 		try {
 			Double totalMesRendimento = finService.buscarTotalporMes(dadosUsuario.getId(), "rendimento_despesa",
-					"Rendimento", cbResumoMensal.getSelectedIndex() + 1);
+					"Rendimento", cbResumoMensal.getSelectedIndex() + 1, Integer.parseInt((String) cbResumoMensalAno.getSelectedItem()));
 			modeloResumoMensal.addRow(new Object[] { "Rendimento", "R$ " + totalMesRendimento });
 
 			Double totalMesInvestimento = finService.buscarTotalporMes(dadosUsuario.getId(), "investimento",
-					"Investimento a Longo Prazo", cbResumoMensal.getSelectedIndex() + 1);
+					"Investimento a Longo Prazo", cbResumoMensal.getSelectedIndex() + 1, Integer.parseInt((String) cbResumoMensalAno.getSelectedItem()));
 			modeloResumoMensal.addRow(new Object[] { "Investimento a Longo Prazo", "R$ " + totalMesInvestimento });
 
 			Double totalMesFundo = finService.buscarTotalporMes(dadosUsuario.getId(), "fundo_despesas",
-					"Fundo para Despesas Ocasionais", cbResumoMensal.getSelectedIndex() + 1);
+					"Fundo para Despesas Ocasionais", cbResumoMensal.getSelectedIndex() + 1, Integer.parseInt((String) cbResumoMensalAno.getSelectedItem()));
 			modeloResumoMensal.addRow(new Object[] { "Fundo para Despesas Ocasionais", "R$ " + totalMesFundo });
 
 			Double totalMesDisponivel = (totalMesRendimento - (totalMesFundo + totalMesInvestimento));
@@ -1287,7 +1378,8 @@ public class MenuPrincipalFrame extends JFrame {
 					"<html><b> R$ " + totalMesDisponivel + "</b></html>" });
 
 			Double totalMesDespesa = finService.buscarTotalporMes(dadosUsuario.getId(), "rendimento_despesa", "Despesa",
-					cbResumoMensal.getSelectedIndex() + 1);
+					cbResumoMensal.getSelectedIndex() + 1, Integer.parseInt(
+							(String) cbResumoMensalAno.getSelectedItem()));
 			modeloResumoMensal.addRow(new Object[] { "<html><b>Valor Total das Despesas Orçadas para o Mês</b></html>",
 					"<html><b>R$ " + totalMesDespesa + "</b></html>" });
 

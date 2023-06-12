@@ -16,7 +16,7 @@ public class TesteFinanca {
 		
 		Categoria categoria = new Categoria(1);
 		
-		Financa financa = new Financa("Combustivel", categoria, false, 240.00, "Despesa", 3);
+		Financa financa = new Financa("Combustivel", categoria, false, 240.00, "Despesa", 3, 5);
 		
 		try {
 			service.inserirRedimentoDespesa(financa, 10);
