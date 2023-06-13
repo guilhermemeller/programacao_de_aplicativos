@@ -487,6 +487,7 @@ public class CadastrarFinancaFrame extends JFrame {
 				financa.setTotal(Double.parseDouble(txtValorFinanca.getText()));
 				financa.setTipo(getTipoFinanca());
 				financa.setMensal_Ocasional(true);
+				financa.setAno(Integer.parseInt((String) cbAno.getSelectedItem()));
 
 
 				if (cadastro_edicao == "Cadastrar") {
@@ -554,7 +555,7 @@ public class CadastrarFinancaFrame extends JFrame {
 			financa.setNome(txtNomeFinanca.getText());
 			financa.setTotal(Double.parseDouble(txtValorFinanca.getText()));
 			financa.setTipo(getTipoFinanca());
-
+			financa.setAno(Integer.parseInt((String) cbAno.getSelectedItem()));
 			if (cadastro_edicao == "Cadastrar") {
 				try {
 					service.inserirFundoParaDespesas(financa, dadosUsuario.getId());

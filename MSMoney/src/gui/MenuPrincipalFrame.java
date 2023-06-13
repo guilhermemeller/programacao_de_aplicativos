@@ -1270,6 +1270,7 @@ public class MenuPrincipalFrame extends JFrame {
 				financa.setTotal(valorDouble);
 				financa.setTipo("Investimento a Longo Prazo");
 				financa.setMes(cbInvestimentoMensal.getSelectedIndex());
+				financa.setAno(((int) cbInvestimentoAnual.getSelectedItem()));
 				CadastrarFinancaFrame editarFinancaFrame = new CadastrarFinancaFrame("Investimento a Longo Prazo",
 						"Editar", financa);
 				editarFinancaFrame.setLocationRelativeTo(null);
@@ -1356,6 +1357,7 @@ public class MenuPrincipalFrame extends JFrame {
 				Double valorDouble = Double.parseDouble(valorSelecionado);
 				financa.setTotal(valorDouble);
 				financa.setTipo("Fundo para Despesas Ocasionais");
+				financa.setAno(((int) cbFundoDespesasAnual.getSelectedItem()));
 				CadastrarFinancaFrame editarFinancaFrame = new CadastrarFinancaFrame("Fundo para Despesas Ocasionais",
 						"Editar", financa);
 				editarFinancaFrame.setLocationRelativeTo(null);
