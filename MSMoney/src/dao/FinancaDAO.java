@@ -208,6 +208,35 @@ public class FinancaDAO {
 			BancoDados.desconectar();
 		}
 	}
+	
+	public Double buscarTotalporAno(int usuarioId, String table, String tipo, int ano)throws SQLException {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		Double totalFinal = 0.0;
+
+		try {
+
+			st = conn.prepareStatement(
+					"SELECT total FROM " + table + " WHERE usuario_id = ? AND ano = ? AND tipo LIKE ?");
+
+			st.setInt(1, usuarioId);
+			st.setInt(2, ano);
+			st.setString(3, tipo);
+
+			rs = st.executeQuery();
+
+			while (rs.next()) {
+				totalFinal += rs.getDouble("total");
+			}
+
+			return totalFinal;
+
+		} finally {
+			BancoDados.finalizarStatement(st);
+			BancoDados.finalizarResultSet(rs);
+			BancoDados.desconectar();
+		}
+	}
 
 	public int buscarIdInvestimentoPorNome(int usuarioId, String nome, int mes, int ano) throws SQLException {
 		PreparedStatement st = null;

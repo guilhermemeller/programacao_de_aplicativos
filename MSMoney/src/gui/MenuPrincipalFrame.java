@@ -25,6 +25,7 @@ import utils.Mes;
 
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 
@@ -114,6 +115,7 @@ public class MenuPrincipalFrame extends JFrame {
 	private JScrollPane scrollPaneDespesas;
 	private JScrollPane scrollPaneFundoDespesas;
 	private JScrollPane scrollPaneResumoMensal;
+	private JScrollPane scrollPaneResumoAnual;
 	public DefaultTableCellRenderer estiloCelula;
 	private JComboBox cbRendimentoAnual;
 	private JComboBox cbDespesasAnual;
@@ -564,7 +566,7 @@ public class MenuPrincipalFrame extends JFrame {
 		tableResumoMensal.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
 		scrollPaneResumoMensal.setViewportView(tableResumoMensal);
 		tableResumoMensal
-				.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "Descrição", "Valor Mensal" }));
+				.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "Descrição", "Total Mensal" }));
 
 		resumoanualPanel = new JPanel();
 		resumoanualPanel
@@ -581,6 +583,11 @@ public class MenuPrincipalFrame extends JFrame {
 		topPanelResumoanual.add(cbResumoAnual);
 
 		btnPesquisarResumoAnual = new JButton("");
+		btnPesquisarResumoAnual.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnPesquisarResumoAnualActionPerformed();
+			}
+		});
 		btnPesquisarResumoAnual.setIcon(new ImageIcon(MenuPrincipalFrame.class.getResource("/images/pesquisar20.png")));
 		topPanelResumoanual.add(btnPesquisarResumoAnual);
 
@@ -721,11 +728,18 @@ public class MenuPrincipalFrame extends JFrame {
 		centerPanelResumoanual = new JPanel();
 		centerPanelResumoanual.setLayout(null);
 		resumoanualPanel.add(centerPanelResumoanual, BorderLayout.CENTER);
+		
+		scrollPaneResumoAnual = new JScrollPane();
+		scrollPaneResumoAnual.setBounds(0, 0, 590, 346);
 
+		centerPanelResumoanual.add(scrollPaneResumoAnual);
+		
 		tableResumoAnual = new JTable();
+		tableResumoAnual.setRowSelectionAllowed(false);
 		tableResumoAnual.setFont(new Font("Trebuchet MS", Font.PLAIN, 14));
-		tableResumoAnual.setBounds(10, 11, 570, 324);
-		centerPanelResumoanual.add(tableResumoAnual);
+		scrollPaneResumoAnual.setViewportView(tableResumoAnual);
+		tableResumoAnual
+		.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "Descrição", "Mensal (x12)", "Ocasional", "Total Anual" }));
 
 		tpSideMenu.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
@@ -749,8 +763,10 @@ public class MenuPrincipalFrame extends JFrame {
 					if(tpResumo.getSelectedIndex() == 0) {
 						atualizarAnos();
 						btnPesquisarResumoMensalActionPerformed();
-					}else {
-						
+					}
+					if(tpResumo.getSelectedIndex() == 1){
+						atualizarAnos();
+						btnPesquisarResumoAnualActionPerformed();
 					}
 				}
 				if (tpSideMenu.getSelectedIndex() == 5) {
@@ -759,6 +775,19 @@ public class MenuPrincipalFrame extends JFrame {
 					}else {
 						
 					}
+				}
+			}
+		});
+		
+		tpResumo.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				if(tpResumo.getSelectedIndex() == 0) {
+					atualizarAnos();
+					btnPesquisarResumoMensalActionPerformed();
+				}
+				if(tpResumo.getSelectedIndex() == 1){
+					atualizarAnos();
+					btnPesquisarResumoAnualActionPerformed();
 				}
 			}
 		});
@@ -786,6 +815,7 @@ public class MenuPrincipalFrame extends JFrame {
 		cadastrarFinanca.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosed(WindowEvent e) {
+				atualizarAnos();
 				buscarRendimentoDespesa(1);
 			}
 		});
@@ -799,6 +829,7 @@ public class MenuPrincipalFrame extends JFrame {
 		cadastrarFinanca.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosed(WindowEvent e) {
+				atualizarAnos();
 				buscarRendimentoDespesa(2);
 			}
 		});
@@ -812,6 +843,7 @@ public class MenuPrincipalFrame extends JFrame {
 		cadastrarFinanca.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosed(WindowEvent e) {
+				atualizarAnos();
 				buscarInvestimento();
 			}
 		});
@@ -825,6 +857,7 @@ public class MenuPrincipalFrame extends JFrame {
 		cadastrarFinanca.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosed(WindowEvent e) {
+				atualizarAnos();
 				buscarFundoDespesas();
 			}
 		});
@@ -1048,6 +1081,7 @@ public class MenuPrincipalFrame extends JFrame {
 				financa.setTotal(valorDouble);
 				financa.setTipo("Rendimento");
 				financa.setMes(cbRendimentoMensal.getSelectedIndex());
+				financa.setAno(((int) cbRendimentoAnual.getSelectedItem()));
 				CadastrarFinancaFrame editarFinancaFrame = new CadastrarFinancaFrame("Rendimento", "Editar", financa);
 				editarFinancaFrame.setLocationRelativeTo(null);
 				editarFinancaFrame.setVisible(true);
@@ -1129,7 +1163,7 @@ public class MenuPrincipalFrame extends JFrame {
 						catService.buscarIdCategoria((String) tableDespesas.getModel().getValueAt(linhaTabela, 0)));
 				String nomeFinanca = (String) tableDespesas.getModel().getValueAt(linhaTabela, 1);
 				int id = finService.buscarIdRendimentoDespesaPorNome(dadosUsuario.getId(), nomeFinanca,
-						cbRendimentoMensal.getSelectedIndex() + 1, ((int) cbRendimentoAnual.getSelectedItem()));
+						cbDespesasMensal.getSelectedIndex() + 1, ((int) cbDespesasAnual.getSelectedItem()));
 				financa.setId(id);
 				financa.setNome(nomeFinanca);
 				financa.setCategoria(categoria);
@@ -1143,7 +1177,8 @@ public class MenuPrincipalFrame extends JFrame {
 				Double valorDouble = Double.parseDouble(valorSelecionado);
 				financa.setTotal(valorDouble);
 				financa.setTipo("Despesa");
-				financa.setMes(cbRendimentoMensal.getSelectedIndex());
+				financa.setMes(cbDespesasMensal.getSelectedIndex());
+				financa.setAno(((int) cbDespesasAnual.getSelectedItem()));
 				CadastrarFinancaFrame editarFinancaFrame = new CadastrarFinancaFrame("Despesa", "Editar", financa);
 				editarFinancaFrame.setLocationRelativeTo(null);
 				editarFinancaFrame.setVisible(true);
@@ -1435,6 +1470,70 @@ public class MenuPrincipalFrame extends JFrame {
 			}
 		
 	}
+	
+	public void btnPesquisarResumoAnualActionPerformed() {
+		FinancaService finService = new FinancaService();
+		DefaultTableModel modeloResumoAnual = (DefaultTableModel) tableResumoAnual.getModel();
+		modeloResumoAnual.fireTableDataChanged();
+		modeloResumoAnual.setRowCount(0);
+
+		for (int i = 1; i <= 3; i++) {
+			tableResumoAnual.getColumnModel().getColumn(i).setCellRenderer(estiloCelula);
+		}
+
+		if (cbResumoAnual.getSelectedItem() == null) {
+			cbResumoAnual.addItem(Calendar.getInstance().get(Calendar.YEAR));
+		}
+			try {
+				Double totalAnoRendimento = finService.buscarTotalporAno(dadosUsuario.getId(), "rendimento_despesa",
+						"Rendimento",((int) cbResumoAnual.getSelectedItem()));
+				modeloResumoAnual.addRow(new Object[] { "Rendimento", "R$ " + totalAnoRendimento, "R$ " + totalAnoRendimento, "R$ " + totalAnoRendimento });
+
+				Double totalAnoInvestimento = finService.buscarTotalporAno(dadosUsuario.getId(), "investimento",
+						"Investimento a Longo Prazo", ((int) cbResumoAnual.getSelectedItem()));
+				modeloResumoAnual.addRow(new Object[] { "Investimento a Longo Prazo", "R$ " + totalAnoInvestimento, "R$ " + totalAnoInvestimento, "R$ " + totalAnoInvestimento });
+
+				Double totalAnoFundo = finService.buscarTotalporAno(dadosUsuario.getId(), "fundo_despesas",
+						"Fundo para Despesas Ocasionais", ((int) cbResumoAnual.getSelectedItem()));
+				modeloResumoAnual.addRow(new Object[] { "Fundo para Despesas Ocasionais", "R$ " + totalAnoFundo, "", "R$ " + totalAnoFundo });
+
+				Double totalAnoDisponivel = (totalAnoRendimento - (totalAnoFundo + totalAnoInvestimento));
+				modeloResumoAnual
+						.addRow(new Object[] { "<html><b>Total Disponível para Despesas Durante o Ano</b></html>",
+								"", "", "<html><b> R$ " + totalAnoDisponivel + "</b></html>"});
+
+				Double totalAnoDespesaMensal = finService.buscarTotalporAno(dadosUsuario.getId(), "rendimento_despesa",
+						"Despesa", ((int) cbResumoAnual.getSelectedItem()));
+				modeloResumoAnual
+						.addRow(new Object[] { "<html><b>Total das Despesas Mensais Orçadas (12 meses)</b></html>", "","",
+								"<html><b>R$ " + totalAnoDespesaMensal + "</b></html>" });
+				
+				Double totalAnoDespesaOcasional = finService.buscarTotalporAno(dadosUsuario.getId(), "rendimento_despesa",
+						"Despesa", ((int) cbResumoAnual.getSelectedItem()));
+				modeloResumoAnual
+						.addRow(new Object[] { "<html><b>Total das Despesas Ocasionais Orçadas para o Ano</b></html>", "","",
+								"<html><b>R$ " + totalAnoDespesaOcasional + "</b></html>" });
+
+				Double totalFinalAno = (totalAnoDisponivel - totalAnoDespesaMensal);
+
+				if (totalFinalAno >= 0.0) {
+					modeloResumoAnual.addRow(new Object[] { "<html><b>Valor Total Restante Final do Ano</b></html>","","",
+							"<html><b><font color=\"green\">R$ " + totalFinalAno + "</font></b></html>" });
+				} else {
+					modeloResumoAnual.addRow(new Object[] { "<html><b>Valor Total Restante Final do Ano</b></html>","","",
+							"<html><b><font color=\"red\">R$ " + totalFinalAno + "</font></b></html>" });
+				}
+
+				tableResumoAnual.setRowHeight(30);
+				TableColumn coluna0 = tableResumoAnual.getColumnModel().getColumn(0);
+			    coluna0.setPreferredWidth(310);
+
+			} catch (SQLException | IOException e) {
+				JOptionPane.showMessageDialog(null, "Erro ao carregar dados das finanças!\n" + e.getMessage(), "ERRO",
+						JOptionPane.ERROR_MESSAGE);
+			}
+		
+	}
 
 	public void atualizarAnos() {
 		FinancaService service = new FinancaService();
@@ -1442,7 +1541,7 @@ public class MenuPrincipalFrame extends JFrame {
 		int[] vetorAnoDespesas;
 		int[] vetorAnoInvestimento;
 		int[] vetorAnoFundo;
-		int[] vetorAnoRelatorio;
+		int[] vetorAnoResumo;
 		try {
 			vetorAnoRendimento = service.buscarAnoPorUsuario(dadosUsuario.getId(), "rendimento_despesa", "Rendimento");
 			vetorAnoDespesas = service.buscarAnoPorUsuario(dadosUsuario.getId(), "rendimento_despesa", "Despesa");
@@ -1453,14 +1552,14 @@ public class MenuPrincipalFrame extends JFrame {
 			if (vetorAnoRendimento.length >= vetorAnoDespesas.length
 					&& vetorAnoRendimento.length >= vetorAnoInvestimento.length
 					&& vetorAnoRendimento.length >= vetorAnoFundo.length) {
-				vetorAnoRelatorio = vetorAnoRendimento;
+				vetorAnoResumo = vetorAnoRendimento;
 			} else if (vetorAnoDespesas.length >= vetorAnoInvestimento.length
 					&& vetorAnoDespesas.length >= vetorAnoFundo.length) {
-				vetorAnoRelatorio = vetorAnoDespesas;
+				vetorAnoResumo = vetorAnoDespesas;
 			} else if (vetorAnoInvestimento.length >= vetorAnoFundo.length) {
-				vetorAnoRelatorio = vetorAnoInvestimento;
+				vetorAnoResumo = vetorAnoInvestimento;
 			} else {
-				vetorAnoRelatorio = vetorAnoFundo;
+				vetorAnoResumo = vetorAnoFundo;
 			}
 			cbRendimentoAnual.removeAllItems();
 			for (int valor : vetorAnoRendimento) {
@@ -1486,10 +1585,16 @@ public class MenuPrincipalFrame extends JFrame {
 			cbFundoDespesasAnual.setSelectedItem(Calendar.getInstance().get(Calendar.YEAR));
 
 			cbResumoMensalAno.removeAllItems();
-			for (int valor : vetorAnoRelatorio) {
+			for (int valor : vetorAnoResumo) {
 				cbResumoMensalAno.addItem(valor);
 			}
 			cbResumoMensalAno.setSelectedItem(Calendar.getInstance().get(Calendar.YEAR));
+			
+			cbResumoAnual.removeAllItems();
+			for (int valor : vetorAnoResumo) {
+				cbResumoAnual.addItem(valor);
+			}
+			cbResumoAnual.setSelectedItem(Calendar.getInstance().get(Calendar.YEAR));
 		} catch (SQLException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -405,7 +405,6 @@ public class CadastrarFinancaFrame extends JFrame {
 				id_categoria = buscarIdCategoria(categorias, categoria);
 				financa.setCategoria(new Categoria(id_categoria));
 				financa.setMensal_Ocasional(true);
-				financa.setAno(Integer.parseInt((String) cbAno.getSelectedItem()));
 				
 				try {
 					financa.setId(service.buscarIdRendimentoDespesaPorNome(dadosUsuario.getId(), financa.getNome(), financa.getMes(), financa.getAno()));
@@ -488,7 +487,6 @@ public class CadastrarFinancaFrame extends JFrame {
 				financa.setTotal(Double.parseDouble(txtValorFinanca.getText()));
 				financa.setTipo(getTipoFinanca());
 				financa.setMensal_Ocasional(true);
-				financa.setAno(Integer.parseInt((String) cbAno.getSelectedItem()));
 
 
 				if (cadastro_edicao == "Cadastrar") {
@@ -556,7 +554,6 @@ public class CadastrarFinancaFrame extends JFrame {
 			financa.setNome(txtNomeFinanca.getText());
 			financa.setTotal(Double.parseDouble(txtValorFinanca.getText()));
 			financa.setTipo(getTipoFinanca());
-			financa.setAno(Integer.parseInt((String) cbAno.getSelectedItem()));
 
 			if (cadastro_edicao == "Cadastrar") {
 				try {
@@ -606,6 +603,11 @@ public class CadastrarFinancaFrame extends JFrame {
 				cbMes.setEnabled(true);
 				cbMes.setSelectedIndex(financa.getMes());
 			}
+			for(int i = 0; i < cbAno.getItemCount();i++) {
+				if(cbAno.getItemAt(i).equals(String.valueOf(financa.getAno()))) {
+					cbAno.setSelectedIndex(i);
+				}
+			}
 		}else if(tipo.equals("Investimento a Longo Prazo")) {
 			txtNomeFinanca.setText(financa.getNome());			
 			
@@ -619,13 +621,18 @@ public class CadastrarFinancaFrame extends JFrame {
 				cbMes.setEnabled(true);
 				cbMes.setSelectedIndex(financa.getMes());
 			}
+			for(int i = 0; i < cbAno.getItemCount();i++) {
+				if(cbAno.getItemAt(i).equals(String.valueOf(financa.getAno()))) {
+					cbAno.setSelectedIndex(i);
+				}
+			}
 		}else {
 			txtNomeFinanca.setText(financa.getNome());
 			txtValorFinanca.setText(String.valueOf(financa.getTotal() / 12));
-		}
-		for(int i = 0; i < cbAno.getItemCount();i++) {
-			if(cbAno.getItemAt(i).equals(financa.getAno())) {
-				cbAno.setSelectedIndex(i);
+			for(int i = 0; i < cbAno.getItemCount();i++) {
+				if(cbAno.getItemAt(i).equals(String.valueOf(financa.getAno()))) {
+					cbAno.setSelectedIndex(i);
+				}
 			}
 		}
 	}
