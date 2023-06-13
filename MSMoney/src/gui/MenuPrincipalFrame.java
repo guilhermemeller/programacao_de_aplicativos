@@ -9,6 +9,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.swing.border.TitledBorder;
@@ -124,15 +125,16 @@ public class MenuPrincipalFrame extends JFrame {
 		dadosUsuario = DadosUsuario.getInstance();
 		estiloCelula();
 		initComponents();
+		atualizarAnos();
 		buscarRendimentoDespesa(1);
 	}
 
 	public void estiloCelula() {
 		estiloCelula = new DefaultTableCellRenderer();
 		estiloCelula.setHorizontalAlignment(SwingConstants.CENTER);
-		
+
 	}
-	
+
 	public void initComponents() {
 		setResizable(false);
 		// Configurações da janela principal
@@ -200,9 +202,8 @@ public class MenuPrincipalFrame extends JFrame {
 				buscarRendimentoDespesa(1);
 			}
 		});
-		
+
 		cbRendimentoAnual = new JComboBox();
-		cbRendimentoAnual.setModel(new DefaultComboBoxModel(new String[] {"2023"}));
 		cbRendimentoAnual.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		topPanelRendimento.add(cbRendimentoAnual);
 		btnPesquisarRendimento.setIcon(new ImageIcon(MenuPrincipalFrame.class.getResource("/images/pesquisar20.png")));
@@ -217,7 +218,6 @@ public class MenuPrincipalFrame extends JFrame {
 		tableRendimento.setModel(new DefaultTableModel(new Object[][] {},
 				new String[] { "Categoria", "Rendimento", "Mensal", "Ocasional", "Total Ano" }));
 		tableRendimento.setBounds(10, 11, 727, 302);
-		
 
 		scrollPaneRendimento = new JScrollPane();
 		scrollPaneRendimento.setBounds(10, 11, 727, 302);
@@ -283,9 +283,8 @@ public class MenuPrincipalFrame extends JFrame {
 				buscarRendimentoDespesa(2);
 			}
 		});
-		
+
 		cbDespesasAnual = new JComboBox();
-		cbDespesasAnual.setModel(new DefaultComboBoxModel(new String[] {"2023"}));
 		cbDespesasAnual.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		topPanelDespesas.add(cbDespesasAnual);
 		btnPesquisarDespesas.setIcon(new ImageIcon(MenuPrincipalFrame.class.getResource("/images/pesquisar20.png")));
@@ -302,8 +301,6 @@ public class MenuPrincipalFrame extends JFrame {
 
 		tableDespesas.setBounds(10, 11, 727, 302);
 
-		
-		
 		scrollPaneDespesas = new JScrollPane();
 		scrollPaneDespesas.setBounds(10, 11, 727, 302);
 		centerPanelDespesas.add(scrollPaneDespesas);
@@ -368,9 +365,8 @@ public class MenuPrincipalFrame extends JFrame {
 				buscarInvestimento();
 			}
 		});
-		
+
 		cbInvestimentoAnual = new JComboBox();
-		cbInvestimentoAnual.setModel(new DefaultComboBoxModel(new String[] {"2023"}));
 		cbInvestimentoAnual.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		topPanelInvestimento.add(cbInvestimentoAnual);
 		btnPesquisarInvestimento
@@ -445,9 +441,8 @@ public class MenuPrincipalFrame extends JFrame {
 		cbFundoDespesasMensal.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		cbFundoDespesasMensal.setModel(new DefaultComboBoxModel(Mes.values()));
 		topPanelFundoDespesas.add(cbFundoDespesasMensal);
-		
+
 		cbFundoDespesasAnual = new JComboBox();
-		cbFundoDespesasAnual.setModel(new DefaultComboBoxModel(new String[] {"2023"}));
 		cbFundoDespesasAnual.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		topPanelFundoDespesas.add(cbFundoDespesasAnual);
 
@@ -546,9 +541,8 @@ public class MenuPrincipalFrame extends JFrame {
 				btnPesquisarResumoMensalActionPerformed();
 			}
 		});
-		
+
 		cbResumoMensalAno = new JComboBox();
-		cbResumoMensalAno.setModel(new DefaultComboBoxModel(new String[] {"2023"}));
 		cbResumoMensalAno.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		topPanelResumomensal.add(cbResumoMensalAno);
 		btnPesquisarResumoMensal
@@ -584,7 +578,6 @@ public class MenuPrincipalFrame extends JFrame {
 
 		cbResumoAnual = new JComboBox();
 		cbResumoAnual.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		cbResumoAnual.setModel(new DefaultComboBoxModel(new String[] { "2023" }));
 		topPanelResumoanual.add(cbResumoAnual);
 
 		btnPesquisarResumoAnual = new JButton("");
@@ -619,24 +612,23 @@ public class MenuPrincipalFrame extends JFrame {
 		cbRelatorioMensal.setModel(new DefaultComboBoxModel(Mes.values()));
 		cbRelatorioMensal.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		topPanelRelatoriomensal.add(cbRelatorioMensal);
-		
+
 		JComboBox cbRelatorioMensalAno = new JComboBox();
-		cbRelatorioMensalAno.setModel(new DefaultComboBoxModel(new String[] {"2023"}));
+		cbRelatorioMensalAno.setModel(new DefaultComboBoxModel(new String[] { "2023" }));
 		cbRelatorioMensalAno.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		topPanelRelatoriomensal.add(cbRelatorioMensalAno);
-		
+
 		JCheckBox chckbxRelatorioMensalCategoria = new JCheckBox("Filtrar por Categoria");
 		chckbxRelatorioMensalCategoria.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(chckbxRelatorioMensalCategoria.isSelected()) {
+				if (chckbxRelatorioMensalCategoria.isSelected()) {
 					cbCategoriaMensal.setEnabled(true);
-				}else {
+				} else {
 					cbCategoriaMensal.setEnabled(false);
 				}
 			}
 		});
 		topPanelRelatoriomensal.add(chckbxRelatorioMensalCategoria);
-		
 
 		cbCategoriaMensal = new JComboBox();
 		cbCategoriaMensal.setFont(new Font("Tahoma", Font.PLAIN, 15));
@@ -685,17 +677,19 @@ public class MenuPrincipalFrame extends JFrame {
 		cbCategoriaAnual = new JComboBox();
 		cbCategoriaAnual.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		cbCategoriaAnual.setEnabled(false);
-		
+
 		atualizarCategorias();
-		
+
+		atualizarAnos();
+
 		JCheckBox chckbxRelatorioAnualCategoria = new JCheckBox("Filtrar por Categoria");
 		chckbxRelatorioAnualCategoria.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-					if(chckbxRelatorioAnualCategoria.isSelected()) {
-						cbCategoriaAnual.setEnabled(true);
-					}else {
-						cbCategoriaAnual.setEnabled(false);
-					}
+				if (chckbxRelatorioAnualCategoria.isSelected()) {
+					cbCategoriaAnual.setEnabled(true);
+				} else {
+					cbCategoriaAnual.setEnabled(false);
+				}
 			}
 		});
 		topPanelRelatorioanual.add(chckbxRelatorioAnualCategoria);
@@ -736,34 +730,50 @@ public class MenuPrincipalFrame extends JFrame {
 		tpSideMenu.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				if (tpSideMenu.getSelectedIndex() == 0) {
+					atualizarAnos();
 					buscarRendimentoDespesa(1);
 				}
 				if (tpSideMenu.getSelectedIndex() == 1) {
+					atualizarAnos();
 					buscarRendimentoDespesa(2);
 				}
 				if (tpSideMenu.getSelectedIndex() == 2) {
+					atualizarAnos();
 					buscarInvestimento();
 				}
 				if (tpSideMenu.getSelectedIndex() == 3) {
+					atualizarAnos();
 					buscarFundoDespesas();
 				}
 				if (tpSideMenu.getSelectedIndex() == 4) {
-					btnPesquisarResumoMensalActionPerformed();
+					if(tpResumo.getSelectedIndex() == 0) {
+						atualizarAnos();
+						btnPesquisarResumoMensalActionPerformed();
+					}else {
+						
+					}
+				}
+				if (tpSideMenu.getSelectedIndex() == 5) {
+					if(tpRelatorio.getSelectedIndex() == 0) {
+						
+					}else {
+						
+					}
 				}
 			}
 		});
-		
-		for(int i=2;i<=4;i++) {
+
+		for (int i = 2; i <= 4; i++) {
 			tableRendimento.getColumnModel().getColumn(i).setCellRenderer(estiloCelula);
 			tableDespesas.getColumnModel().getColumn(i).setCellRenderer(estiloCelula);
 		}
-		for(int i=1;i<=3;i++) {
+		for (int i = 1; i <= 3; i++) {
 			tableInvestimento.getColumnModel().getColumn(i).setCellRenderer(estiloCelula);
 		}
-		for(int i=1;i<=2;i++) {
+		for (int i = 1; i <= 2; i++) {
 			tableFundoDespesas.getColumnModel().getColumn(i).setCellRenderer(estiloCelula);
 		}
-		
+
 		// Exibir a janela
 		setVisible(true);
 	}
@@ -848,7 +858,7 @@ public class MenuPrincipalFrame extends JFrame {
 	private void buscarRendimentoDespesa(int type) {
 		tableRendimento.setRowHeight(20);
 		tableDespesas.setRowHeight(20);
-		
+
 		DefaultTableModel modeloR = (DefaultTableModel) tableRendimento.getModel();
 		modeloR.fireTableDataChanged();
 		modeloR.setRowCount(0);
@@ -856,139 +866,157 @@ public class MenuPrincipalFrame extends JFrame {
 		DefaultTableModel modeloD = (DefaultTableModel) tableDespesas.getModel();
 		modeloD.fireTableDataChanged();
 		modeloD.setRowCount(0);
-
 		List<Financa> financas;
 		FinancaService service = new FinancaService();
 		if (type == 1) {
-			try {
-				financas = service.buscarRendimentoDespesaPorUsuario(dadosUsuario.getId(),
-						(cbRendimentoMensal.getSelectedIndex() + 1), Integer.parseInt((String) cbRendimentoAnual.getSelectedItem()), "Rendimento");
-				String nomeCategoria = "";
+			if (cbRendimentoAnual.getSelectedItem() == null) {
+				cbRendimentoAnual.addItem(Calendar.getInstance().get(Calendar.YEAR));
+			}
 				try {
-					CategoriaService catS = new CategoriaService();
-					for (int i = 0; i < financas.size(); i++) {
-						nomeCategoria = catS.buscarNomeCategoria(financas.get(i).getCategoria().getId_Categoria());
-						financas.get(i).getCategoria().setNome(nomeCategoria);
+					financas = service.buscarRendimentoDespesaPorUsuario(dadosUsuario.getId(),
+							(cbRendimentoMensal.getSelectedIndex() + 1), ((int) cbRendimentoAnual.getSelectedItem()),
+							"Rendimento");
+					String nomeCategoria = "";
+					try {
+						CategoriaService catS = new CategoriaService();
+						for (int i = 0; i < financas.size(); i++) {
+							nomeCategoria = catS.buscarNomeCategoria(financas.get(i).getCategoria().getId_Categoria());
+							financas.get(i).getCategoria().setNome(nomeCategoria);
+						}
+
+					} catch (SQLException | IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					for (Financa financa : financas) {
+						if (financa.isMensal_Ocasional()) {
+							modeloR.addRow(new Object[] { financa.getCategoria().getNome(), financa.getNome(),
+									"R$ " + financa.getTotal(), "", "R$ " + (financa.getTotal() * 12) });
+						} else {
+							modeloR.addRow(new Object[] { financa.getCategoria().getNome(), financa.getNome(), "",
+									"R$ " + financa.getTotal(), "R$ " + (financa.getTotal()) });
+						}
 					}
 
-				} catch (SQLException | IOException e) {
+				} catch (SQLException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Erro ao carregar Rendimentos!\n" + e.getMessage(), "ERRO",
+							JOptionPane.ERROR_MESSAGE);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					JOptionPane.showMessageDialog(null, "Erro ao carregar Rendimentos!\n" + e.getMessage(), "ERRO",
+							JOptionPane.ERROR_MESSAGE);
 				}
-				for (Financa financa : financas) {
-					if (financa.isMensal_Ocasional()) {
-						modeloR.addRow(new Object[] { financa.getCategoria().getNome(), financa.getNome(),
-								"R$ "+financa.getTotal(), "", "R$ "+(financa.getTotal() * 12) });
-					} else {
-						modeloR.addRow(new Object[] { financa.getCategoria().getNome(), financa.getNome(), "",
-								"R$ "+financa.getTotal(), "R$ "+(financa.getTotal()) });
-					}
-				}
-				 
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				JOptionPane.showMessageDialog(null, "Erro ao carregar Rendimentos!\n" + e.getMessage(), "ERRO",
-						JOptionPane.ERROR_MESSAGE);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				JOptionPane.showMessageDialog(null, "Erro ao carregar Rendimentos!\n" + e.getMessage(), "ERRO",
-						JOptionPane.ERROR_MESSAGE);
-			}
+			
 		} else {
-			try {
-				financas = service.buscarRendimentoDespesaPorUsuario(dadosUsuario.getId(),
-						(cbDespesasMensal.getSelectedIndex() + 1), Integer.parseInt((String) cbDespesasAnual.getSelectedItem()), "Despesa");
-				String nomeCategoria = "";
-				try {
-					CategoriaService catS = new CategoriaService();
-					for (int i = 0; i < financas.size(); i++) {
-						nomeCategoria = catS.buscarNomeCategoria(financas.get(i).getCategoria().getId_Categoria());
-						financas.get(i).getCategoria().setNome(nomeCategoria);
-					}
-
-				} catch (SQLException | IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				for (Financa financa : financas) {
-					if (financa.isMensal_Ocasional()) {
-						modeloD.addRow(new Object[] { financa.getCategoria().getNome(), financa.getNome(),
-								"R$ "+financa.getTotal(), "", "R$ "+(financa.getTotal() * 12) });
-					} else {
-						modeloD.addRow(new Object[] { financa.getCategoria().getNome(), financa.getNome(), "",
-								"R$ "+financa.getTotal(), "R$ "+(financa.getTotal()) });
-					}
-				}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				JOptionPane.showMessageDialog(null, "Erro ao carregar Rendimentos!\n" + e.getMessage(), "ERRO",
-						JOptionPane.ERROR_MESSAGE);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				JOptionPane.showMessageDialog(null, "Erro ao carregar Rendimentos!\n" + e.getMessage(), "ERRO",
-						JOptionPane.ERROR_MESSAGE);
+			if (cbDespesasAnual.getSelectedItem() == null) {
+				cbDespesasAnual.addItem(Calendar.getInstance().get(Calendar.YEAR));
 			}
+				try {
+					financas = service.buscarRendimentoDespesaPorUsuario(dadosUsuario.getId(),
+							(cbDespesasMensal.getSelectedIndex() + 1), ((int) cbDespesasAnual.getSelectedItem()),
+							"Despesa");
+					String nomeCategoria = "";
+					try {
+						CategoriaService catS = new CategoriaService();
+						for (int i = 0; i < financas.size(); i++) {
+							nomeCategoria = catS.buscarNomeCategoria(financas.get(i).getCategoria().getId_Categoria());
+							financas.get(i).getCategoria().setNome(nomeCategoria);
+						}
+
+					} catch (SQLException | IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					for (Financa financa : financas) {
+						if (financa.isMensal_Ocasional()) {
+							modeloD.addRow(new Object[] { financa.getCategoria().getNome(), financa.getNome(),
+									"R$ " + financa.getTotal(), "", "R$ " + (financa.getTotal() * 12) });
+						} else {
+							modeloD.addRow(new Object[] { financa.getCategoria().getNome(), financa.getNome(), "",
+									"R$ " + financa.getTotal(), "R$ " + (financa.getTotal()) });
+						}
+					}
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					JOptionPane.showMessageDialog(null, "Erro ao carregar Rendimentos!\n" + e.getMessage(), "ERRO",
+							JOptionPane.ERROR_MESSAGE);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					JOptionPane.showMessageDialog(null, "Erro ao carregar Rendimentos!\n" + e.getMessage(), "ERRO",
+							JOptionPane.ERROR_MESSAGE);
+				}
+			
 		}
 
 	}
 
 	private void buscarInvestimento() {
 		tableInvestimento.setRowHeight(20);
-		
+
 		DefaultTableModel modelo = (DefaultTableModel) tableInvestimento.getModel();
 		modelo.fireTableDataChanged();
 		modelo.setRowCount(0);
 
 		List<Financa> financas;
 		FinancaService service = new FinancaService();
-
-		try {
-			financas = service.buscarInvestimentoPorUsuario(dadosUsuario.getId(),
-					(cbInvestimentoMensal.getSelectedIndex() + 1), Integer.parseInt((String) cbInvestimentoAnual.getSelectedItem()));
-			for (Financa financa : financas) {
-				if (financa.isMensal_Ocasional()) {
-					modelo.addRow(
-							new Object[] { financa.getNome(), "R$ "+financa.getTotal(), "", "R$ "+(financa.getTotal() * 12) });
-				} else {
-					modelo.addRow(new Object[] { financa.getNome(), "", "R$ "+financa.getTotal(), "R$ "+(financa.getTotal()) });
-				}
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			JOptionPane.showMessageDialog(null, "Erro ao carregar Investimentos!\n" + e.getMessage(), "ERRO",
-					JOptionPane.ERROR_MESSAGE);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			JOptionPane.showMessageDialog(null, "Erro ao carregar Investimentos!\n" + e.getMessage(), "ERRO",
-					JOptionPane.ERROR_MESSAGE);
+		if (cbInvestimentoAnual.getSelectedItem() == null) {
+			cbInvestimentoAnual.addItem(Calendar.getInstance().get(Calendar.YEAR));
 		}
+			try {
+				financas = service.buscarInvestimentoPorUsuario(dadosUsuario.getId(),
+						(cbInvestimentoMensal.getSelectedIndex() + 1), ((int) cbInvestimentoAnual.getSelectedItem()));
+				for (Financa financa : financas) {
+					if (financa.isMensal_Ocasional()) {
+						modelo.addRow(new Object[] { financa.getNome(), "R$ " + financa.getTotal(), "",
+								"R$ " + (financa.getTotal() * 12) });
+					} else {
+						modelo.addRow(new Object[] { financa.getNome(), "", "R$ " + financa.getTotal(),
+								"R$ " + (financa.getTotal()) });
+					}
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				JOptionPane.showMessageDialog(null, "Erro ao carregar Investimentos!\n" + e.getMessage(), "ERRO",
+						JOptionPane.ERROR_MESSAGE);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				JOptionPane.showMessageDialog(null, "Erro ao carregar Investimentos!\n" + e.getMessage(), "ERRO",
+						JOptionPane.ERROR_MESSAGE);
+			}
+		
 	}
 
 	private void buscarFundoDespesas() {
 		tableFundoDespesas.setRowHeight(20);
-		
+
 		DefaultTableModel modelo = (DefaultTableModel) tableFundoDespesas.getModel();
 		modelo.fireTableDataChanged();
 		modelo.setRowCount(0);
 
 		List<Financa> financas;
 		FinancaService service = new FinancaService();
-
-		try {
-			financas = service.buscarFundoDespesasPorUsuario(dadosUsuario.getId(),
-					(cbFundoDespesasMensal.getSelectedIndex() + 1), Integer.parseInt((String) cbFundoDespesasAnual.getSelectedItem()));
-			for (Financa financa : financas) {
-				modelo.addRow(new Object[] { financa.getNome(), "R$ "+financa.getTotal(), "R$ "+(financa.getTotal() * 12) });
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			JOptionPane.showMessageDialog(null, "Erro ao carregar Fundo de Despesas Ocasionais!\n" + e.getMessage(),
-					"ERRO", JOptionPane.ERROR_MESSAGE);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			JOptionPane.showMessageDialog(null, "Erro ao carregar Fundo de Despesas Ocasionais!\n" + e.getMessage(),
-					"ERRO", JOptionPane.ERROR_MESSAGE);
+		if (cbFundoDespesasAnual.getSelectedItem() == null) {
+				cbFundoDespesasAnual.addItem(Calendar.getInstance().get(Calendar.YEAR));
+			
 		}
+			try {
+				financas = service.buscarFundoDespesasPorUsuario(dadosUsuario.getId(),
+						(cbFundoDespesasMensal.getSelectedIndex() + 1), ((int) cbFundoDespesasAnual.getSelectedItem()));
+				for (Financa financa : financas) {
+					modelo.addRow(new Object[] { financa.getNome(), "R$ " + financa.getTotal(),
+							"R$ " + (financa.getTotal() * 12) });
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				JOptionPane.showMessageDialog(null, "Erro ao carregar Fundo de Despesas Ocasionais!\n" + e.getMessage(),
+						"ERRO", JOptionPane.ERROR_MESSAGE);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				JOptionPane.showMessageDialog(null, "Erro ao carregar Fundo de Despesas Ocasionais!\n" + e.getMessage(),
+						"ERRO", JOptionPane.ERROR_MESSAGE);
+			}
+		
 	}
 
 	public void btnEditarRendimentoActionPerformed() {
@@ -1005,7 +1033,7 @@ public class MenuPrincipalFrame extends JFrame {
 						catService.buscarIdCategoria((String) tableRendimento.getModel().getValueAt(linhaTabela, 0)));
 				String nomeFinanca = (String) tableRendimento.getModel().getValueAt(linhaTabela, 1);
 				int id = finService.buscarIdRendimentoDespesaPorNome(dadosUsuario.getId(), nomeFinanca,
-						cbRendimentoMensal.getSelectedIndex() + 1, Integer.parseInt((String) cbRendimentoAnual.getSelectedItem()));
+						cbRendimentoMensal.getSelectedIndex() + 1, ((int) cbRendimentoAnual.getSelectedItem()));
 				financa.setId(id);
 				financa.setNome(nomeFinanca);
 				financa.setCategoria(categoria);
@@ -1053,7 +1081,7 @@ public class MenuPrincipalFrame extends JFrame {
 			try {
 				String nomeFinanca = (String) tableRendimento.getModel().getValueAt(linhaTabela, 1);
 				int id = finService.buscarIdRendimentoDespesaPorNome(dadosUsuario.getId(), nomeFinanca,
-						cbRendimentoMensal.getSelectedIndex() + 1, Integer.parseInt((String) cbRendimentoAnual.getSelectedItem()));
+						cbRendimentoMensal.getSelectedIndex() + 1, ((int) cbRendimentoAnual.getSelectedItem()));
 				financa.setId(id);
 				financa.setNome(nomeFinanca);
 				financa.setTipo("Rendimento");
@@ -1101,7 +1129,7 @@ public class MenuPrincipalFrame extends JFrame {
 						catService.buscarIdCategoria((String) tableDespesas.getModel().getValueAt(linhaTabela, 0)));
 				String nomeFinanca = (String) tableDespesas.getModel().getValueAt(linhaTabela, 1);
 				int id = finService.buscarIdRendimentoDespesaPorNome(dadosUsuario.getId(), nomeFinanca,
-						cbRendimentoMensal.getSelectedIndex() + 1, Integer.parseInt((String) cbRendimentoAnual.getSelectedItem()));
+						cbRendimentoMensal.getSelectedIndex() + 1, ((int) cbRendimentoAnual.getSelectedItem()));
 				financa.setId(id);
 				financa.setNome(nomeFinanca);
 				financa.setCategoria(categoria);
@@ -1148,7 +1176,7 @@ public class MenuPrincipalFrame extends JFrame {
 			try {
 				String nomeFinanca = (String) tableDespesas.getModel().getValueAt(linhaTabela, 1);
 				int id = finService.buscarIdRendimentoDespesaPorNome(dadosUsuario.getId(), nomeFinanca,
-						cbRendimentoMensal.getSelectedIndex() + 1, Integer.parseInt((String) cbRendimentoAnual.getSelectedItem()));
+						cbRendimentoMensal.getSelectedIndex() + 1, ((int) cbRendimentoAnual.getSelectedItem()));
 				financa.setId(id);
 				financa.setNome(nomeFinanca);
 				financa.setTipo("Despesa");
@@ -1167,7 +1195,7 @@ public class MenuPrincipalFrame extends JFrame {
 							"Confirmação de Exclusão", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 					if (resposta == JOptionPane.YES_OPTION) {
 						finService.excluirFinanca(financa, "rendimento_despesa");
-					}								
+					}
 				}
 
 				buscarRendimentoDespesa(2);
@@ -1192,7 +1220,7 @@ public class MenuPrincipalFrame extends JFrame {
 			try {
 				String nomeFinanca = (String) tableInvestimento.getModel().getValueAt(linhaTabela, 0);
 				int id = finService.buscarIdInvestimentoPorNome(dadosUsuario.getId(), nomeFinanca,
-						cbInvestimentoMensal.getSelectedIndex() + 1, Integer.parseInt((String) cbInvestimentoAnual.getSelectedItem()));
+						cbInvestimentoMensal.getSelectedIndex() + 1, ((int) cbInvestimentoAnual.getSelectedItem()));
 				financa.setId(id);
 				financa.setNome(nomeFinanca);
 				if ((tableInvestimento.getModel().getValueAt(linhaTabela, 1)).equals("")) {
@@ -1200,7 +1228,7 @@ public class MenuPrincipalFrame extends JFrame {
 				} else {
 					financa.setMensal_Ocasional(true);
 				}
-				
+
 				String valorSelecionado = (String) tableInvestimento.getModel().getValueAt(linhaTabela, 3);
 				valorSelecionado = valorSelecionado.replace("R$", "").trim();
 				Double valorDouble = Double.parseDouble(valorSelecionado);
@@ -1240,7 +1268,7 @@ public class MenuPrincipalFrame extends JFrame {
 			try {
 				String nomeFinanca = (String) tableInvestimento.getModel().getValueAt(linhaTabela, 0);
 				int id = finService.buscarIdInvestimentoPorNome(dadosUsuario.getId(), nomeFinanca,
-						cbRendimentoMensal.getSelectedIndex() + 1, Integer.parseInt((String) cbRendimentoAnual.getSelectedItem()));
+						cbRendimentoMensal.getSelectedIndex() + 1, ((int) cbRendimentoAnual.getSelectedItem()));
 				financa.setId(id);
 				financa.setNome(nomeFinanca);
 				financa.setTipo("Investimento a Longo Prazo");
@@ -1259,7 +1287,7 @@ public class MenuPrincipalFrame extends JFrame {
 							"Confirmação de Exclusão", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 					if (resposta == JOptionPane.YES_OPTION) {
 						finService.excluirFinanca(financa, "investimento");
-					}					
+					}
 				}
 
 				buscarInvestimento();
@@ -1284,10 +1312,10 @@ public class MenuPrincipalFrame extends JFrame {
 			try {
 				String nomeFinanca = (String) tableFundoDespesas.getModel().getValueAt(linhaTabela, 0);
 				int id = finService.buscarIdFundoDespesasPorNome(dadosUsuario.getId(), nomeFinanca,
-						cbFundoDespesasMensal.getSelectedIndex() + 1, Integer.parseInt((String) cbFundoDespesasAnual.getSelectedItem()));
+						cbFundoDespesasMensal.getSelectedIndex() + 1, ((int) cbFundoDespesasAnual.getSelectedItem()));
 				financa.setId(id);
 				financa.setNome(nomeFinanca);
-				
+
 				String valorSelecionado = (String) tableFundoDespesas.getModel().getValueAt(linhaTabela, 2);
 				valorSelecionado = valorSelecionado.replace("R$", "").trim();
 				Double valorDouble = Double.parseDouble(valorSelecionado);
@@ -1326,7 +1354,7 @@ public class MenuPrincipalFrame extends JFrame {
 			try {
 				String nomeFinanca = (String) tableFundoDespesas.getModel().getValueAt(linhaTabela, 0);
 				int id = finService.buscarIdFundoDespesasPorNome(dadosUsuario.getId(), nomeFinanca,
-						cbFundoDespesasMensal.getSelectedIndex() + 1, Integer.parseInt((String) cbFundoDespesasAnual.getSelectedItem()));
+						cbFundoDespesasMensal.getSelectedIndex() + 1, ((int) cbFundoDespesasAnual.getSelectedItem()));
 				financa.setId(id);
 				financa.setNome(nomeFinanca);
 				financa.setTipo("Fundo para Despesas Ocasionais");
@@ -1356,48 +1384,115 @@ public class MenuPrincipalFrame extends JFrame {
 		modeloResumoMensal.fireTableDataChanged();
 		modeloResumoMensal.setRowCount(0);
 
-
 		tableResumoMensal.getColumnModel().getColumn(1).setCellRenderer(estiloCelula);
 
+		if (cbResumoMensalAno.getSelectedItem() == null) {
+			cbResumoMensalAno.addItem(Calendar.getInstance().get(Calendar.YEAR));
+		}
+			try {
+				Double totalMesRendimento = finService.buscarTotalporMes(dadosUsuario.getId(), "rendimento_despesa",
+						"Rendimento", cbResumoMensal.getSelectedIndex() + 1,
+						((int) cbResumoMensalAno.getSelectedItem()));
+				modeloResumoMensal.addRow(new Object[] { "Rendimento", "R$ " + totalMesRendimento });
 
-		try {
-			Double totalMesRendimento = finService.buscarTotalporMes(dadosUsuario.getId(), "rendimento_despesa",
-					"Rendimento", cbResumoMensal.getSelectedIndex() + 1, Integer.parseInt((String) cbResumoMensalAno.getSelectedItem()));
-			modeloResumoMensal.addRow(new Object[] { "Rendimento", "R$ " + totalMesRendimento });
+				Double totalMesInvestimento = finService.buscarTotalporMes(dadosUsuario.getId(), "investimento",
+						"Investimento a Longo Prazo", cbResumoMensal.getSelectedIndex() + 1,
+						((int) cbResumoMensalAno.getSelectedItem()));
+				modeloResumoMensal.addRow(new Object[] { "Investimento a Longo Prazo", "R$ " + totalMesInvestimento });
 
-			Double totalMesInvestimento = finService.buscarTotalporMes(dadosUsuario.getId(), "investimento",
-					"Investimento a Longo Prazo", cbResumoMensal.getSelectedIndex() + 1, Integer.parseInt((String) cbResumoMensalAno.getSelectedItem()));
-			modeloResumoMensal.addRow(new Object[] { "Investimento a Longo Prazo", "R$ " + totalMesInvestimento });
+				Double totalMesFundo = finService.buscarTotalporMes(dadosUsuario.getId(), "fundo_despesas",
+						"Fundo para Despesas Ocasionais", cbResumoMensal.getSelectedIndex() + 1,
+						((int) cbResumoMensalAno.getSelectedItem()));
+				modeloResumoMensal.addRow(new Object[] { "Fundo para Despesas Ocasionais", "R$ " + totalMesFundo });
 
-			Double totalMesFundo = finService.buscarTotalporMes(dadosUsuario.getId(), "fundo_despesas",
-					"Fundo para Despesas Ocasionais", cbResumoMensal.getSelectedIndex() + 1, Integer.parseInt((String) cbResumoMensalAno.getSelectedItem()));
-			modeloResumoMensal.addRow(new Object[] { "Fundo para Despesas Ocasionais", "R$ " + totalMesFundo });
+				Double totalMesDisponivel = (totalMesRendimento - (totalMesFundo + totalMesInvestimento));
+				modeloResumoMensal
+						.addRow(new Object[] { "<html><b>Valor Total Disponível por Mês para Despesas</b></html>",
+								"<html><b> R$ " + totalMesDisponivel + "</b></html>" });
 
-			Double totalMesDisponivel = (totalMesRendimento - (totalMesFundo + totalMesInvestimento));
-			modeloResumoMensal.addRow(new Object[] { "<html><b>Valor Total Disponível por Mês para Despesas</b></html>",
-					"<html><b> R$ " + totalMesDisponivel + "</b></html>" });
+				Double totalMesDespesa = finService.buscarTotalporMes(dadosUsuario.getId(), "rendimento_despesa",
+						"Despesa", cbResumoMensal.getSelectedIndex() + 1,
+						((int) cbResumoMensalAno.getSelectedItem()));
+				modeloResumoMensal
+						.addRow(new Object[] { "<html><b>Valor Total das Despesas Orçadas para o Mês</b></html>",
+								"<html><b>R$ " + totalMesDespesa + "</b></html>" });
 
-			Double totalMesDespesa = finService.buscarTotalporMes(dadosUsuario.getId(), "rendimento_despesa", "Despesa",
-					cbResumoMensal.getSelectedIndex() + 1, Integer.parseInt(
-							(String) cbResumoMensalAno.getSelectedItem()));
-			modeloResumoMensal.addRow(new Object[] { "<html><b>Valor Total das Despesas Orçadas para o Mês</b></html>",
-					"<html><b>R$ " + totalMesDespesa + "</b></html>" });
+				Double totalFinalMes = (totalMesDisponivel - totalMesDespesa);
 
-			Double totalFinalMes = (totalMesDisponivel - totalMesDespesa);
+				if (totalFinalMes >= 0.0) {
+					modeloResumoMensal.addRow(new Object[] { "<html><b>Valor total</b></html>",
+							"<html><b><font color=\"green\">R$ " + totalFinalMes + "</font></b></html>" });
+				} else {
+					modeloResumoMensal.addRow(new Object[] { "<html><b>Valor total</b></html>",
+							"<html><b><font color=\"red\">R$ " + totalFinalMes + "</font></b></html>" });
+				}
 
-			if (totalFinalMes >= 0.0) {
-				modeloResumoMensal.addRow(new Object[] { "<html><b>Valor total</b></html>",
-						"<html><b><font color=\"green\">R$ " + totalFinalMes + "</font></b></html>" });
-			} else {
-				modeloResumoMensal.addRow(new Object[] { "<html><b>Valor total</b></html>",
-						"<html><b><font color=\"red\">R$ " + totalFinalMes + "</font></b></html>" });
+				tableResumoMensal.setRowHeight(30);
+
+			} catch (SQLException | IOException e) {
+				JOptionPane.showMessageDialog(null, "Erro ao carregar dados das finanças!\n" + e.getMessage(), "ERRO",
+						JOptionPane.ERROR_MESSAGE);
 			}
+		
+	}
 
-			tableResumoMensal.setRowHeight(30);
+	public void atualizarAnos() {
+		FinancaService service = new FinancaService();
+		int[] vetorAnoRendimento;
+		int[] vetorAnoDespesas;
+		int[] vetorAnoInvestimento;
+		int[] vetorAnoFundo;
+		int[] vetorAnoRelatorio;
+		try {
+			vetorAnoRendimento = service.buscarAnoPorUsuario(dadosUsuario.getId(), "rendimento_despesa", "Rendimento");
+			vetorAnoDespesas = service.buscarAnoPorUsuario(dadosUsuario.getId(), "rendimento_despesa", "Despesa");
+			vetorAnoInvestimento = service.buscarAnoPorUsuario(dadosUsuario.getId(), "investimento",
+					"Investimento a Longo Prazo");
+			vetorAnoFundo = service.buscarAnoPorUsuario(dadosUsuario.getId(), "fundo_despesas",
+					"Fundo para Despesas Ocasionais");
+			if (vetorAnoRendimento.length >= vetorAnoDespesas.length
+					&& vetorAnoRendimento.length >= vetorAnoInvestimento.length
+					&& vetorAnoRendimento.length >= vetorAnoFundo.length) {
+				vetorAnoRelatorio = vetorAnoRendimento;
+			} else if (vetorAnoDespesas.length >= vetorAnoInvestimento.length
+					&& vetorAnoDespesas.length >= vetorAnoFundo.length) {
+				vetorAnoRelatorio = vetorAnoDespesas;
+			} else if (vetorAnoInvestimento.length >= vetorAnoFundo.length) {
+				vetorAnoRelatorio = vetorAnoInvestimento;
+			} else {
+				vetorAnoRelatorio = vetorAnoFundo;
+			}
+			cbRendimentoAnual.removeAllItems();
+			for (int valor : vetorAnoRendimento) {
+				cbRendimentoAnual.addItem(valor);
+			}
+			cbRendimentoAnual.setSelectedItem(Calendar.getInstance().get(Calendar.YEAR));
+			cbDespesasAnual.removeAllItems();
+			for (int valor : vetorAnoDespesas) {
+				cbDespesasAnual.addItem(valor);
+			}
+			cbDespesasAnual.setSelectedItem(Calendar.getInstance().get(Calendar.YEAR));
 
+			cbInvestimentoAnual.removeAllItems();
+			for (int valor : vetorAnoInvestimento) {
+				cbInvestimentoAnual.addItem(valor);
+			}
+			cbInvestimentoAnual.setSelectedItem(Calendar.getInstance().get(Calendar.YEAR));
+
+			cbFundoDespesasAnual.removeAllItems();
+			for (int valor : vetorAnoFundo) {
+				cbFundoDespesasAnual.addItem(valor);
+			}
+			cbFundoDespesasAnual.setSelectedItem(Calendar.getInstance().get(Calendar.YEAR));
+
+			cbResumoMensalAno.removeAllItems();
+			for (int valor : vetorAnoRelatorio) {
+				cbResumoMensalAno.addItem(valor);
+			}
+			cbResumoMensalAno.setSelectedItem(Calendar.getInstance().get(Calendar.YEAR));
 		} catch (SQLException | IOException e) {
-			JOptionPane.showMessageDialog(null, "Erro ao carregar dados das finanças!\n" + e.getMessage(), "ERRO",
-					JOptionPane.ERROR_MESSAGE);
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 

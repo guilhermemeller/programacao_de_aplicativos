@@ -1,7 +1,7 @@
 package gui;
 
 import java.awt.EventQueue;
-
+import java.util.Calendar;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -10,21 +10,18 @@ import javax.swing.JRadioButton;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import javax.swing.border.TitledBorder;
-
 import entities.Usuario;
 import entities.Categoria;
 import entities.Financa;
 import service.CategoriaService;
 import service.FinancaService;
 import service.UsuarioService;
-
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.border.BevelBorder;
 import javax.swing.JComboBox;
 import javax.swing.border.EtchedBorder;
 import java.awt.Color;
-
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
@@ -38,7 +35,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.DefaultComboBoxModel;
-
 import utils.DadosUsuario;
 import utils.Mes;
 
@@ -265,7 +261,12 @@ public class CadastrarFinancaFrame extends JFrame {
 		cadastrofinancaPanel.add(anoPanel);
 		
 		cbAno = new JComboBox();
-		cbAno.setModel(new DefaultComboBoxModel(new String[] {"2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025", "2026", "2027", "2028", "2029", "2030", "2031", "2032", "2033"}));
+		int anoAtual = Calendar.getInstance().get(Calendar.YEAR);
+		String[] anos = new String[21];
+		for (int i = 0; i < 21; i++) {
+		    anos[i] = String.valueOf(anoAtual - 10 + i);
+		}
+		cbAno.setModel(new DefaultComboBoxModel(anos));
 		cbAno.setSelectedIndex(10);
 		cbAno.setBounds(16, 20, 143, 30);
 		anoPanel.add(cbAno);
@@ -304,6 +305,7 @@ public class CadastrarFinancaFrame extends JFrame {
 	}
 
 	public void btnEditarCategoriaActionPerformed() {
+		if(cbCategoria.getSelectedItem()!= null) {
 		String cSelecionado = (String) cbCategoria.getSelectedItem();
 		List<Categoria> categorias = atualizarCategorias();
 		CategoriaService cService = new CategoriaService();
@@ -347,6 +349,11 @@ public class CadastrarFinancaFrame extends JFrame {
 			}
 		});
 		dialog.setVisible(true);
+		}else {
+			JOptionPane.showMessageDialog(null,
+					"Não existem categorias para serem editadas. Favor cadastrar novas categorias!",
+					"Erro", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
 	public List<Categoria> atualizarCategorias() {

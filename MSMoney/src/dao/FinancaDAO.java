@@ -1,8 +1,8 @@
 package dao;
 
-import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 import java.sql.Connection;
-import service.CategoriaService;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -524,5 +524,43 @@ public class FinancaDAO {
 			BancoDados.finalizarStatement(st);
 			BancoDados.desconectar();
 		}
+	}
+	
+
+	
+	public int[] buscarAnoPorUsuario(int usuario_id, String table, String type) throws SQLException {
+	    PreparedStatement st = null;
+	    ResultSet rs = null;
+	    List<Integer> listaAnos = new ArrayList<>();
+
+	    try {
+	        st = conn.prepareStatement("SELECT ano FROM "+ table +" WHERE usuario_id = ? AND tipo = ?");
+	        st.setInt(1, usuario_id);
+	        st.setString(2, type);
+	        rs = st.executeQuery();
+
+	        while (rs.next()) {
+	            int ano = rs.getInt("ano");
+	            listaAnos.add(ano);
+	        }
+	    } finally {
+	        // Certifique-se de fechar os recursos adequadamente
+	        BancoDados.finalizarStatement(st);
+	        BancoDados.finalizarResultSet(rs);
+	        BancoDados.desconectar();
+	    }
+
+	    // Remova anos duplicados usando um conjunto (Set)
+	    Set<Integer> conjuntoAnos = new HashSet<>(listaAnos);
+	    listaAnos.clear();
+	    listaAnos.addAll(conjuntoAnos);
+
+	    // Converta a lista para um vetor de inteiros
+	    int[] vetorAno = new int[listaAnos.size()];
+	    for (int i = 0; i < listaAnos.size(); i++) {
+	        vetorAno[i] = listaAnos.get(i);
+	    }
+
+	    return vetorAno;
 	}
 }
