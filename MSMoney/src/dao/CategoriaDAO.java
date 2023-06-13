@@ -20,16 +20,17 @@ public class CategoriaDAO {
 		this.conn = conn;
 	}
 	
-	public void inserirCategoria(Categoria categoria) throws SQLException {
+	public void inserirCategoria(Categoria categoria, int idUsuario) throws SQLException {
 		
 		PreparedStatement st = null;
 		
 		try {
 
 			st = conn.prepareStatement(
-					"INSERT INTO categoria (nome_categoria) VALUES (?)");
+					"INSERT INTO categoria (nome_categoria, usuario_id) VALUES (?, ?)");
 
 			st.setString(1, categoria.getNome());
+			st.setInt(2, idUsuario);
 
 			st.executeUpdate();
 
@@ -80,14 +81,16 @@ public class CategoriaDAO {
 		}
 	}
 	
-	public List<Categoria> buscarCategorias() throws SQLException, IOException {
+	public List<Categoria> buscarCategorias(int idUsuario) throws SQLException, IOException {
 		
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		
 		try {
 			
-			st = conn.prepareStatement("SELECT nome_categoria, id_categoria FROM categoria");
+			st = conn.prepareStatement("SELECT nome_categoria, id_categoria FROM categoria WHERE usuario_id = ?");
+			
+			st.setInt(1, idUsuario);
 			
 			rs = st.executeQuery();
 			

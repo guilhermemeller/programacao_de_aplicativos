@@ -9,7 +9,7 @@ import service.CategoriaService;
 
 public class TesteCategoria {
 	
-	public static void cadastrarTeste() {
+	/*public static void cadastrarTeste() {
 		
 		CategoriaService service =  new CategoriaService();
 		
@@ -43,5 +43,5 @@ public class TesteCategoria {
 		
 		cadastrarTeste();
 		buscarTeste();
-	}
+	}*/
 }

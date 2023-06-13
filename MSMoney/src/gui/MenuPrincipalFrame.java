@@ -873,7 +873,8 @@ public class MenuPrincipalFrame extends JFrame {
 		}
 		List<Categoria> categorias;
 		try {
-			categorias = cService.buscarCategorias();
+			DadosUsuario dadosUsuario = DadosUsuario.getInstance();
+			categorias = cService.buscarCategorias(dadosUsuario.getId());
 			for (Categoria categoria : categorias) {
 				cbCategoriaMensal.addItem(categoria.getNome());
 				cbCategoriaAnual.addItem(categoria.getNome());
@@ -1539,11 +1540,11 @@ public class MenuPrincipalFrame extends JFrame {
 
 	public void atualizarAnos() {
 		FinancaService service = new FinancaService();
-		int[] vetorAnoRendimento;
-		int[] vetorAnoDespesas;
-		int[] vetorAnoInvestimento;
-		int[] vetorAnoFundo;
-		int[] vetorAnoResumo;
+		List<Integer> vetorAnoRendimento;
+		List<Integer> vetorAnoDespesas;
+		List<Integer> vetorAnoInvestimento;
+		List<Integer> vetorAnoFundo;
+		List<Integer> vetorAnoResumo;
 		try {
 			vetorAnoRendimento = service.buscarAnoPorUsuario(dadosUsuario.getId(), "rendimento_despesa", "Rendimento");
 			vetorAnoDespesas = service.buscarAnoPorUsuario(dadosUsuario.getId(), "rendimento_despesa", "Despesa");
@@ -1551,14 +1552,14 @@ public class MenuPrincipalFrame extends JFrame {
 					"Investimento a Longo Prazo");
 			vetorAnoFundo = service.buscarAnoPorUsuario(dadosUsuario.getId(), "fundo_despesas",
 					"Fundo para Despesas Ocasionais");
-			if (vetorAnoRendimento.length >= vetorAnoDespesas.length
-					&& vetorAnoRendimento.length >= vetorAnoInvestimento.length
-					&& vetorAnoRendimento.length >= vetorAnoFundo.length) {
+			if (vetorAnoRendimento.size() >= vetorAnoDespesas.size()
+					&& vetorAnoRendimento.size() >= vetorAnoInvestimento.size()
+					&& vetorAnoRendimento.size() >= vetorAnoFundo.size()) {
 				vetorAnoResumo = vetorAnoRendimento;
-			} else if (vetorAnoDespesas.length >= vetorAnoInvestimento.length
-					&& vetorAnoDespesas.length >= vetorAnoFundo.length) {
+			} else if (vetorAnoDespesas.size() >= vetorAnoInvestimento.size()
+					&& vetorAnoDespesas.size() >= vetorAnoFundo.size()) {
 				vetorAnoResumo = vetorAnoDespesas;
-			} else if (vetorAnoInvestimento.length >= vetorAnoFundo.length) {
+			} else if (vetorAnoInvestimento.size() >= vetorAnoFundo.size()) {
 				vetorAnoResumo = vetorAnoInvestimento;
 			} else {
 				vetorAnoResumo = vetorAnoFundo;

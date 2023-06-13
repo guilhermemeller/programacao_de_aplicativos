@@ -557,13 +557,13 @@ public class FinancaDAO {
 	
 
 	
-	public int[] buscarAnoPorUsuario(int usuario_id, String table, String type) throws SQLException {
+	public List<Integer> buscarAnoPorUsuario(int usuario_id, String table, String type) throws SQLException {
 	    PreparedStatement st = null;
 	    ResultSet rs = null;
 	    List<Integer> listaAnos = new ArrayList<>();
 
 	    try {
-	        st = conn.prepareStatement("SELECT ano FROM "+ table +" WHERE usuario_id = ? AND tipo = ?");
+	        st = conn.prepareStatement("SELECT ano FROM "+ table +" WHERE usuario_id = ? AND tipo = ? GROUP BY ano");
 	        st.setInt(1, usuario_id);
 	        st.setString(2, type);
 	        rs = st.executeQuery();
@@ -578,18 +578,6 @@ public class FinancaDAO {
 	        BancoDados.finalizarResultSet(rs);
 	        BancoDados.desconectar();
 	    }
-
-	    // Remova anos duplicados usando um conjunto (Set)
-	    Set<Integer> conjuntoAnos = new HashSet<>(listaAnos);
-	    listaAnos.clear();
-	    listaAnos.addAll(conjuntoAnos);
-
-	    // Converta a lista para um vetor de inteiros
-	    int[] vetorAno = new int[listaAnos.size()];
-	    for (int i = 0; i < listaAnos.size(); i++) {
-	        vetorAno[i] = listaAnos.get(i);
-	    }
-
-	    return vetorAno;
+	    return listaAnos;
 	}
 }
