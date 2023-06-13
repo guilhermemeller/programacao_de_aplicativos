@@ -99,7 +99,7 @@ public class FinancaService {
 		return new FinancaDAO(conn).buscarTotalporAno(usuarioId, table, tipo, mes);
 	}
 	
-	public int[] buscarAnoPorUsuario(int usuario_id, String table, String type)throws SQLException, IOException{
+	public List<Integer> buscarAnoPorUsuario(int usuario_id, String table, String type)throws SQLException, IOException{
 		Connection conn = BancoDados.conectar();
 		return new FinancaDAO(conn).buscarAnoPorUsuario(usuario_id, table, type);
 	}

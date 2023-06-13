@@ -11,10 +11,10 @@ import entities.Categoria;
 
 public class CategoriaService {
 	
-	public void inserirCategoria(Categoria categoria) throws SQLException, IOException {
+	public void inserirCategoria(Categoria categoria, int idUsuario) throws SQLException, IOException {
 
 		Connection conn = BancoDados.conectar();
-		new CategoriaDAO(conn).inserirCategoria(categoria);
+		new CategoriaDAO(conn).inserirCategoria(categoria, idUsuario);
 	}
 	
 	public void editarCategoria(Categoria categoria) throws SQLException, IOException {
@@ -29,10 +29,10 @@ public class CategoriaService {
 		return new CategoriaDAO(conn).excluirCategoria(id_categoria);
 	}
 	
-	public List<Categoria> buscarCategorias() throws SQLException, IOException {
+	public List<Categoria> buscarCategorias(int idUsuario) throws SQLException, IOException {
 
 		Connection conn = BancoDados.conectar();
-		return new CategoriaDAO(conn).buscarCategorias();
+		return new CategoriaDAO(conn).buscarCategorias(idUsuario);
 	}
 	
 	public String buscarNomeCategoria(int id) throws SQLException, IOException {
