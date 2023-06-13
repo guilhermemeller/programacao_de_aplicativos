@@ -291,8 +291,9 @@ public class CadastrarFinancaFrame extends JFrame {
 		if (nomeCategoria != null) {
 			Categoria categoria = new Categoria(nomeCategoria);
 			CategoriaService cService = new CategoriaService();
+			DadosUsuario dadosUsuario = DadosUsuario.getInstance();
 			try {
-				cService.inserirCategoria(categoria);
+				cService.inserirCategoria(categoria, dadosUsuario.getId());
 				JOptionPane.showMessageDialog(null, "Cadastro realizado com sucesso!");
 				atualizarCategorias();
 			} catch (SQLException | IOException e1) {
@@ -362,7 +363,8 @@ public class CadastrarFinancaFrame extends JFrame {
 
 		List<Categoria> categorias;
 		try {
-			categorias = cService.buscarCategorias();
+			DadosUsuario dadosUsuario = DadosUsuario.getInstance();
+			categorias = cService.buscarCategorias(dadosUsuario.getId());
 			for (Categoria categoria : categorias) {
 				cbCategoria.addItem(categoria.getNome());
 			}
@@ -405,6 +407,7 @@ public class CadastrarFinancaFrame extends JFrame {
 				id_categoria = buscarIdCategoria(categorias, categoria);
 				financa.setCategoria(new Categoria(id_categoria));
 				financa.setMensal_Ocasional(true);
+				financa.setAno(Integer.parseInt((String) cbAno.getSelectedItem()));
 				
 				try {
 					financa.setId(service.buscarIdRendimentoDespesaPorNome(dadosUsuario.getId(), financa.getNome(), financa.getMes(), financa.getAno()));
@@ -474,11 +477,8 @@ public class CadastrarFinancaFrame extends JFrame {
 					} catch (SQLException | IOException e) {
 						// TODO Auto-generated catch block
 						JOptionPane.showMessageDialog(null, e.getMessage());
-					}
-					
-					
+					}										
 				}
-
 			}
 		} else if (getTipoFinanca().equals("Investimento a Longo Prazo")) {
 			if (this.rdbtnMensal.isSelected()) {
@@ -554,7 +554,7 @@ public class CadastrarFinancaFrame extends JFrame {
 			financa.setNome(txtNomeFinanca.getText());
 			financa.setTotal(Double.parseDouble(txtValorFinanca.getText()));
 			financa.setTipo(getTipoFinanca());
-
+			financa.setAno(Integer.parseInt((String) cbAno.getSelectedItem()));
 			if (cadastro_edicao == "Cadastrar") {
 				try {
 					service.inserirFundoParaDespesas(financa, dadosUsuario.getId());
