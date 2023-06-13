@@ -405,6 +405,7 @@ public class CadastrarFinancaFrame extends JFrame {
 				id_categoria = buscarIdCategoria(categorias, categoria);
 				financa.setCategoria(new Categoria(id_categoria));
 				financa.setMensal_Ocasional(true);
+				financa.setAno(Integer.parseInt((String) cbAno.getSelectedItem()));
 				
 				try {
 					financa.setId(service.buscarIdRendimentoDespesaPorNome(dadosUsuario.getId(), financa.getNome(), financa.getMes(), financa.getAno()));
