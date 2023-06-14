@@ -33,6 +33,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.awt.event.ActionEvent;
 import javax.swing.DefaultComboBoxModel;
 import utils.DadosUsuario;
@@ -61,7 +63,7 @@ public class CadastrarFinancaFrame extends JFrame {
 	public ButtonGroup buttonGroup;
 
 	private String tipoFinanca;
-	
+
 	private Financa financa;
 	private JPanel anoPanel;
 	private JComboBox cbAno;
@@ -75,28 +77,28 @@ public class CadastrarFinancaFrame extends JFrame {
 	}
 
 	public CadastrarFinancaFrame() {
-		initComponents("", "");
+		initComponents("", "", 2023);
 	}
 
-	public CadastrarFinancaFrame(String tipoFinanca, String cadastro_edicao) {
+	public CadastrarFinancaFrame(String tipoFinanca, String cadastro_edicao, int ano) {
 		setTipoFinanca(tipoFinanca);
-		initComponents(tipoFinanca, cadastro_edicao);
+		initComponents(tipoFinanca, cadastro_edicao, ano);
 	}
 
-	public CadastrarFinancaFrame(String tipoFinanca, String cadastro_edicao, Financa financa) {
+	public CadastrarFinancaFrame(String tipoFinanca, String cadastro_edicao, int ano, Financa financa) {
 		setTipoFinanca(tipoFinanca);
 		setFinanca(financa);
 		getFinanca().setNome(financa.getNome());
 		getFinanca().setMensal_Ocasional(financa.isMensal_Ocasional());
 		getFinanca().setTipo(tipoFinanca);
-		initComponents(tipoFinanca, cadastro_edicao);
+		initComponents(tipoFinanca, cadastro_edicao, ano);
 		preencherCampos(financa, financa.getTipo());
 	}
 	/*
 	 * Create the frame.
 	 */
 
-	public void initComponents(String tipoFinanca, String cadastro_edicao) {
+	public void initComponents(String tipoFinanca, String cadastro_edicao, int ano) {
 		if (cadastro_edicao == "Editar") {
 			setTitle("Edição de Finança");
 			btnCadastrarFinanca = new JButton("Editar");
@@ -239,9 +241,9 @@ public class CadastrarFinancaFrame extends JFrame {
 
 		btnCadastrarFinanca.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if ((!txtNomeFinanca.getText().equals("")) && (!txtValorFinanca.getText().equals(""))) {
+				if ((!txtNomeFinanca.getText().isBlank()) && (!txtValorFinanca.getText().isBlank())
+						&& (cbCategoria.getSelectedItem() != null)) {
 					cadastrarFinancaActionPerformed(cadastro_edicao);
-
 				} else {
 					JOptionPane.showMessageDialog(null, "Os campo devem estar preenchidos!", "Erro",
 							JOptionPane.ERROR_MESSAGE);
@@ -253,36 +255,43 @@ public class CadastrarFinancaFrame extends JFrame {
 		btnCadastrarFinanca.setBounds(28, 385, 115, 30);
 
 		cadastrofinancaPanel.add(btnCadastrarFinanca);
-		
+
 		anoPanel = new JPanel();
 		anoPanel.setLayout(null);
-		anoPanel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Ano", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		anoPanel.setBorder(new TitledBorder(
+				new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Ano",
+				TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		anoPanel.setBounds(10, 124, 175, 70);
 		cadastrofinancaPanel.add(anoPanel);
-		
+
 		cbAno = new JComboBox();
 		int anoAtual = Calendar.getInstance().get(Calendar.YEAR);
 		String[] anos = new String[21];
 		for (int i = 0; i < 21; i++) {
-		    anos[i] = String.valueOf(anoAtual - 10 + i);
+			anos[i] = String.valueOf(anoAtual - 10 + i);
 		}
 		cbAno.setModel(new DefaultComboBoxModel(anos));
-		cbAno.setSelectedIndex(10);
+		
+		for(int i=0;i<cbAno.getItemCount(); i++) {
+			if ((Integer.parseInt((String)cbAno.getItemAt(i)) == ano)) {
+				cbAno.setSelectedIndex(i);
+			}
+		}
 		cbAno.setBounds(16, 20, 143, 30);
 		anoPanel.add(cbAno);
-		
-				btnCancelar = new JButton("Cancelar");
-				btnCancelar.addActionListener(new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						// Fechar a tela
-						dispose();
-					}
-				});
-				btnCancelar.setBackground(new Color(255, 176, 176));
-				btnCancelar.setFont(new Font("Tahoma", Font.BOLD, 16));
-				btnCancelar.setBounds(270, 385, 115, 30);
-				cadastrofinancaPanel.add(btnCancelar);
+
+		btnCancelar = new JButton("Cancelar");
+		btnCancelar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Fechar a tela
+				dispose();
+			}
+		});
+		btnCancelar.setBackground(new Color(255, 176, 176));
+		btnCancelar.setFont(new Font("Tahoma", Font.BOLD, 16));
+		btnCancelar.setBounds(270, 385, 115, 30);
+		cadastrofinancaPanel.add(btnCancelar);
 	}
 
 	public void btnCadastrarCategoriaActionPerformed() {
@@ -306,54 +315,54 @@ public class CadastrarFinancaFrame extends JFrame {
 	}
 
 	public void btnEditarCategoriaActionPerformed() {
-		if(cbCategoria.getSelectedItem()!= null) {
-		String cSelecionado = (String) cbCategoria.getSelectedItem();
-		List<Categoria> categorias = atualizarCategorias();
-		CategoriaService cService = new CategoriaService();
-		EditarExcluirCategoriaDialog dialog = new EditarExcluirCategoriaDialog(cSelecionado);
-		dialog.setLocationRelativeTo(null);
-		dialog.addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosed(WindowEvent e) {
-				String nomeCategoriaE = dialog.getCategoriaEditada();
-				if (nomeCategoriaE == null) {
+		if (cbCategoria.getSelectedItem() != null) {
+			String cSelecionado = (String) cbCategoria.getSelectedItem();
+			List<Categoria> categorias = atualizarCategorias();
+			CategoriaService cService = new CategoriaService();
+			EditarExcluirCategoriaDialog dialog = new EditarExcluirCategoriaDialog(cSelecionado);
+			dialog.setLocationRelativeTo(null);
+			dialog.addWindowListener(new WindowAdapter() {
+				@Override
+				public void windowClosed(WindowEvent e) {
+					String nomeCategoriaE = dialog.getCategoriaEditada();
+					if (nomeCategoriaE == null) {
 
-				} else if (nomeCategoriaE.equals("-1")) {
-					try {
-						int resposta = JOptionPane.showConfirmDialog(null,
-								"Deseja realmente excluir essa Categoria?\nCaso exclua, todas as Finanças vinculadas a essa categoria também serão excluidas",
-								"Confirmação de Exclusão", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-						if (resposta == JOptionPane.YES_OPTION) {
-							int id = buscarIdCategoria(categorias, cSelecionado);
-							cService.excluirCategoria(id);
-							JOptionPane.showMessageDialog(null, "Excluído com sucesso!");
-							atualizarCategorias();
+					} else if (nomeCategoriaE.equals("-1")) {
+						try {
+							int resposta = JOptionPane.showConfirmDialog(null,
+									"Deseja realmente excluir essa Categoria?\nCaso exclua, todas as Finanças vinculadas a essa categoria também serão excluidas",
+									"Confirmação de Exclusão", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+							if (resposta == JOptionPane.YES_OPTION) {
+								int id = buscarIdCategoria(categorias, cSelecionado);
+								cService.excluirCategoria(id);
+								JOptionPane.showMessageDialog(null, "Excluído com sucesso!");
+								atualizarCategorias();
+							}
+						} catch (SQLException | IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
 						}
-					} catch (SQLException | IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
 
-				} else {
-					try {
-						int id = buscarIdCategoria(categorias, cSelecionado);
-						Categoria cate = new Categoria(id, nomeCategoriaE);
-						cService.editarCategoria(cate);
-						JOptionPane.showMessageDialog(null, "Editado com sucesso!");
-						atualizarCategorias();
-					} catch (SQLException | IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+					} else {
+						try {
+							int id = buscarIdCategoria(categorias, cSelecionado);
+							Categoria cate = new Categoria(id, nomeCategoriaE);
+							cService.editarCategoria(cate);
+							JOptionPane.showMessageDialog(null, "Editado com sucesso!");
+							atualizarCategorias();
+						} catch (SQLException | IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 
+					}
 				}
-			}
-		});
-		dialog.setVisible(true);
-		}else {
+			});
+			dialog.setVisible(true);
+		} else {
 			JOptionPane.showMessageDialog(null,
-					"Não existem categorias para serem editadas. Favor cadastrar novas categorias!",
-					"Erro", JOptionPane.ERROR_MESSAGE);
+					"Não existem categorias para serem editadas. Favor cadastrar novas categorias!", "Erro",
+					JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -388,7 +397,6 @@ public class CadastrarFinancaFrame extends JFrame {
 	}
 
 	public void cadastrarFinancaActionPerformed(String cadastro_edicao) {
-
 		String categoria;
 		int id_categoria;
 		categoria = (String) cbCategoria.getSelectedItem();
@@ -397,184 +405,197 @@ public class CadastrarFinancaFrame extends JFrame {
 		FinancaService service = new FinancaService();
 		Financa financa = new Financa();
 
-		if (getTipoFinanca().equals("Rendimento") || getTipoFinanca().equals("Despesa")) {
+		String pattern = "\\d+(\\.\\d+)?";
 
-			if (this.rdbtnMensal.isSelected()) {
+		Pattern regex = Pattern.compile(pattern);
+        Matcher matcher = regex.matcher(txtValorFinanca.getText());
+		
+        if(matcher.find()) {
+        	if (getTipoFinanca().equals("Rendimento") || getTipoFinanca().equals("Despesa")) {
 
-				financa.setNome(txtNomeFinanca.getText());
-				financa.setTotal(Double.parseDouble(txtValorFinanca.getText()));
-				financa.setTipo(getTipoFinanca());
-				id_categoria = buscarIdCategoria(categorias, categoria);
-				financa.setCategoria(new Categoria(id_categoria));
-				financa.setMensal_Ocasional(true);
-				financa.setAno(Integer.parseInt((String) cbAno.getSelectedItem()));
-				
-				try {
-					financa.setId(service.buscarIdRendimentoDespesaPorNome(dadosUsuario.getId(), financa.getNome(), financa.getMes(), financa.getAno()));
-				} catch (SQLException | IOException e1) {
-					// TODO Auto-generated catch block
-					JOptionPane.showMessageDialog(null, e1.getMessage());
-				}
-				
-				if (cadastro_edicao.equals("Cadastrar")) {
-					try {
-						service.inserirRedimentoDespesa(financa, dadosUsuario.getId());
-						JOptionPane.showMessageDialog(null, "Cadastrado com sucesso!");
-						limparCampos();
-					} catch (SQLException | IOException e) {
-						JOptionPane.showMessageDialog(null, e.getMessage());
-					}
-				} else {
-					try {
-						if(getFinanca().isMensal_Ocasional() == financa.isMensal_Ocasional()) {
-							service.editarRendimentoDespesas(financa,getFinanca().getNome());
-						}else {
-							service.excluirFinanca(getFinanca(), "rendimento_despesa");
-							service.inserirRedimentoDespesa(financa, dadosUsuario.getId());
-						}
-						
-						JOptionPane.showMessageDialog(null, "Edição com sucesso!");
-						this.dispose();
-					} catch (SQLException | IOException e) {
-						// TODO Auto-generated catch block
-						JOptionPane.showMessageDialog(null, e.getMessage());
-					}
-					
-				}
+    			if (this.rdbtnMensal.isSelected()) {
 
-			} else {
-				financa.setNome(txtNomeFinanca.getText());
-				financa.setTotal(Double.parseDouble(txtValorFinanca.getText()));
-				financa.setTipo(getTipoFinanca());
-				id_categoria = buscarIdCategoria(categorias, categoria);
-				financa.setCategoria(new Categoria(id_categoria));
-				financa.setMensal_Ocasional(false);
-				financa.setMes(cbMes.getSelectedIndex() + 1);
-				financa.setAno(Integer.parseInt((String) cbAno.getSelectedItem()));
-				
-				if (cadastro_edicao == "Cadastrar") {
-					try {
-						service.inserirRedimentoDespesa(financa, dadosUsuario.getId());
-						JOptionPane.showMessageDialog(null, "Cadastrado com sucesso!");
-						limparCampos();
-					} catch (SQLException | IOException e) {
-						JOptionPane.showMessageDialog(null, e.getMessage());
-					}
-					
-				}else {
-					financa.setId(getFinanca().getId());
-					try {
-						if(getFinanca().isMensal_Ocasional() == financa.isMensal_Ocasional()) {
-							service.editarRendimentoDespesas(financa,"");
-						}else {
-							service.excluirFinanca(getFinanca(), "rendimento_despesa");
-							service.inserirRedimentoDespesa(financa, dadosUsuario.getId());
-						}
-						
-						JOptionPane.showMessageDialog(null, "Edição com sucesso!");
-						this.dispose();
-					} catch (SQLException | IOException e) {
-						// TODO Auto-generated catch block
-						JOptionPane.showMessageDialog(null, e.getMessage());
-					}										
-				}
-			}
-		} else if (getTipoFinanca().equals("Investimento a Longo Prazo")) {
-			if (this.rdbtnMensal.isSelected()) {
+    				financa.setNome(txtNomeFinanca.getText());
+    				financa.setTotal(Double.parseDouble(txtValorFinanca.getText()));
+    				financa.setTipo(getTipoFinanca());
+    				id_categoria = buscarIdCategoria(categorias, categoria);
+    				financa.setCategoria(new Categoria(id_categoria));
+    				financa.setMensal_Ocasional(true);
+    				financa.setAno(Integer.parseInt((String) cbAno.getSelectedItem()));
 
-				financa.setNome(txtNomeFinanca.getText());
-				financa.setTotal(Double.parseDouble(txtValorFinanca.getText()));
-				financa.setTipo(getTipoFinanca());
-				financa.setMensal_Ocasional(true);
-				financa.setAno(Integer.parseInt((String) cbAno.getSelectedItem()));
+    				try {
+    					financa.setId(service.buscarIdRendimentoDespesaPorNome(dadosUsuario.getId(), financa.getNome(),
+    							financa.getMes(), financa.getAno()));
+    				} catch (SQLException | IOException e1) {
+    					// TODO Auto-generated catch block
+    					JOptionPane.showMessageDialog(null, e1.getMessage());
+    				}
 
+    				if (cadastro_edicao.equals("Cadastrar")) {
+    					try {
+    						service.inserirRedimentoDespesa(financa, dadosUsuario.getId());
+    						JOptionPane.showMessageDialog(null, "Cadastrado com sucesso!");
+    						limparCampos();
+    					} catch (SQLException | IOException e) {
+    						JOptionPane.showMessageDialog(null, e.getMessage());
+    					}
+    				} else {
+    					try {
+    						if (getFinanca().isMensal_Ocasional() == financa.isMensal_Ocasional()) {
+    							service.editarRendimentoDespesas(financa, getFinanca().getNome());
+    						} else {
+    							service.excluirFinanca(getFinanca(), "rendimento_despesa");
+    							service.inserirRedimentoDespesa(financa, dadosUsuario.getId());
+    						}
 
-				if (cadastro_edicao == "Cadastrar") {
-					try {
-						service.inserirInvestimento(financa, dadosUsuario.getId());
-						JOptionPane.showMessageDialog(null, "Cadastrado com sucesso!");
-						limparCampos();
-					} catch (SQLException | IOException e) {
-						JOptionPane.showMessageDialog(null, e.getMessage());
-					}
-				}else {
-					//Se for edição de mensal
-					try {
-						if(getFinanca().isMensal_Ocasional() == financa.isMensal_Ocasional()) {
-							service.editarInvestimento(financa, getFinanca().getNome());
-						}else {
-							service.excluirFinanca(getFinanca(), "investimento");
-							service.inserirInvestimento(financa, dadosUsuario.getId());
-						}
-						
-						JOptionPane.showMessageDialog(null, "Edição com sucesso!");
-						this.dispose();
-					} catch (SQLException | IOException e) {
-						// TODO Auto-generated catch block
-						JOptionPane.showMessageDialog(null, e.getMessage());
-					}
-				}
-			} else {
-				financa.setNome(txtNomeFinanca.getText());
-				financa.setTotal(Double.parseDouble(txtValorFinanca.getText()));
-				financa.setTipo(getTipoFinanca());
-				financa.setMensal_Ocasional(false);
-				financa.setMes(cbMes.getSelectedIndex() + 1);
-				financa.setAno(Integer.parseInt((String) cbAno.getSelectedItem()));
+    						JOptionPane.showMessageDialog(null, "Edição com sucesso!");
+    						this.dispose();
+    					} catch (SQLException | IOException e) {
+    						// TODO Auto-generated catch block
+    						JOptionPane.showMessageDialog(null, e.getMessage());
+    					}
 
+    				}
 
-				if (cadastro_edicao == "Cadastrar") {
-					try {
-						service.inserirInvestimento(financa, dadosUsuario.getId());
-						JOptionPane.showMessageDialog(null, "Cadastrado com sucesso!");
-						limparCampos();
-					} catch (SQLException | IOException e) {
-						JOptionPane.showMessageDialog(null, e.getMessage());
-					}
-				}else {
-					financa.setId(getFinanca().getId());
-					//Se for edição de ocasional					
-					try {
-						if(getFinanca().isMensal_Ocasional() == financa.isMensal_Ocasional()) {
-							service.editarInvestimento(financa, "");
-						}else {
-							service.excluirFinanca(getFinanca(), "investimento");
-							service.inserirInvestimento(financa, dadosUsuario.getId());
-						}
-						
-						JOptionPane.showMessageDialog(null, "Edição com sucesso!");
-						this.dispose();
-					} catch (SQLException | IOException e) {
-						// TODO Auto-generated catch block
-						JOptionPane.showMessageDialog(null, e.getMessage());
-					}
-				}
-			}
-		} else if (getTipoFinanca().equals("Fundo para Despesas Ocasionais")) {
-			financa.setNome(txtNomeFinanca.getText());
-			financa.setTotal(Double.parseDouble(txtValorFinanca.getText()));
-			financa.setTipo(getTipoFinanca());
-			financa.setAno(Integer.parseInt((String) cbAno.getSelectedItem()));
-			if (cadastro_edicao == "Cadastrar") {
-				try {
-					service.inserirFundoParaDespesas(financa, dadosUsuario.getId());
-					JOptionPane.showMessageDialog(null, "Cadastrado com sucesso!");
-					limparCampos();
-				} catch (SQLException | IOException e) {
-					JOptionPane.showMessageDialog(null, e.getMessage());
-				}
-			}else {
-				try {
-					service.editarFundoDespesas(financa, getFinanca().getNome(), getFinanca().getAno());
-					
-					JOptionPane.showMessageDialog(null, "Edição com sucesso!");
-					this.dispose();
-				} catch (SQLException | IOException e) {
-					// TODO Auto-generated catch block
-					JOptionPane.showMessageDialog(null, e.getMessage());
-				}
-			}
-		}
+    			} else {
+    				financa.setNome(txtNomeFinanca.getText());
+    				financa.setTotal(Double.parseDouble(txtValorFinanca.getText()));
+    				financa.setTipo(getTipoFinanca());
+    				id_categoria = buscarIdCategoria(categorias, categoria);
+    				financa.setCategoria(new Categoria(id_categoria));
+    				financa.setMensal_Ocasional(false);
+    				financa.setMes(cbMes.getSelectedIndex() + 1);
+    				financa.setAno(Integer.parseInt((String) cbAno.getSelectedItem()));
+
+    				if (cadastro_edicao == "Cadastrar") {
+    					try {
+    						service.inserirRedimentoDespesa(financa, dadosUsuario.getId());
+    						JOptionPane.showMessageDialog(null, "Cadastrado com sucesso!");
+    						limparCampos();
+    					} catch (SQLException | IOException e) {
+    						JOptionPane.showMessageDialog(null, e.getMessage());
+    					}
+
+    				} else {
+    					financa.setId(getFinanca().getId());
+    					try {
+    						if (getFinanca().isMensal_Ocasional() == financa.isMensal_Ocasional()) {
+    							service.editarRendimentoDespesas(financa, "");
+    						} else {
+    							service.excluirFinanca(getFinanca(), "rendimento_despesa");
+    							service.inserirRedimentoDespesa(financa, dadosUsuario.getId());
+    						}
+
+    						JOptionPane.showMessageDialog(null, "Edição com sucesso!");
+    						this.dispose();
+    					} catch (SQLException | IOException e) {
+    						// TODO Auto-generated catch block
+    						JOptionPane.showMessageDialog(null, e.getMessage());
+    					}
+    				}
+    			}
+    		} else if (getTipoFinanca().equals("Investimento a Longo Prazo")) {
+    			if (this.rdbtnMensal.isSelected()) {
+
+    				financa.setNome(txtNomeFinanca.getText());
+    				financa.setTotal(Double.parseDouble(txtValorFinanca.getText()));
+    				financa.setTipo(getTipoFinanca());
+    				financa.setMensal_Ocasional(true);
+    				financa.setAno(Integer.parseInt((String) cbAno.getSelectedItem()));
+
+    				if (cadastro_edicao == "Cadastrar") {
+    					try {
+    						service.inserirInvestimento(financa, dadosUsuario.getId());
+    						JOptionPane.showMessageDialog(null, "Cadastrado com sucesso!");
+    						limparCampos();
+    					} catch (SQLException | IOException e) {
+    						JOptionPane.showMessageDialog(null, e.getMessage());
+    					}
+    				} else {
+    					// Se for edição de mensal
+    					try {
+    						if (getFinanca().isMensal_Ocasional() == financa.isMensal_Ocasional()) {
+    							service.editarInvestimento(financa, getFinanca().getNome());
+    						} else {
+    							service.excluirFinanca(getFinanca(), "investimento");
+    							service.inserirInvestimento(financa, dadosUsuario.getId());
+    						}
+
+    						JOptionPane.showMessageDialog(null, "Edição com sucesso!");
+    						this.dispose();
+    					} catch (SQLException | IOException e) {
+    						// TODO Auto-generated catch block
+    						JOptionPane.showMessageDialog(null, e.getMessage());
+    					}
+    				}
+    			} else {
+    				financa.setNome(txtNomeFinanca.getText());
+    				financa.setTotal(Double.parseDouble(txtValorFinanca.getText()));
+    				financa.setTipo(getTipoFinanca());
+    				financa.setMensal_Ocasional(false);
+    				financa.setMes(cbMes.getSelectedIndex() + 1);
+    				financa.setAno(Integer.parseInt((String) cbAno.getSelectedItem()));
+
+    				if (cadastro_edicao == "Cadastrar") {
+    					try {
+    						service.inserirInvestimento(financa, dadosUsuario.getId());
+    						JOptionPane.showMessageDialog(null, "Cadastrado com sucesso!");
+    						limparCampos();
+    					} catch (SQLException | IOException e) {
+    						JOptionPane.showMessageDialog(null, e.getMessage());
+    					}
+    				} else {
+    					financa.setId(getFinanca().getId());
+    					// Se for edição de ocasional
+    					try {
+    						if (getFinanca().isMensal_Ocasional() == financa.isMensal_Ocasional()) {
+    							service.editarInvestimento(financa, "");
+    						} else {
+    							service.excluirFinanca(getFinanca(), "investimento");
+    							service.inserirInvestimento(financa, dadosUsuario.getId());
+    						}
+
+    						JOptionPane.showMessageDialog(null, "Edição com sucesso!");
+    						this.dispose();
+    					} catch (SQLException | IOException e) {
+    						// TODO Auto-generated catch block
+    						JOptionPane.showMessageDialog(null, e.getMessage());
+    					}
+    				}
+    			}
+    		} else if (getTipoFinanca().equals("Fundo para Despesas Ocasionais")) {
+    			financa.setNome(txtNomeFinanca.getText());
+    			financa.setTotal(Double.parseDouble(txtValorFinanca.getText()));
+    			financa.setTipo(getTipoFinanca());
+    			financa.setAno(Integer.parseInt((String) cbAno.getSelectedItem()));
+    			if (cadastro_edicao == "Cadastrar") {
+    				try {
+    					service.inserirFundoParaDespesas(financa, dadosUsuario.getId());
+    					JOptionPane.showMessageDialog(null, "Cadastrado com sucesso!");
+    					limparCampos();
+    				} catch (SQLException | IOException e) {
+    					JOptionPane.showMessageDialog(null, e.getMessage());
+    				}
+    			} else {
+    				try {
+    					service.editarFundoDespesas(financa, getFinanca().getNome(), getFinanca().getAno());
+
+    					JOptionPane.showMessageDialog(null, "Edição com sucesso!");
+    					this.dispose();
+    				} catch (SQLException | IOException e) {
+    					// TODO Auto-generated catch block
+    					JOptionPane.showMessageDialog(null, e.getMessage());
+    				}
+    			}
+    		}
+        }else {
+        	JOptionPane.showMessageDialog(null, "Campo Valor com formato inválido!", "Erro",
+					JOptionPane.ERROR_MESSAGE);
+        	txtValorFinanca.setText("");
+        	txtValorFinanca.requestFocus();
+        }
+        
+		
 	}
 
 	public void limparCampos() {
@@ -586,10 +607,10 @@ public class CadastrarFinancaFrame extends JFrame {
 	}
 
 	public void preencherCampos(Financa financa, String tipo) {
-		if((tipo.equals("Despesa")) || (tipo.equals("Rendimento"))) {
+		if ((tipo.equals("Despesa")) || (tipo.equals("Rendimento"))) {
 			txtNomeFinanca.setText(financa.getNome());
-			for(int i = 0; i < cbCategoria.getItemCount();i++) {
-				if(cbCategoria.getItemAt(i).equals(financa.getCategoria().getNome())) {
+			for (int i = 0; i < cbCategoria.getItemCount(); i++) {
+				if (cbCategoria.getItemAt(i).equals(financa.getCategoria().getNome())) {
 					cbCategoria.setSelectedIndex(i);
 				}
 			}
@@ -603,14 +624,14 @@ public class CadastrarFinancaFrame extends JFrame {
 				cbMes.setEnabled(true);
 				cbMes.setSelectedIndex(financa.getMes());
 			}
-			for(int i = 0; i < cbAno.getItemCount();i++) {
-				if(cbAno.getItemAt(i).equals(String.valueOf(financa.getAno()))) {
+			for (int i = 0; i < cbAno.getItemCount(); i++) {
+				if (cbAno.getItemAt(i).equals(String.valueOf(financa.getAno()))) {
 					cbAno.setSelectedIndex(i);
 				}
 			}
-		}else if(tipo.equals("Investimento a Longo Prazo")) {
-			txtNomeFinanca.setText(financa.getNome());			
-			
+		} else if (tipo.equals("Investimento a Longo Prazo")) {
+			txtNomeFinanca.setText(financa.getNome());
+
 			if (financa.isMensal_Ocasional()) {
 				rdbtnMensal.setSelected(true);
 				txtValorFinanca.setText(String.valueOf(financa.getTotal() / 12));
@@ -621,16 +642,16 @@ public class CadastrarFinancaFrame extends JFrame {
 				cbMes.setEnabled(true);
 				cbMes.setSelectedIndex(financa.getMes());
 			}
-			for(int i = 0; i < cbAno.getItemCount();i++) {
-				if(cbAno.getItemAt(i).equals(String.valueOf(financa.getAno()))) {
+			for (int i = 0; i < cbAno.getItemCount(); i++) {
+				if (cbAno.getItemAt(i).equals(String.valueOf(financa.getAno()))) {
 					cbAno.setSelectedIndex(i);
 				}
 			}
-		}else {
+		} else {
 			txtNomeFinanca.setText(financa.getNome());
 			txtValorFinanca.setText(String.valueOf(financa.getTotal() / 12));
-			for(int i = 0; i < cbAno.getItemCount();i++) {
-				if(cbAno.getItemAt(i).equals(String.valueOf(financa.getAno()))) {
+			for (int i = 0; i < cbAno.getItemCount(); i++) {
+				if (cbAno.getItemAt(i).equals(String.valueOf(financa.getAno()))) {
 					cbAno.setSelectedIndex(i);
 				}
 			}

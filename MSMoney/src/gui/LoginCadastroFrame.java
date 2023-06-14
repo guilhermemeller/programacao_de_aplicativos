@@ -88,10 +88,10 @@ public class LoginCadastroFrame extends JFrame {
 		// Verificar a autenticação do usuário
 		try {
 			if (uService.verificarLogin(username, password)) {
-				loginEfetuado = true;	
-				
+				loginEfetuado = true;
+
 				uService.atualizarIdUsuario(username, password);
-				
+
 				dispose(); // Fechar a janela de login
 
 				// Abrir a tela do menu principal após o login
@@ -112,7 +112,7 @@ public class LoginCadastroFrame extends JFrame {
 		}
 
 	}
-	
+
 	public void initComponents() {
 		setResizable(false);
 		// Configurações da janela principal
@@ -298,13 +298,23 @@ public class LoginCadastroFrame extends JFrame {
 				loginPanel.setVisible(true);
 			}
 		});
+		UsuarioService uService = new UsuarioService();
 		cadastrarUsuarioButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if((!nomeField.getText().equals(""))&&(!novoUsernameField.getText().equals(""))&&(novoPasswordField.getPassword()!= null)&&(novoPasswordField.getPassword().length != 0)) {
-					cadastrarUsuario();
-				}else {
-					JOptionPane.showMessageDialog(null, "Os campo devem estar preenchidos!", "Erro", JOptionPane.ERROR_MESSAGE);
+				try {
+					if(!uService.verificarExistenciaUsuario(novoUsernameField.getText())) {
+						if((!nomeField.getText().equals(""))&&(!novoUsernameField.getText().equals(""))&&(novoPasswordField.getPassword()!= null)&&(novoPasswordField.getPassword().length != 0)) {
+							cadastrarUsuario();
+						}else {
+							JOptionPane.showMessageDialog(null, "Os campo devem estar preenchidos!", "Erro", JOptionPane.ERROR_MESSAGE);
+						}
+					}else {
+						JOptionPane.showMessageDialog(null, "O nome de usuário já existe!!", "Erro", JOptionPane.ERROR_MESSAGE);
+					}
+				} catch (HeadlessException | SQLException | IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
 			}
 		});

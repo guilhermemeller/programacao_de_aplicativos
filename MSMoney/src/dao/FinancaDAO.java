@@ -67,6 +67,138 @@ public class FinancaDAO {
 			BancoDados.desconectar();
 		}
 	}
+	
+	public List<Financa> buscarRendimentoDespesaPorUsuarioPorAno(int usuarioId, int ano, String tipoFinanca)
+			throws SQLException {
+
+		PreparedStatement st = null;
+		ResultSet rs = null;
+
+		try {
+
+			st = conn.prepareStatement("SELECT nome, categoria, mensal_ocasional, total, tipo, mes, ano "
+					+ "FROM rendimento_despesa WHERE usuario_id = ? AND tipo = ? AND ano = ? GROUP BY nome");
+
+			st.setInt(1, usuarioId);
+			st.setString(2, tipoFinanca);
+			st.setInt(3, ano);
+
+			rs = st.executeQuery();
+
+			List<Financa> financas = new ArrayList<>();
+
+			while (rs.next()) {
+
+				String nome = rs.getString("nome");
+				Categoria categoria = new Categoria(rs.getInt("categoria"));
+				boolean mensalOcasional = rs.getBoolean("mensal_Ocasional");
+				double total = rs.getDouble("total");
+				String tipo = rs.getString("tipo");
+				int mesAux = rs.getInt("mes");
+				int anoAux = rs.getInt("ano");
+				Financa financa = new Financa(nome, categoria, mensalOcasional, total, tipo, mesAux, anoAux);
+
+				financas.add(financa);
+
+			}
+			return financas;
+
+		} finally {
+
+			BancoDados.finalizarStatement(st);
+			BancoDados.finalizarResultSet(rs);
+			BancoDados.desconectar();
+		}
+	}
+	
+	public List<Financa> buscarRendimentoDespesaPorUsuarioPorCategoria(int usuarioId, int mes, int ano, String tipoFinanca, int idCategoria)
+			throws SQLException {
+
+		PreparedStatement st = null;
+		ResultSet rs = null;
+
+		try {
+
+			st = conn.prepareStatement("SELECT nome, categoria, mensal_ocasional, total, tipo, mes, ano "
+					+ "FROM rendimento_despesa WHERE usuario_id = ? AND tipo = ? AND mes = ? AND ano = ? AND categoria = ?");
+
+			st.setInt(1, usuarioId);
+			st.setString(2, tipoFinanca);
+			st.setInt(3, mes);
+			st.setInt(4, ano);
+			st.setInt(5, idCategoria);
+
+			rs = st.executeQuery();
+
+			List<Financa> financas = new ArrayList<>();
+
+			while (rs.next()) {
+
+				String nome = rs.getString("nome");
+				Categoria categoria = new Categoria(rs.getInt("categoria"));
+				boolean mensalOcasional = rs.getBoolean("mensal_Ocasional");
+				double total = rs.getDouble("total");
+				String tipo = rs.getString("tipo");
+				int mesAux = rs.getInt("mes");
+				int anoAux = rs.getInt("ano");
+				Financa financa = new Financa(nome, categoria, mensalOcasional, total, tipo, mesAux, anoAux);
+
+				financas.add(financa);
+
+			}
+			return financas;
+
+		} finally {
+
+			BancoDados.finalizarStatement(st);
+			BancoDados.finalizarResultSet(rs);
+			BancoDados.desconectar();
+		}
+	}
+	
+	public List<Financa> buscarRendimentoDespesaPorUsuarioPorCategoriaPorAno(int usuarioId, int ano, String tipoFinanca, int idCategoria)
+			throws SQLException {
+
+		PreparedStatement st = null;
+		ResultSet rs = null;
+
+		try {
+
+			st = conn.prepareStatement("SELECT nome, categoria, mensal_ocasional, total, tipo, mes, ano "
+					+ "FROM rendimento_despesa WHERE usuario_id = ? AND tipo = ? AND ano = ? AND categoria = ? GROUP BY nome");
+
+			st.setInt(1, usuarioId);
+			st.setString(2, tipoFinanca);
+			st.setInt(3, ano);
+			st.setInt(4, idCategoria);
+
+			rs = st.executeQuery();
+
+			List<Financa> financas = new ArrayList<>();
+
+			while (rs.next()) {
+
+				String nome = rs.getString("nome");
+				Categoria categoria = new Categoria(rs.getInt("categoria"));
+				boolean mensalOcasional = rs.getBoolean("mensal_Ocasional");
+				double total = rs.getDouble("total");
+				String tipo = rs.getString("tipo");
+				int mesAux = rs.getInt("mes");
+				int anoAux = rs.getInt("ano");
+				Financa financa = new Financa(nome, categoria, mensalOcasional, total, tipo, mesAux, anoAux);
+
+				financas.add(financa);
+
+			}
+			return financas;
+
+		} finally {
+
+			BancoDados.finalizarStatement(st);
+			BancoDados.finalizarResultSet(rs);
+			BancoDados.desconectar();
+		}
+	}
 
 	public List<Financa> buscarInvestimentoPorUsuario(int usuarioId, int mes, int ano) throws SQLException {
 		PreparedStatement st = null;
@@ -108,6 +240,46 @@ public class FinancaDAO {
 			BancoDados.desconectar();
 		}
 	}
+	
+	public List<Financa> buscarInvestimentoPorUsuarioPorAno(int usuarioId, int ano) throws SQLException {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+
+		try {
+
+			st = conn.prepareStatement("SELECT nome, mensal_ocasional, total, tipo, mes, ano "
+					+ "FROM investimento WHERE usuario_id = ? AND ano = ? GROUP BY nome");
+
+			st.setInt(1, usuarioId);
+			st.setInt(2, ano);
+
+			rs = st.executeQuery();
+
+			List<Financa> financas = new ArrayList<>();
+
+			while (rs.next()) {
+
+				String nome = rs.getString("nome");
+				boolean mensalOcasional = rs.getBoolean("mensal_Ocasional");
+				double total = rs.getDouble("total");
+				String tipo = rs.getString("tipo");
+				int mesAux = rs.getInt("mes");
+				int anoAux = rs.getInt("ano");
+
+				Financa financa = new Financa(nome, mensalOcasional, total, tipo, mesAux, anoAux);
+
+				financas.add(financa);
+
+			}
+			return financas;
+
+		} finally {
+
+			BancoDados.finalizarStatement(st);
+			BancoDados.finalizarResultSet(rs);
+			BancoDados.desconectar();
+		}
+	}
 
 	public List<Financa> buscarFundoDespesasPorUsuario(int usuarioId, int mes, int ano) throws SQLException {
 		PreparedStatement st = null;
@@ -121,6 +293,45 @@ public class FinancaDAO {
 			st.setInt(1, usuarioId);
 			st.setInt(2, mes);
 			st.setInt(3, ano);
+
+			rs = st.executeQuery();
+
+			List<Financa> financas = new ArrayList<>();
+
+			while (rs.next()) {
+
+				String nome = rs.getString("nome");
+				double total = rs.getDouble("total");
+				String tipo = rs.getString("tipo");
+				int mesAux = rs.getInt("mes");
+				int anoAux = rs.getInt("ano");
+
+				Financa financa = new Financa(nome, total, tipo, mesAux, anoAux);
+
+				financas.add(financa);
+
+			}
+			return financas;
+
+		} finally {
+
+			BancoDados.finalizarStatement(st);
+			BancoDados.finalizarResultSet(rs);
+			BancoDados.desconectar();
+		}
+	}
+	
+	public List<Financa> buscarFundoDespesasPorUsuarioPorAno(int usuarioId, int ano) throws SQLException {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+
+		try {
+
+			st = conn.prepareStatement(
+					"SELECT nome, total, tipo, mes, ano FROM fundo_despesas WHERE usuario_id = ? AND ano = ? GROUP BY nome");
+
+			st.setInt(1, usuarioId);
+			st.setInt(2, ano);
 
 			rs = st.executeQuery();
 
