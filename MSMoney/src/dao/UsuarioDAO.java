@@ -97,4 +97,23 @@ public class UsuarioDAO {
 			BancoDados.desconectar();
 		}
 	}
+	
+	public boolean verificarExistenciaUsuario(String nomeUsuario) throws SQLException, IOException {
+	    PreparedStatement st = null;
+	    ResultSet rs = null;
+
+	    try {
+	        st = conn.prepareStatement("SELECT login FROM usuario WHERE login = ?");
+	        st.setString(1, nomeUsuario);
+
+	        rs = st.executeQuery();
+
+	        return rs.next(); 
+	    } finally {
+	        BancoDados.finalizarResultSet(rs);
+	        BancoDados.finalizarStatement(st);
+	        BancoDados.desconectar();
+	    }
+	}
+
 }
