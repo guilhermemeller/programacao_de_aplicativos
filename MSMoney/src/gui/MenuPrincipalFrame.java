@@ -449,6 +449,11 @@ public class MenuPrincipalFrame extends JFrame {
 		topPanelFundoDespesas.add(cbFundoDespesasAnual);
 
 		btnPesquisarFundoDespesas = new JButton("");
+		btnPesquisarFundoDespesas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				buscarFundoDespesas();
+			}
+		});
 		btnPesquisarFundoDespesas
 				.setIcon(new ImageIcon(MenuPrincipalFrame.class.getResource("/images/pesquisar20.png")));
 		topPanelFundoDespesas.add(btnPesquisarFundoDespesas);
@@ -1031,8 +1036,7 @@ public class MenuPrincipalFrame extends JFrame {
 		List<Financa> financas;
 		FinancaService service = new FinancaService();
 		if (cbFundoDespesasAnual.getSelectedItem() == null) {
-				cbFundoDespesasAnual.addItem(Calendar.getInstance().get(Calendar.YEAR));
-			
+				cbFundoDespesasAnual.addItem(Calendar.getInstance().get(Calendar.YEAR));	
 		}
 			try {
 				financas = service.buscarFundoDespesasPorUsuario(dadosUsuario.getId(),
@@ -1120,6 +1124,7 @@ public class MenuPrincipalFrame extends JFrame {
 				financa.setId(id);
 				financa.setNome(nomeFinanca);
 				financa.setTipo("Rendimento");
+				financa.setAno(((int) cbRendimentoAnual.getSelectedItem()));
 
 				if ((tableRendimento.getModel().getValueAt(linhaTabela, 2)).equals("")) {
 					financa.setMensal_Ocasional(false);
@@ -1216,6 +1221,7 @@ public class MenuPrincipalFrame extends JFrame {
 				financa.setId(id);
 				financa.setNome(nomeFinanca);
 				financa.setTipo("Despesa");
+				financa.setAno(((int) cbDespesasAnual.getSelectedItem()));
 
 				if ((tableDespesas.getModel().getValueAt(linhaTabela, 2)).equals("")) {
 					financa.setMensal_Ocasional(false);
@@ -1309,6 +1315,7 @@ public class MenuPrincipalFrame extends JFrame {
 				financa.setId(id);
 				financa.setNome(nomeFinanca);
 				financa.setTipo("Investimento a Longo Prazo");
+				financa.setAno(((int) cbInvestimentoAnual.getSelectedItem()));
 
 				if ((tableInvestimento.getModel().getValueAt(linhaTabela, 1)).equals("")) {
 					financa.setMensal_Ocasional(false);
@@ -1396,6 +1403,7 @@ public class MenuPrincipalFrame extends JFrame {
 				financa.setId(id);
 				financa.setNome(nomeFinanca);
 				financa.setTipo("Fundo para Despesas Ocasionais");
+				financa.setAno(Integer.parseInt((String) cbFundoDespesasAnual.getSelectedItem()));
 
 				resposta = JOptionPane.showConfirmDialog(null,
 						"Deseja realmente excluir essa Financa Mensal?\nCaso exclua, ela será apagada de todos os meses!",
@@ -1488,36 +1496,36 @@ public class MenuPrincipalFrame extends JFrame {
 			cbResumoAnual.addItem(Calendar.getInstance().get(Calendar.YEAR));
 		}
 			try {
-				Double totalAnoRendimento = finService.buscarTotalporAno(dadosUsuario.getId(), "rendimento_despesa",
+				List<Double> totalAnoRendimento = finService.buscarTotalporAno(dadosUsuario.getId(), "rendimento_despesa",
 						"Rendimento",((int) cbResumoAnual.getSelectedItem()));
-				modeloResumoAnual.addRow(new Object[] { "Rendimento", "R$ " + totalAnoRendimento, "R$ " + totalAnoRendimento, "R$ " + totalAnoRendimento });
+				modeloResumoAnual.addRow(new Object[] { "Rendimento", "R$ " + totalAnoRendimento.get(0), "R$ " + totalAnoRendimento.get(1), "R$ " + totalAnoRendimento.get(2) });
 
-				Double totalAnoInvestimento = finService.buscarTotalporAno(dadosUsuario.getId(), "investimento",
+				List<Double> totalAnoInvestimento = finService.buscarTotalporAno(dadosUsuario.getId(), "investimento",
 						"Investimento a Longo Prazo", ((int) cbResumoAnual.getSelectedItem()));
-				modeloResumoAnual.addRow(new Object[] { "Investimento a Longo Prazo", "R$ " + totalAnoInvestimento, "R$ " + totalAnoInvestimento, "R$ " + totalAnoInvestimento });
+				modeloResumoAnual.addRow(new Object[] { "Investimento a Longo Prazo", "R$ " + totalAnoInvestimento.get(0), "R$ " + totalAnoInvestimento.get(1), "R$ " + totalAnoInvestimento.get(2) });
 
-				Double totalAnoFundo = finService.buscarTotalporAno(dadosUsuario.getId(), "fundo_despesas",
+				List<Double> totalAnoFundo = finService.buscarTotalporAno(dadosUsuario.getId(), "fundo_despesas",
 						"Fundo para Despesas Ocasionais", ((int) cbResumoAnual.getSelectedItem()));
-				modeloResumoAnual.addRow(new Object[] { "Fundo para Despesas Ocasionais", "R$ " + totalAnoFundo, "", "R$ " + totalAnoFundo });
+				modeloResumoAnual.addRow(new Object[] { "Fundo para Despesas Ocasionais", "R$ " + totalAnoFundo.get(0), "", "R$ " + totalAnoFundo.get(0) });
 
-				Double totalAnoDisponivel = (totalAnoRendimento - (totalAnoFundo + totalAnoInvestimento));
+				Double totalAnoDisponivel = (totalAnoRendimento.get(2) -  totalAnoInvestimento.get(2));
 				modeloResumoAnual
 						.addRow(new Object[] { "<html><b>Total Disponível para Despesas Durante o Ano</b></html>",
 								"", "", "<html><b> R$ " + totalAnoDisponivel + "</b></html>"});
 
-				Double totalAnoDespesaMensal = finService.buscarTotalporAno(dadosUsuario.getId(), "rendimento_despesa",
+				List<Double> totalAnoDespesaMensal = finService.buscarTotalporAno(dadosUsuario.getId(), "rendimento_despesa",
 						"Despesa", ((int) cbResumoAnual.getSelectedItem()));
 				modeloResumoAnual
-						.addRow(new Object[] { "<html><b>Total das Despesas Mensais Orçadas (12 meses)</b></html>", "","",
-								"<html><b>R$ " + totalAnoDespesaMensal + "</b></html>" });
+						.addRow(new Object[] { "<html>Total das Despesas Mensais Orçadas (12 meses)</html>", "","",
+								"<html>R$ " + totalAnoDespesaMensal.get(0) + "</html>" });
 				
-				Double totalAnoDespesaOcasional = finService.buscarTotalporAno(dadosUsuario.getId(), "rendimento_despesa",
+				List<Double> totalAnoDespesaOcasional = finService.buscarTotalporAno(dadosUsuario.getId(), "rendimento_despesa",
 						"Despesa", ((int) cbResumoAnual.getSelectedItem()));
 				modeloResumoAnual
-						.addRow(new Object[] { "<html><b>Total das Despesas Ocasionais Orçadas para o Ano</b></html>", "","",
-								"<html><b>R$ " + totalAnoDespesaOcasional + "</b></html>" });
+						.addRow(new Object[] { "<html>Total Despesas Ocasionais para o Ano</html>", "","",
+								"<html>R$ " + totalAnoDespesaOcasional.get(1) + "</html>" });
 
-				Double totalFinalAno = (totalAnoDisponivel - totalAnoDespesaMensal);
+				Double totalFinalAno = (totalAnoDisponivel - (totalAnoDespesaMensal.get(2)));
 
 				if (totalFinalAno >= 0.0) {
 					modeloResumoAnual.addRow(new Object[] { "<html><b>Valor Total Restante Final do Ano</b></html>","","",

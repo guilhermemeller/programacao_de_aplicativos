@@ -427,7 +427,6 @@ public class CadastrarFinancaFrame extends JFrame {
 				} else {
 					try {
 						if(getFinanca().isMensal_Ocasional() == financa.isMensal_Ocasional()) {
-							//Era mensal - virou mensal
 							service.editarRendimentoDespesas(financa,getFinanca().getNome());
 						}else {
 							service.excluirFinanca(getFinanca(), "rendimento_despesa");
@@ -566,7 +565,7 @@ public class CadastrarFinancaFrame extends JFrame {
 				}
 			}else {
 				try {
-					service.editarFundoDespesas(financa, getFinanca().getNome());
+					service.editarFundoDespesas(financa, getFinanca().getNome(), getFinanca().getAno());
 					
 					JOptionPane.showMessageDialog(null, "Edição com sucesso!");
 					this.dispose();
