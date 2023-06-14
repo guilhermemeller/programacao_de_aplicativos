@@ -78,9 +78,9 @@ public class FinancaService {
 		
 	}
 	
-	public void editarFundoDespesas(Financa financa, String nome) throws SQLException, IOException {
+	public void editarFundoDespesas(Financa financa, String nome, int ano) throws SQLException, IOException {
 		Connection conn = BancoDados.conectar();
-		new FinancaDAO(conn).editarFundoDespesas(financa, nome);
+		new FinancaDAO(conn).editarFundoDespesas(financa, nome, ano);
 		
 	}
 	
@@ -94,7 +94,7 @@ public class FinancaService {
 		return new FinancaDAO(conn).buscarTotalporMes(usuarioId, table, tipo, mes, ano);
 	}
 	
-	public Double buscarTotalporAno(int usuarioId, String table,String tipo,  int mes) throws SQLException, IOException {
+	public List<Double> buscarTotalporAno(int usuarioId, String table,String tipo,  int mes) throws SQLException, IOException {
 		Connection conn = BancoDados.conectar();
 		return new FinancaDAO(conn).buscarTotalporAno(usuarioId, table, tipo, mes);
 	}

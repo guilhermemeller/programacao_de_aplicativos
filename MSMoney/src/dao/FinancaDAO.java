@@ -116,7 +116,7 @@ public class FinancaDAO {
 		try {
 
 			st = conn.prepareStatement(
-					"SELECT nome, total, tipo, mes, ano " + "FROM fundo_despesas WHERE usuario_id = ? AND mes = ? AND ano = ?");
+					"SELECT nome, total, tipo, mes, ano FROM fundo_despesas WHERE usuario_id = ? AND mes = ? AND ano = ?");
 
 			st.setInt(1, usuarioId);
 			st.setInt(2, mes);
@@ -208,34 +208,57 @@ public class FinancaDAO {
 			BancoDados.desconectar();
 		}
 	}
-	
-	public Double buscarTotalporAno(int usuarioId, String table, String tipo, int ano)throws SQLException {
+
+	public List<Double> buscarTotalporAno(int usuarioId, String table, String tipo, int ano) throws SQLException {
 		PreparedStatement st = null;
 		ResultSet rs = null;
-		Double totalFinal = 0.0;
-
+		Double totalFinalMensal = 0.0;
+		Double totalFinalOcasional = 0.0;
+		List<Double> listaTotalFinal = new ArrayList<>();
+		
 		try {
+			if (!tipo.equals("Fundo para Despesas Ocasionais")) {
+				st = conn.prepareStatement(
+						"SELECT total, mensal_ocasional FROM " + table + " WHERE usuario_id = ? AND ano = ? AND tipo LIKE ?");
 
-			st = conn.prepareStatement(
-					"SELECT total FROM " + table + " WHERE usuario_id = ? AND ano = ? AND tipo LIKE ?");
+				st.setInt(1, usuarioId);
+				st.setInt(2, ano);
+				st.setString(3, tipo);
 
-			st.setInt(1, usuarioId);
-			st.setInt(2, ano);
-			st.setString(3, tipo);
+				rs = st.executeQuery();
 
-			rs = st.executeQuery();
+				while (rs.next()) {
+					if(rs.getBoolean("mensal_ocasional")) {
+						totalFinalMensal += rs.getDouble("total");
+					}else {
+						totalFinalOcasional += rs.getDouble("total");
+					}
+				}
+				listaTotalFinal.add(totalFinalMensal);
+				listaTotalFinal.add(totalFinalOcasional);
+				listaTotalFinal.add(totalFinalOcasional+totalFinalMensal);
+			}else {
+				st = conn.prepareStatement(
+						"SELECT total FROM " + table + " WHERE usuario_id = ? AND ano = ? AND tipo LIKE ?");
 
-			while (rs.next()) {
-				totalFinal += rs.getDouble("total");
+				st.setInt(1, usuarioId);
+				st.setInt(2, ano);
+				st.setString(3, tipo);
+
+				rs = st.executeQuery();
+
+				while (rs.next()) {
+					totalFinalMensal += rs.getDouble("total");
+				}
+				listaTotalFinal.add(totalFinalMensal);
 			}
-
-			return totalFinal;
-
 		} finally {
 			BancoDados.finalizarStatement(st);
 			BancoDados.finalizarResultSet(rs);
 			BancoDados.desconectar();
 		}
+
+		return listaTotalFinal;
 	}
 
 	public int buscarIdInvestimentoPorNome(int usuarioId, String nome, int mes, int ano) throws SQLException {
@@ -244,7 +267,8 @@ public class FinancaDAO {
 
 		try {
 
-			st = conn.prepareStatement("SELECT id FROM investimento WHERE usuario_id = ? AND nome LIKE ? AND mes = ? AND ano = ?");
+			st = conn.prepareStatement(
+					"SELECT id FROM investimento WHERE usuario_id = ? AND nome LIKE ? AND mes = ? AND ano = ?");
 
 			st.setInt(1, usuarioId);
 			st.setString(2, nome);
@@ -271,8 +295,8 @@ public class FinancaDAO {
 
 		try {
 
-			st = conn
-					.prepareStatement("SELECT id FROM fundo_despesas WHERE usuario_id = ? AND nome LIKE ? AND mes = ? AND ano = ?");
+			st = conn.prepareStatement(
+					"SELECT id FROM fundo_despesas WHERE usuario_id = ? AND nome LIKE ? AND mes = ? AND ano = ?");
 
 			st.setInt(1, usuarioId);
 			st.setString(2, nome);
@@ -455,7 +479,7 @@ public class FinancaDAO {
 			} else {
 
 				st = conn.prepareStatement(
-						"UPDATE rendimento_despesa SET nome = ?, categoria = ?, mensal_ocasional = ?, total = ?, ano = ? WHERE nome = ? AND tipo = ?");
+						"UPDATE rendimento_despesa SET nome = ?, categoria = ?, mensal_ocasional = ?, total = ?, ano = ? WHERE nome = ? AND tipo = ? AND ano = ?");
 
 				st.setString(1, financaNova.getNome());
 				st.setInt(2, financaNova.getCategoria().getId_Categoria());
@@ -464,6 +488,7 @@ public class FinancaDAO {
 				st.setInt(5, financaNova.getAno());
 				st.setString(6, nome);
 				st.setString(7, financaNova.getTipo());
+				st.setInt(8, financaNova.getAno());
 
 				st.executeUpdate();
 			}
@@ -494,7 +519,7 @@ public class FinancaDAO {
 			} else {
 
 				st = conn.prepareStatement(
-						"UPDATE investimento SET nome = ?, mensal_ocasional = ?, total = ?, ano = ? WHERE nome = ? AND tipo = ?");
+						"UPDATE investimento SET nome = ?, mensal_ocasional = ?, total = ?, ano = ? WHERE nome = ? AND tipo = ? AND ano = ?");
 
 				st.setString(1, financaNova.getNome());
 				st.setBoolean(2, financaNova.isMensal_Ocasional());
@@ -502,6 +527,7 @@ public class FinancaDAO {
 				st.setInt(4, financaNova.getAno());
 				st.setString(5, nome);
 				st.setString(6, financaNova.getTipo());
+				st.setInt(7, financaNova.getAno());
 
 				st.executeUpdate();
 			}
@@ -513,17 +539,19 @@ public class FinancaDAO {
 		}
 	}
 
-	public void editarFundoDespesas(Financa financaNova, String nome) throws SQLException {
+	public void editarFundoDespesas(Financa financaNova, String nome, int ano) throws SQLException {
 		PreparedStatement st = null;
 
 		try {
-			st = conn.prepareStatement("UPDATE fundo_despesas SET nome = ?, total = ?, ano = ? WHERE nome = ? AND tipo = ?");
+			st = conn.prepareStatement(
+					"UPDATE fundo_despesas SET nome = ?, total = ?, ano = ? WHERE nome = ? AND tipo = ? AND ano = ?");
 
 			st.setString(1, financaNova.getNome());
 			st.setDouble(2, financaNova.getTotal());
 			st.setInt(3, financaNova.getAno());
 			st.setString(4, nome);
 			st.setString(5, financaNova.getTipo());
+			st.setInt(6, ano);
 
 			st.executeUpdate();
 
@@ -542,9 +570,10 @@ public class FinancaDAO {
 
 				st.setInt(1, financa.getId());
 			} else {
-				st = conn.prepareStatement("DELETE FROM " + table + " WHERE nome = ? AND tipo = ?");
+				st = conn.prepareStatement("DELETE FROM " + table + " WHERE nome = ? AND tipo = ? AND ano = ?");
 				st.setString(1, financa.getNome());
 				st.setString(2, financa.getTipo());
+				st.setInt(3, financa.getAno());
 			}
 
 			st.executeUpdate();
@@ -554,30 +583,28 @@ public class FinancaDAO {
 			BancoDados.desconectar();
 		}
 	}
-	
 
-	
 	public List<Integer> buscarAnoPorUsuario(int usuario_id, String table, String type) throws SQLException {
-	    PreparedStatement st = null;
-	    ResultSet rs = null;
-	    List<Integer> listaAnos = new ArrayList<>();
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		List<Integer> listaAnos = new ArrayList<>();
 
-	    try {
-	        st = conn.prepareStatement("SELECT ano FROM "+ table +" WHERE usuario_id = ? AND tipo = ? GROUP BY ano");
-	        st.setInt(1, usuario_id);
-	        st.setString(2, type);
-	        rs = st.executeQuery();
+		try {
+			st = conn.prepareStatement("SELECT ano FROM " + table + " WHERE usuario_id = ? AND tipo = ? GROUP BY ano");
+			st.setInt(1, usuario_id);
+			st.setString(2, type);
+			rs = st.executeQuery();
 
-	        while (rs.next()) {
-	            int ano = rs.getInt("ano");
-	            listaAnos.add(ano);
-	        }
-	    } finally {
-	        // Certifique-se de fechar os recursos adequadamente
-	        BancoDados.finalizarStatement(st);
-	        BancoDados.finalizarResultSet(rs);
-	        BancoDados.desconectar();
-	    }
-	    return listaAnos;
+			while (rs.next()) {
+				int ano = rs.getInt("ano");
+				listaAnos.add(ano);
+			}
+		} finally {
+			// Certifique-se de fechar os recursos adequadamente
+			BancoDados.finalizarStatement(st);
+			BancoDados.finalizarResultSet(rs);
+			BancoDados.desconectar();
+		}
+		return listaAnos;
 	}
 }
