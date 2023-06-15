@@ -25,6 +25,7 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
+import utils.ExportarXls;
 
 public class MenuPrincipalFrame extends JFrame {
 	private JPanel mainPanel;
@@ -682,7 +683,13 @@ public class MenuPrincipalFrame extends JFrame {
 		btnGerarRelatorioMensal = new JButton("Gerar Relatório");
 		btnGerarRelatorioMensal.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				exportarXls(tableRelatorioMensal, "Mensal"+ cbRelatorioMensal.getSelectedItem()+cbRelatorioMensalAno.getSelectedItem());
+				if (!chckbxRelatorioMensalCategoria.isSelected()) {
+					exportarXls(tableRelatorioMensal, "Mensal" + cbRelatorioMensal.getSelectedItem()
+							+ cbRelatorioMensalAno.getSelectedItem() + ".xls");
+				}else {
+					exportarXls(tableRelatorioMensal, "Mensal" + cbRelatorioMensal.getSelectedItem()
+					+ cbRelatorioMensalAno.getSelectedItem() + cbCategoriaMensal + ".xls");
+				}
 			}
 		});
 		btnGerarRelatorioMensal.setIcon(new ImageIcon(MenuPrincipalFrame.class.getResource("/images/relatorio40.png")));
@@ -758,6 +765,15 @@ public class MenuPrincipalFrame extends JFrame {
 		botPanelRelatorioAnual.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 5));
 
 		btnGerarRelatorioAnual = new JButton("Gerar Relatório");
+		btnGerarRelatorioAnual.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(!chckbxRelatorioAnualCategoria.isSelected()) {
+					exportarXls(tableRelatorioAnual, "Mensal" + cbRelatorioAnual.getSelectedItem() + ".xls");
+				}else {
+					exportarXls(tableRelatorioAnual, "Mensal" + cbRelatorioAnual.getSelectedItem() + cbCategoriaAnual + ".xls");
+				}
+			}
+		});
 		btnGerarRelatorioAnual.setIcon(new ImageIcon(MenuPrincipalFrame.class.getResource("/images/relatorio40.png")));
 		btnGerarRelatorioAnual.setBackground(new Color(221, 249, 226));
 		btnGerarRelatorioAnual.setFont(new Font("Tahoma", Font.BOLD, 16));
@@ -1627,14 +1643,12 @@ public class MenuPrincipalFrame extends JFrame {
 				}
 				for (Financa financa : financas) {
 					if (financa.isMensal_Ocasional()) {
-						modelo.addRow(new Object[] { "<html><b>" + financa.getTipo() + "</b></html>",
-								financa.getCategoria().getNome(), financa.getNome(), "R$ " + financa.getTotal(), "",
-								"R$ " + (financa.getTotal() * 12) });
+						modelo.addRow(new Object[] { financa.getTipo(), financa.getCategoria().getNome(),
+								financa.getNome(), "R$ " + financa.getTotal(), "", "R$ " + (financa.getTotal() * 12) });
 						totalFinal += (financa.getTotal());
 					} else {
-						modelo.addRow(new Object[] { "<html><b>" + financa.getTipo() + "</b></html>",
-								financa.getCategoria().getNome(), financa.getNome(), "", "R$ " + financa.getTotal(),
-								"R$ " + (financa.getTotal()) });
+						modelo.addRow(new Object[] { financa.getTipo(), financa.getCategoria().getNome(),
+								financa.getNome(), "", "R$ " + financa.getTotal(), "R$ " + (financa.getTotal()) });
 						totalFinal += (financa.getTotal());
 					}
 				}
@@ -1643,12 +1657,12 @@ public class MenuPrincipalFrame extends JFrame {
 						(cbRelatorioMensal.getSelectedIndex() + 1), ((int) cbRelatorioMensalAno.getSelectedItem()));
 				for (Financa financa : financas) {
 					if (financa.isMensal_Ocasional()) {
-						modelo.addRow(new Object[] { "<html><b>" + financa.getTipo() + "</b></html>", "",
-								financa.getNome(), "R$ " + financa.getTotal(), "", "R$ " + (financa.getTotal() * 12) });
+						modelo.addRow(new Object[] { financa.getTipo(), "", financa.getNome(),
+								"R$ " + financa.getTotal(), "", "R$ " + (financa.getTotal() * 12) });
 						totalFinal -= (financa.getTotal());
 					} else {
-						modelo.addRow(new Object[] { "<html><b>" + financa.getTipo() + "</b></html>", "",
-								financa.getNome(), "", "R$ " + financa.getTotal(), "R$ " + (financa.getTotal()) });
+						modelo.addRow(new Object[] { financa.getTipo(), "", financa.getNome(), "",
+								"R$ " + financa.getTotal(), "R$ " + (financa.getTotal()) });
 						totalFinal -= (financa.getTotal());
 					}
 				}
@@ -1656,8 +1670,8 @@ public class MenuPrincipalFrame extends JFrame {
 				financas = service.buscarFundoDespesasPorUsuario(dadosUsuario.getId(),
 						(cbRelatorioMensal.getSelectedIndex() + 1), ((int) cbRelatorioMensalAno.getSelectedItem()));
 				for (Financa financa : financas) {
-					modelo.addRow(new Object[] { "<html><b>" + financa.getTipo() + "</b></html>", "", financa.getNome(),
-							"R$ " + financa.getTotal(), "", "R$ " + (financa.getTotal() * 12) });
+					modelo.addRow(new Object[] { financa.getTipo(), "", financa.getNome(), "R$ " + financa.getTotal(),
+							"", "R$ " + (financa.getTotal() * 12) });
 					totalFinal -= (financa.getTotal());
 				}
 
@@ -1678,20 +1692,17 @@ public class MenuPrincipalFrame extends JFrame {
 				}
 				for (Financa financa : financas) {
 					if (financa.isMensal_Ocasional()) {
-						modelo.addRow(new Object[] { "<html><b>" + financa.getTipo() + "</b></html>",
-								financa.getCategoria().getNome(), financa.getNome(), "R$ " + financa.getTotal(), "",
-								"R$ " + (financa.getTotal() * 12) });
+						modelo.addRow(new Object[] { financa.getTipo(), financa.getCategoria().getNome(),
+								financa.getNome(), "R$ " + financa.getTotal(), "", "R$ " + (financa.getTotal() * 12) });
 						totalFinal -= (financa.getTotal());
 					} else {
-						modelo.addRow(new Object[] { "<html><b>" + financa.getTipo() + "</b></html>",
-								financa.getCategoria().getNome(), financa.getNome(), "", "R$ " + financa.getTotal(),
-								"R$ " + (financa.getTotal()) });
+						modelo.addRow(new Object[] { financa.getTipo(), financa.getCategoria().getNome(),
+								financa.getNome(), "", "R$ " + financa.getTotal(), "R$ " + (financa.getTotal()) });
 						totalFinal -= (financa.getTotal());
 					}
 				}
 				if (modelo.getRowCount() != 0) {
-					modelo.addRow(
-							new Object[] { "<html><b>Total Mensal</b></html>", "", "", "", "", "R$ " + totalFinal });
+					modelo.addRow(new Object[] { "Total Mensal", "", "", "", "", "R$ " + totalFinal });
 				}
 
 			} catch (SQLException e) {
@@ -1724,14 +1735,12 @@ public class MenuPrincipalFrame extends JFrame {
 				}
 				for (Financa financa : financas) {
 					if (financa.isMensal_Ocasional()) {
-						modelo.addRow(new Object[] { "<html><b>" + financa.getTipo() + "</b></html>",
-								financa.getCategoria().getNome(), financa.getNome(), "R$ " + financa.getTotal(), "",
-								"R$ " + (financa.getTotal() * 12) });
+						modelo.addRow(new Object[] { financa.getTipo(), financa.getCategoria().getNome(),
+								financa.getNome(), "R$ " + financa.getTotal(), "", "R$ " + (financa.getTotal() * 12) });
 						totalFinal += (financa.getTotal());
 					} else {
-						modelo.addRow(new Object[] { "<html><b>" + financa.getTipo() + "</b></html>",
-								financa.getCategoria().getNome(), financa.getNome(), "", "R$ " + financa.getTotal(),
-								"R$ " + (financa.getTotal()) });
+						modelo.addRow(new Object[] { financa.getTipo(), financa.getCategoria().getNome(),
+								financa.getNome(), "", "R$ " + financa.getTotal(), "R$ " + (financa.getTotal()) });
 						totalFinal += (financa.getTotal());
 					}
 				}
@@ -1753,21 +1762,18 @@ public class MenuPrincipalFrame extends JFrame {
 				}
 				for (Financa financa : financas) {
 					if (financa.isMensal_Ocasional()) {
-						modelo.addRow(new Object[] { "<html><b>" + financa.getTipo() + "</b></html>",
-								financa.getCategoria().getNome(), financa.getNome(), "R$ " + financa.getTotal(), "",
-								"R$ " + (financa.getTotal() * 12) });
+						modelo.addRow(new Object[] { financa.getTipo(), financa.getCategoria().getNome(),
+								financa.getNome(), "R$ " + financa.getTotal(), "", "R$ " + (financa.getTotal() * 12) });
 						totalFinal -= (financa.getTotal());
 					} else {
-						modelo.addRow(new Object[] { "<html><b>" + financa.getTipo() + "</b></html>",
-								financa.getCategoria().getNome(), financa.getNome(), "", "R$ " + financa.getTotal(),
-								"R$ " + (financa.getTotal()) });
+						modelo.addRow(new Object[] { financa.getTipo(), financa.getCategoria().getNome(),
+								financa.getNome(), "", "R$ " + financa.getTotal(), "R$ " + (financa.getTotal()) });
 						totalFinal -= (financa.getTotal());
 					}
 				}
 
 				if (modelo.getRowCount() != 0) {
-					modelo.addRow(
-							new Object[] { "<html><b>Total Mensal</b></html>", "", "", "", "", "R$ " + totalFinal });
+					modelo.addRow(new Object[] { "Total Mensal", "", "", "", "", "R$ " + totalFinal });
 				}
 
 			} catch (SQLException e) {
@@ -1814,14 +1820,12 @@ public class MenuPrincipalFrame extends JFrame {
 				}
 				for (Financa financa : financas) {
 					if (financa.isMensal_Ocasional()) {
-						modelo.addRow(new Object[] { "<html><b>" + financa.getTipo() + "</b></html>",
-								financa.getCategoria().getNome(), financa.getNome(), "R$ " + financa.getTotal(), "",
-								"R$ " + (financa.getTotal() * 12) });
+						modelo.addRow(new Object[] { financa.getTipo(), financa.getCategoria().getNome(),
+								financa.getNome(), "R$ " + financa.getTotal(), "", "R$ " + (financa.getTotal() * 12) });
 						totalFinal += (financa.getTotal() * 12);
 					} else {
-						modelo.addRow(new Object[] { "<html><b>" + financa.getTipo() + "</b></html>",
-								financa.getCategoria().getNome(), financa.getNome(), "", "R$ " + financa.getTotal(),
-								"R$ " + (financa.getTotal()) });
+						modelo.addRow(new Object[] { financa.getTipo(), financa.getCategoria().getNome(),
+								financa.getNome(), "", "R$ " + financa.getTotal(), "R$ " + (financa.getTotal()) });
 						totalFinal += (financa.getTotal());
 					}
 				}
@@ -1830,12 +1834,12 @@ public class MenuPrincipalFrame extends JFrame {
 						((int) cbRelatorioAnual.getSelectedItem()));
 				for (Financa financa : financas) {
 					if (financa.isMensal_Ocasional()) {
-						modelo.addRow(new Object[] { "<html><b>" + financa.getTipo() + "</b></html>", "",
-								financa.getNome(), "R$ " + financa.getTotal(), "", "R$ " + (financa.getTotal() * 12) });
+						modelo.addRow(new Object[] { financa.getTipo(), "", financa.getNome(),
+								"R$ " + financa.getTotal(), "", "R$ " + (financa.getTotal() * 12) });
 						totalFinal -= (financa.getTotal() * 12);
 					} else {
-						modelo.addRow(new Object[] { "<html><b>" + financa.getTipo() + "</b></html>", "",
-								financa.getNome(), "", "R$ " + financa.getTotal(), "R$ " + (financa.getTotal()) });
+						modelo.addRow(new Object[] { financa.getTipo(), "", financa.getNome(), "",
+								"R$ " + financa.getTotal(), "R$ " + (financa.getTotal()) });
 						totalFinal -= (financa.getTotal());
 					}
 				}
@@ -1843,8 +1847,8 @@ public class MenuPrincipalFrame extends JFrame {
 				financas = service.buscarFundoDespesasPorUsuarioPorAno(dadosUsuario.getId(),
 						((int) cbRelatorioAnual.getSelectedItem()));
 				for (Financa financa : financas) {
-					modelo.addRow(new Object[] { "<html><b>" + financa.getTipo() + "</b></html>", "", financa.getNome(),
-							"R$ " + financa.getTotal(), "", "R$ " + (financa.getTotal() * 12) });
+					modelo.addRow(new Object[] { financa.getTipo(), "", financa.getNome(), "R$ " + financa.getTotal(),
+							"", "R$ " + (financa.getTotal() * 12) });
 					totalFinal -= (financa.getTotal() * 12);
 				}
 
@@ -1864,20 +1868,17 @@ public class MenuPrincipalFrame extends JFrame {
 				}
 				for (Financa financa : financas) {
 					if (financa.isMensal_Ocasional()) {
-						modelo.addRow(new Object[] { "<html><b>" + financa.getTipo() + "</b></html>",
-								financa.getCategoria().getNome(), financa.getNome(), "R$ " + financa.getTotal(), "",
-								"R$ " + (financa.getTotal() * 12) });
+						modelo.addRow(new Object[] { financa.getTipo(), financa.getCategoria().getNome(),
+								financa.getNome(), "R$ " + financa.getTotal(), "", "R$ " + (financa.getTotal() * 12) });
 						totalFinal -= (financa.getTotal() * 12);
 					} else {
-						modelo.addRow(new Object[] { "<html><b>" + financa.getTipo() + "</b></html>",
-								financa.getCategoria().getNome(), financa.getNome(), "", "R$ " + financa.getTotal(),
-								"R$ " + (financa.getTotal()) });
+						modelo.addRow(new Object[] { financa.getTipo(), financa.getCategoria().getNome(),
+								financa.getNome(), "", "R$ " + financa.getTotal(), "R$ " + (financa.getTotal()) });
 						totalFinal -= (financa.getTotal());
 					}
 				}
 				if (modelo.getRowCount() != 0) {
-					modelo.addRow(
-							new Object[] { "<html><b>Total Anual</b></html>", "", "", "", "", "R$ " + totalFinal });
+					modelo.addRow(new Object[] { "Total Anual", "", "", "", "", "R$ " + totalFinal });
 				}
 
 			} catch (SQLException e) {
@@ -1909,14 +1910,12 @@ public class MenuPrincipalFrame extends JFrame {
 				}
 				for (Financa financa : financas) {
 					if (financa.isMensal_Ocasional()) {
-						modelo.addRow(new Object[] { "<html><b>" + financa.getTipo() + "</b></html>",
-								financa.getCategoria().getNome(), financa.getNome(), "R$ " + financa.getTotal(), "",
-								"R$ " + (financa.getTotal() * 12) });
+						modelo.addRow(new Object[] { financa.getTipo(), financa.getCategoria().getNome(),
+								financa.getNome(), "R$ " + financa.getTotal(), "", "R$ " + (financa.getTotal() * 12) });
 						totalFinal += (financa.getTotal() * 12);
 					} else {
-						modelo.addRow(new Object[] { "<html><b>" + financa.getTipo() + "</b></html>",
-								financa.getCategoria().getNome(), financa.getNome(), "", "R$ " + financa.getTotal(),
-								"R$ " + (financa.getTotal()) });
+						modelo.addRow(new Object[] { financa.getTipo(), financa.getCategoria().getNome(),
+								financa.getNome(), "", "R$ " + financa.getTotal(), "R$ " + (financa.getTotal()) });
 						totalFinal += (financa.getTotal());
 					}
 				}
@@ -1937,21 +1936,18 @@ public class MenuPrincipalFrame extends JFrame {
 				}
 				for (Financa financa : financas) {
 					if (financa.isMensal_Ocasional()) {
-						modelo.addRow(new Object[] { "<html><b>" + financa.getTipo() + "</b></html>",
-								financa.getCategoria().getNome(), financa.getNome(), "R$ " + financa.getTotal(), "",
-								"R$ " + (financa.getTotal() * 12) });
+						modelo.addRow(new Object[] { financa.getTipo(), financa.getCategoria().getNome(),
+								financa.getNome(), "R$ " + financa.getTotal(), "", "R$ " + (financa.getTotal() * 12) });
 						totalFinal -= (financa.getTotal() * 12);
 					} else {
-						modelo.addRow(new Object[] { "<html><b>" + financa.getTipo() + "</b></html>",
-								financa.getCategoria().getNome(), financa.getNome(), "", "R$ " + financa.getTotal(),
-								"R$ " + (financa.getTotal()) });
+						modelo.addRow(new Object[] { financa.getTipo(), financa.getCategoria().getNome(),
+								financa.getNome(), "", "R$ " + financa.getTotal(), "R$ " + (financa.getTotal()) });
 						totalFinal -= (financa.getTotal());
 					}
 				}
 
 				if (modelo.getRowCount() != 0) {
-					modelo.addRow(
-							new Object[] { "<html><b>Total Anual</b></html>", "", "", "", "", "R$ " + totalFinal });
+					modelo.addRow(new Object[] { "Total Anual", "", "", "", "", "R$ " + totalFinal });
 				}
 
 			} catch (SQLException e) {
@@ -2043,9 +2039,9 @@ public class MenuPrincipalFrame extends JFrame {
 			e.printStackTrace();
 		}
 	}
-	
-	public void exportarXls(JTable table, String tipo) {
-		//FALTA SÓ ISSO
+
+	public static void exportarXls(JTable table, String filePath) {
+		new ExportarXls().exportToExcel(table, filePath);
 	}
 
 	public static void main(String[] args) {
