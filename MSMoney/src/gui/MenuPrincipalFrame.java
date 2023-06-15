@@ -684,11 +684,9 @@ public class MenuPrincipalFrame extends JFrame {
 		btnGerarRelatorioMensal.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (!chckbxRelatorioMensalCategoria.isSelected()) {
-					exportarXls(tableRelatorioMensal, "Mensal" + cbRelatorioMensal.getSelectedItem()
-							+ cbRelatorioMensalAno.getSelectedItem() + ".xls");
+					exportarXls(tableRelatorioMensal);
 				}else {
-					exportarXls(tableRelatorioMensal, "Mensal" + cbRelatorioMensal.getSelectedItem()
-					+ cbRelatorioMensalAno.getSelectedItem() + cbCategoriaMensal + ".xls");
+					exportarXls(tableRelatorioMensal);
 				}
 			}
 		});
@@ -768,9 +766,9 @@ public class MenuPrincipalFrame extends JFrame {
 		btnGerarRelatorioAnual.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(!chckbxRelatorioAnualCategoria.isSelected()) {
-					exportarXls(tableRelatorioAnual, "Mensal" + cbRelatorioAnual.getSelectedItem() + ".xls");
+					exportarXls(tableRelatorioAnual);
 				}else {
-					exportarXls(tableRelatorioAnual, "Mensal" + cbRelatorioAnual.getSelectedItem() + cbCategoriaAnual + ".xls");
+					exportarXls(tableRelatorioAnual);
 				}
 			}
 		});
@@ -2040,8 +2038,16 @@ public class MenuPrincipalFrame extends JFrame {
 		}
 	}
 
-	public static void exportarXls(JTable table, String filePath) {
-		new ExportarXls().exportToExcel(table, filePath);
+	public static void exportarXls(JTable table) {
+		try {
+			new ExportarXls().exportToExcel(table);
+			JOptionPane.showMessageDialog(null, "Xls gerado com sucesso!\n", "Sucesso",
+					JOptionPane.INFORMATION_MESSAGE);
+		} catch (HeadlessException e) {
+			// TODO Auto-generated catch block
+			JOptionPane.showMessageDialog(null, "Erro ao gerar xml!\n" + e.getMessage(), "ERRO",
+					JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
 	public static void main(String[] args) {
