@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.List;
-import java.io.FileOutputStream;
 import javax.swing.border.TitledBorder;
 import entities.Categoria;
 import entities.Financa;
@@ -22,12 +21,11 @@ import utils.Mes;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
-import javax.swing.table.TableModel;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 import utils.ExportarXls;
 
-public class MenuPrincipalFrame extends JFrame {
+public class MenuPrincipalWindow extends JFrame {
 	private JPanel mainPanel;
 	private JTable tableDespesas;
 	private JTable tableRendimento;
@@ -106,7 +104,7 @@ public class MenuPrincipalFrame extends JFrame {
 	private JPanel botPanelRelatorioAnual;
 	private JButton btnGerarRelatorioAnual;
 	private JMenu optionsMenu;
-	public CadastrarFinancaFrame cadastrarFinanca;
+	public CadastrarFinancaWindow cadastrarFinanca;
 	private JScrollPane scrollPaneRendimento;
 	private JScrollPane scrollPaneInvestimento;
 	public DadosUsuario dadosUsuario;
@@ -126,7 +124,7 @@ public class MenuPrincipalFrame extends JFrame {
 	private JCheckBox chckbxRelatorioMensalCategoria;
 	private JCheckBox chckbxRelatorioAnualCategoria;
 
-	public MenuPrincipalFrame() {
+	public MenuPrincipalWindow() {
 		dadosUsuario = DadosUsuario.getInstance();
 		estiloCelula();
 		initComponents();
@@ -165,7 +163,7 @@ public class MenuPrincipalFrame extends JFrame {
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override
 					public void run() {
-						new LoginCadastroFrame();
+						new LoginCadastroWindow();
 					}
 				});
 			}
@@ -211,7 +209,7 @@ public class MenuPrincipalFrame extends JFrame {
 		cbRendimentoAnual = new JComboBox();
 		cbRendimentoAnual.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		topPanelRendimento.add(cbRendimentoAnual);
-		btnPesquisarRendimento.setIcon(new ImageIcon(MenuPrincipalFrame.class.getResource("/images/pesquisar20.png")));
+		btnPesquisarRendimento.setIcon(new ImageIcon(MenuPrincipalWindow.class.getResource("/images/pesquisar20.png")));
 		topPanelRendimento.add(btnPesquisarRendimento);
 
 		centerPanelRendimento = new JPanel();
@@ -240,7 +238,7 @@ public class MenuPrincipalFrame extends JFrame {
 				btnCadastrarRendimentoActionPerformed();
 			}
 		});
-		btnCadastrarRendimento.setIcon(new ImageIcon(MenuPrincipalFrame.class.getResource("/images/cadastrar40.png")));
+		btnCadastrarRendimento.setIcon(new ImageIcon(MenuPrincipalWindow.class.getResource("/images/cadastrar40.png")));
 		btnCadastrarRendimento.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btnCadastrarRendimento.setBackground(new Color(221, 249, 226));
 		botPanelRendimento.add(btnCadastrarRendimento);
@@ -251,7 +249,7 @@ public class MenuPrincipalFrame extends JFrame {
 				btnEditarRendimentoActionPerformed();
 			}
 		});
-		btnEditarRendimento.setIcon(new ImageIcon(MenuPrincipalFrame.class.getResource("/images/editar40.png")));
+		btnEditarRendimento.setIcon(new ImageIcon(MenuPrincipalWindow.class.getResource("/images/editar40.png")));
 		btnEditarRendimento.setBackground(new Color(191, 214, 255));
 		btnEditarRendimento.setFont(new Font("Tahoma", Font.BOLD, 16));
 		botPanelRendimento.add(btnEditarRendimento);
@@ -262,7 +260,7 @@ public class MenuPrincipalFrame extends JFrame {
 				btnExcluirRendimentoActionPerformed();
 			}
 		});
-		btnExcluirRendimento.setIcon(new ImageIcon(MenuPrincipalFrame.class.getResource("/images/excluir40.png")));
+		btnExcluirRendimento.setIcon(new ImageIcon(MenuPrincipalWindow.class.getResource("/images/excluir40.png")));
 		btnExcluirRendimento.setBackground(new Color(255, 176, 176));
 		btnExcluirRendimento.setFont(new Font("Tahoma", Font.BOLD, 16));
 		botPanelRendimento.add(btnExcluirRendimento);
@@ -292,7 +290,7 @@ public class MenuPrincipalFrame extends JFrame {
 		cbDespesasAnual = new JComboBox();
 		cbDespesasAnual.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		topPanelDespesas.add(cbDespesasAnual);
-		btnPesquisarDespesas.setIcon(new ImageIcon(MenuPrincipalFrame.class.getResource("/images/pesquisar20.png")));
+		btnPesquisarDespesas.setIcon(new ImageIcon(MenuPrincipalWindow.class.getResource("/images/pesquisar20.png")));
 		topPanelDespesas.add(btnPesquisarDespesas);
 
 		centerPanelDespesas = new JPanel();
@@ -323,7 +321,7 @@ public class MenuPrincipalFrame extends JFrame {
 			}
 		});
 		btnCadastrarDespesas.setBackground(new Color(221, 249, 226));
-		btnCadastrarDespesas.setIcon(new ImageIcon(MenuPrincipalFrame.class.getResource("/images/cadastrar40.png")));
+		btnCadastrarDespesas.setIcon(new ImageIcon(MenuPrincipalWindow.class.getResource("/images/cadastrar40.png")));
 		btnCadastrarDespesas.setFont(new Font("Tahoma", Font.BOLD, 16));
 		botPanelDespesas.add(btnCadastrarDespesas);
 
@@ -334,7 +332,7 @@ public class MenuPrincipalFrame extends JFrame {
 			}
 		});
 		btnEditarDespesas.setBackground(new Color(191, 214, 255));
-		btnEditarDespesas.setIcon(new ImageIcon(MenuPrincipalFrame.class.getResource("/images/editar40.png")));
+		btnEditarDespesas.setIcon(new ImageIcon(MenuPrincipalWindow.class.getResource("/images/editar40.png")));
 		btnEditarDespesas.setFont(new Font("Tahoma", Font.BOLD, 16));
 		botPanelDespesas.add(btnEditarDespesas);
 
@@ -345,7 +343,7 @@ public class MenuPrincipalFrame extends JFrame {
 			}
 		});
 		btnExcluirDespesas.setBackground(new Color(255, 176, 176));
-		btnExcluirDespesas.setIcon(new ImageIcon(MenuPrincipalFrame.class.getResource("/images/excluir40.png")));
+		btnExcluirDespesas.setIcon(new ImageIcon(MenuPrincipalWindow.class.getResource("/images/excluir40.png")));
 		btnExcluirDespesas.setFont(new Font("Tahoma", Font.BOLD, 16));
 		botPanelDespesas.add(btnExcluirDespesas);
 
@@ -375,7 +373,7 @@ public class MenuPrincipalFrame extends JFrame {
 		cbInvestimentoAnual.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		topPanelInvestimento.add(cbInvestimentoAnual);
 		btnPesquisarInvestimento
-				.setIcon(new ImageIcon(MenuPrincipalFrame.class.getResource("/images/pesquisar20.png")));
+				.setIcon(new ImageIcon(MenuPrincipalWindow.class.getResource("/images/pesquisar20.png")));
 		topPanelInvestimento.add(btnPesquisarInvestimento);
 
 		centerPanelInvestimento = new JPanel();
@@ -406,7 +404,7 @@ public class MenuPrincipalFrame extends JFrame {
 		});
 		btnCadastrarInvestimento.setBackground(new Color(221, 249, 226));
 		btnCadastrarInvestimento
-				.setIcon(new ImageIcon(MenuPrincipalFrame.class.getResource("/images/cadastrar40.png")));
+				.setIcon(new ImageIcon(MenuPrincipalWindow.class.getResource("/images/cadastrar40.png")));
 		btnCadastrarInvestimento.setFont(new Font("Tahoma", Font.BOLD, 16));
 		botPanelInvestimento.add(btnCadastrarInvestimento);
 
@@ -417,7 +415,7 @@ public class MenuPrincipalFrame extends JFrame {
 			}
 		});
 		btnEditarInvestimento.setBackground(new Color(191, 214, 255));
-		btnEditarInvestimento.setIcon(new ImageIcon(MenuPrincipalFrame.class.getResource("/images/editar40.png")));
+		btnEditarInvestimento.setIcon(new ImageIcon(MenuPrincipalWindow.class.getResource("/images/editar40.png")));
 		btnEditarInvestimento.setFont(new Font("Tahoma", Font.BOLD, 16));
 		botPanelInvestimento.add(btnEditarInvestimento);
 
@@ -427,7 +425,7 @@ public class MenuPrincipalFrame extends JFrame {
 				btnExcluirInvestimentoActionPerformed();
 			}
 		});
-		btnExcluirInvestimento.setIcon(new ImageIcon(MenuPrincipalFrame.class.getResource("/images/excluir40.png")));
+		btnExcluirInvestimento.setIcon(new ImageIcon(MenuPrincipalWindow.class.getResource("/images/excluir40.png")));
 		btnExcluirInvestimento.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btnExcluirInvestimento.setBackground(new Color(255, 176, 176));
 		botPanelInvestimento.add(btnExcluirInvestimento);
@@ -458,7 +456,7 @@ public class MenuPrincipalFrame extends JFrame {
 			}
 		});
 		btnPesquisarFundoDespesas
-				.setIcon(new ImageIcon(MenuPrincipalFrame.class.getResource("/images/pesquisar20.png")));
+				.setIcon(new ImageIcon(MenuPrincipalWindow.class.getResource("/images/pesquisar20.png")));
 		topPanelFundoDespesas.add(btnPesquisarFundoDespesas);
 
 		btnPesquisarFundoDespesas.setVisible(true);
@@ -491,7 +489,7 @@ public class MenuPrincipalFrame extends JFrame {
 			}
 		});
 		btnCadastrarFundoDespesas
-				.setIcon(new ImageIcon(MenuPrincipalFrame.class.getResource("/images/cadastrar40.png")));
+				.setIcon(new ImageIcon(MenuPrincipalWindow.class.getResource("/images/cadastrar40.png")));
 		btnCadastrarFundoDespesas.setBackground(new Color(221, 249, 226));
 		btnCadastrarFundoDespesas.setFont(new Font("Tahoma", Font.BOLD, 16));
 		botPanelFundoDespesas.add(btnCadastrarFundoDespesas);
@@ -502,7 +500,7 @@ public class MenuPrincipalFrame extends JFrame {
 				btnEditarFundoDespesasActionPerformed();
 			}
 		});
-		btnEditarFundoDespesas.setIcon(new ImageIcon(MenuPrincipalFrame.class.getResource("/images/editar40.png")));
+		btnEditarFundoDespesas.setIcon(new ImageIcon(MenuPrincipalWindow.class.getResource("/images/editar40.png")));
 		btnEditarFundoDespesas.setBackground(new Color(191, 214, 255));
 		btnEditarFundoDespesas.setFont(new Font("Tahoma", Font.BOLD, 16));
 		botPanelFundoDespesas.add(btnEditarFundoDespesas);
@@ -513,7 +511,7 @@ public class MenuPrincipalFrame extends JFrame {
 				btnExcluirFundoDespesasActionPerformed();
 			}
 		});
-		btnExcluirFundoDespesas.setIcon(new ImageIcon(MenuPrincipalFrame.class.getResource("/images/excluir40.png")));
+		btnExcluirFundoDespesas.setIcon(new ImageIcon(MenuPrincipalWindow.class.getResource("/images/excluir40.png")));
 		btnExcluirFundoDespesas.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btnExcluirFundoDespesas.setBackground(new Color(255, 176, 176));
 		botPanelFundoDespesas.add(btnExcluirFundoDespesas);
@@ -556,7 +554,7 @@ public class MenuPrincipalFrame extends JFrame {
 		cbResumoMensalAno.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		topPanelResumomensal.add(cbResumoMensalAno);
 		btnPesquisarResumoMensal
-				.setIcon(new ImageIcon(MenuPrincipalFrame.class.getResource("/images/pesquisar20.png")));
+				.setIcon(new ImageIcon(MenuPrincipalWindow.class.getResource("/images/pesquisar20.png")));
 		topPanelResumomensal.add(btnPesquisarResumoMensal);
 
 		centerPanelResumomensal = new JPanel();
@@ -596,7 +594,7 @@ public class MenuPrincipalFrame extends JFrame {
 				btnPesquisarResumoAnualActionPerformed();
 			}
 		});
-		btnPesquisarResumoAnual.setIcon(new ImageIcon(MenuPrincipalFrame.class.getResource("/images/pesquisar20.png")));
+		btnPesquisarResumoAnual.setIcon(new ImageIcon(MenuPrincipalWindow.class.getResource("/images/pesquisar20.png")));
 		topPanelResumoanual.add(btnPesquisarResumoAnual);
 
 		relatorioPanel = new JPanel();
@@ -657,7 +655,7 @@ public class MenuPrincipalFrame extends JFrame {
 			}
 		});
 		btnPesquisarRelatorioMensal
-				.setIcon(new ImageIcon(MenuPrincipalFrame.class.getResource("/images/pesquisar20.png")));
+				.setIcon(new ImageIcon(MenuPrincipalWindow.class.getResource("/images/pesquisar20.png")));
 		topPanelRelatoriomensal.add(btnPesquisarRelatorioMensal);
 
 		centerPanelRelatoriomensal = new JPanel();
@@ -690,7 +688,7 @@ public class MenuPrincipalFrame extends JFrame {
 				}
 			}
 		});
-		btnGerarRelatorioMensal.setIcon(new ImageIcon(MenuPrincipalFrame.class.getResource("/images/relatorio40.png")));
+		btnGerarRelatorioMensal.setIcon(new ImageIcon(MenuPrincipalWindow.class.getResource("/images/relatorio40.png")));
 		btnGerarRelatorioMensal.setBackground(new Color(221, 249, 226));
 		btnGerarRelatorioMensal.setFont(new Font("Tahoma", Font.BOLD, 16));
 		botPanelRelatorioMensal.add(btnGerarRelatorioMensal);
@@ -739,7 +737,7 @@ public class MenuPrincipalFrame extends JFrame {
 			}
 		});
 		btnPesquisarRelatorioAnual
-				.setIcon(new ImageIcon(MenuPrincipalFrame.class.getResource("/images/pesquisar20.png")));
+				.setIcon(new ImageIcon(MenuPrincipalWindow.class.getResource("/images/pesquisar20.png")));
 		topPanelRelatorioanual.add(btnPesquisarRelatorioAnual);
 
 		centerPanelRelatorioanual = new JPanel();
@@ -772,7 +770,7 @@ public class MenuPrincipalFrame extends JFrame {
 				}
 			}
 		});
-		btnGerarRelatorioAnual.setIcon(new ImageIcon(MenuPrincipalFrame.class.getResource("/images/relatorio40.png")));
+		btnGerarRelatorioAnual.setIcon(new ImageIcon(MenuPrincipalWindow.class.getResource("/images/relatorio40.png")));
 		btnGerarRelatorioAnual.setBackground(new Color(221, 249, 226));
 		btnGerarRelatorioAnual.setFont(new Font("Tahoma", Font.BOLD, 16));
 		botPanelRelatorioAnual.add(btnGerarRelatorioAnual);
@@ -875,7 +873,7 @@ public class MenuPrincipalFrame extends JFrame {
 	}
 
 	public void btnCadastrarRendimentoActionPerformed() {
-		cadastrarFinanca = new CadastrarFinancaFrame("Rendimento", "Cadastrar",
+		cadastrarFinanca = new CadastrarFinancaWindow("Rendimento", "Cadastrar",
 				(int) cbRendimentoAnual.getSelectedItem());
 		cadastrarFinanca.setLocationRelativeTo(null);
 		cadastrarFinanca.setVisible(true);
@@ -890,7 +888,7 @@ public class MenuPrincipalFrame extends JFrame {
 	}
 
 	public void btnCadastrarDespesasActionPerformed() {
-		cadastrarFinanca = new CadastrarFinancaFrame("Despesa", "Cadastrar", (int) cbDespesasAnual.getSelectedItem());
+		cadastrarFinanca = new CadastrarFinancaWindow("Despesa", "Cadastrar", (int) cbDespesasAnual.getSelectedItem());
 		cadastrarFinanca.setLocationRelativeTo(null);
 		cadastrarFinanca.setVisible(true);
 
@@ -904,7 +902,7 @@ public class MenuPrincipalFrame extends JFrame {
 	}
 
 	public void btnCadastrarInvestimentoActionPerformed() {
-		cadastrarFinanca = new CadastrarFinancaFrame("Investimento a Longo Prazo", "Cadastrar",
+		cadastrarFinanca = new CadastrarFinancaWindow("Investimento a Longo Prazo", "Cadastrar",
 				(int) cbInvestimentoAnual.getSelectedItem());
 		cadastrarFinanca.setLocationRelativeTo(null);
 		cadastrarFinanca.setVisible(true);
@@ -919,7 +917,7 @@ public class MenuPrincipalFrame extends JFrame {
 	}
 
 	public void btnCadastrarFundoDespesasActionPerformed() {
-		cadastrarFinanca = new CadastrarFinancaFrame("Fundo para Despesas Ocasionais", "Cadastrar",
+		cadastrarFinanca = new CadastrarFinancaWindow("Fundo para Despesas Ocasionais", "Cadastrar",
 				(int) cbFundoDespesasAnual.getSelectedItem());
 		cadastrarFinanca.setLocationRelativeTo(null);
 		cadastrarFinanca.setVisible(true);
@@ -954,8 +952,8 @@ public class MenuPrincipalFrame extends JFrame {
 			cbCategoriaAnual.revalidate();
 			cbCategoriaAnual.repaint();
 		} catch (SQLException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Erro ao atualizar Categorias!\n" + e.getMessage(), "ERRO",
+					JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -989,8 +987,8 @@ public class MenuPrincipalFrame extends JFrame {
 					}
 
 				} catch (SQLException | IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Erro ao buscar Categorias!\n" + e.getMessage(), "ERRO",
+							JOptionPane.ERROR_MESSAGE);
 				}
 				for (Financa financa : financas) {
 					if (financa.isMensal_Ocasional()) {
@@ -1003,11 +1001,9 @@ public class MenuPrincipalFrame extends JFrame {
 				}
 
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				JOptionPane.showMessageDialog(null, "Erro ao carregar Rendimentos!\n" + e.getMessage(), "ERRO",
 						JOptionPane.ERROR_MESSAGE);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				JOptionPane.showMessageDialog(null, "Erro ao carregar Rendimentos!\n" + e.getMessage(), "ERRO",
 						JOptionPane.ERROR_MESSAGE);
 			}
@@ -1029,8 +1025,8 @@ public class MenuPrincipalFrame extends JFrame {
 					}
 
 				} catch (SQLException | IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Erro ao carregar Categorias!\n" + e.getMessage(), "ERRO",
+							JOptionPane.ERROR_MESSAGE);
 				}
 				for (Financa financa : financas) {
 					if (financa.isMensal_Ocasional()) {
@@ -1042,11 +1038,9 @@ public class MenuPrincipalFrame extends JFrame {
 					}
 				}
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				JOptionPane.showMessageDialog(null, "Erro ao carregar Rendimentos!\n" + e.getMessage(), "ERRO",
 						JOptionPane.ERROR_MESSAGE);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				JOptionPane.showMessageDialog(null, "Erro ao carregar Rendimentos!\n" + e.getMessage(), "ERRO",
 						JOptionPane.ERROR_MESSAGE);
 			}
@@ -1080,11 +1074,9 @@ public class MenuPrincipalFrame extends JFrame {
 				}
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			JOptionPane.showMessageDialog(null, "Erro ao carregar Investimentos!\n" + e.getMessage(), "ERRO",
 					JOptionPane.ERROR_MESSAGE);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			JOptionPane.showMessageDialog(null, "Erro ao carregar Investimentos!\n" + e.getMessage(), "ERRO",
 					JOptionPane.ERROR_MESSAGE);
 		}
@@ -1111,11 +1103,9 @@ public class MenuPrincipalFrame extends JFrame {
 						"R$ " + (financa.getTotal() * 12) });
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			JOptionPane.showMessageDialog(null, "Erro ao carregar Fundo de Despesas Ocasionais!\n" + e.getMessage(),
 					"ERRO", JOptionPane.ERROR_MESSAGE);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			JOptionPane.showMessageDialog(null, "Erro ao carregar Fundo de Despesas Ocasionais!\n" + e.getMessage(),
 					"ERRO", JOptionPane.ERROR_MESSAGE);
 		}
@@ -1152,7 +1142,7 @@ public class MenuPrincipalFrame extends JFrame {
 				financa.setTipo("Rendimento");
 				financa.setMes(cbRendimentoMensal.getSelectedIndex());
 				financa.setAno(((int) cbRendimentoAnual.getSelectedItem()));
-				CadastrarFinancaFrame editarFinancaFrame = new CadastrarFinancaFrame("Rendimento", "Editar",
+				CadastrarFinancaWindow editarFinancaFrame = new CadastrarFinancaWindow("Rendimento", "Editar",
 						(int) cbRendimentoAnual.getSelectedItem(), financa);
 				editarFinancaFrame.setLocationRelativeTo(null);
 				editarFinancaFrame.setVisible(true);
@@ -1251,7 +1241,7 @@ public class MenuPrincipalFrame extends JFrame {
 				financa.setTipo("Despesa");
 				financa.setMes(cbDespesasMensal.getSelectedIndex());
 				financa.setAno(((int) cbDespesasAnual.getSelectedItem()));
-				CadastrarFinancaFrame editarFinancaFrame = new CadastrarFinancaFrame("Despesa", "Editar",
+				CadastrarFinancaWindow editarFinancaFrame = new CadastrarFinancaWindow("Despesa", "Editar",
 						(int) cbDespesasAnual.getSelectedItem(), financa);
 				editarFinancaFrame.setLocationRelativeTo(null);
 				editarFinancaFrame.setVisible(true);
@@ -1345,7 +1335,7 @@ public class MenuPrincipalFrame extends JFrame {
 				financa.setTipo("Investimento a Longo Prazo");
 				financa.setMes(cbInvestimentoMensal.getSelectedIndex());
 				financa.setAno(((int) cbInvestimentoAnual.getSelectedItem()));
-				CadastrarFinancaFrame editarFinancaFrame = new CadastrarFinancaFrame("Investimento a Longo Prazo",
+				CadastrarFinancaWindow editarFinancaFrame = new CadastrarFinancaWindow("Investimento a Longo Prazo",
 						"Editar", (int) cbInvestimentoAnual.getSelectedItem(), financa);
 				editarFinancaFrame.setLocationRelativeTo(null);
 				editarFinancaFrame.setVisible(true);
@@ -1433,7 +1423,7 @@ public class MenuPrincipalFrame extends JFrame {
 				financa.setTotal(valorDouble);
 				financa.setTipo("Fundo para Despesas Ocasionais");
 				financa.setAno(((int) cbFundoDespesasAnual.getSelectedItem()));
-				CadastrarFinancaFrame editarFinancaFrame = new CadastrarFinancaFrame("Fundo para Despesas Ocasionais",
+				CadastrarFinancaWindow editarFinancaFrame = new CadastrarFinancaWindow("Fundo para Despesas Ocasionais",
 						"Editar", (int) cbFundoDespesasAnual.getSelectedItem(), financa);
 				editarFinancaFrame.setLocationRelativeTo(null);
 				editarFinancaFrame.setVisible(true);
@@ -1636,8 +1626,8 @@ public class MenuPrincipalFrame extends JFrame {
 					}
 
 				} catch (SQLException | IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Erro ao buscar Categorias!\n" + e.getMessage(), "ERRO",
+							JOptionPane.ERROR_MESSAGE);
 				}
 				for (Financa financa : financas) {
 					if (financa.isMensal_Ocasional()) {
@@ -1685,8 +1675,8 @@ public class MenuPrincipalFrame extends JFrame {
 					}
 
 				} catch (SQLException | IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Erro ao buscar Categorias!\n" + e.getMessage(), "ERRO",
+							JOptionPane.ERROR_MESSAGE);
 				}
 				for (Financa financa : financas) {
 					if (financa.isMensal_Ocasional()) {
@@ -1704,11 +1694,9 @@ public class MenuPrincipalFrame extends JFrame {
 				}
 
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				JOptionPane.showMessageDialog(null, "Erro ao carregar Rendimentos!\n" + e.getMessage(), "ERRO",
 						JOptionPane.ERROR_MESSAGE);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				JOptionPane.showMessageDialog(null, "Erro ao carregar Rendimentos!\n" + e.getMessage(), "ERRO",
 						JOptionPane.ERROR_MESSAGE);
 			}
@@ -1728,8 +1716,8 @@ public class MenuPrincipalFrame extends JFrame {
 					}
 
 				} catch (SQLException | IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Erro ao buscar Categorias!\n" + e.getMessage(), "ERRO",
+							JOptionPane.ERROR_MESSAGE);
 				}
 				for (Financa financa : financas) {
 					if (financa.isMensal_Ocasional()) {
@@ -1755,8 +1743,8 @@ public class MenuPrincipalFrame extends JFrame {
 					}
 
 				} catch (SQLException | IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Erro ao buscar Categorias!\n" + e.getMessage(), "ERRO",
+							JOptionPane.ERROR_MESSAGE);
 				}
 				for (Financa financa : financas) {
 					if (financa.isMensal_Ocasional()) {
@@ -1775,11 +1763,9 @@ public class MenuPrincipalFrame extends JFrame {
 				}
 
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				JOptionPane.showMessageDialog(null, "Erro ao carregar Rendimentos!\n" + e.getMessage(), "ERRO",
 						JOptionPane.ERROR_MESSAGE);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				JOptionPane.showMessageDialog(null, "Erro ao carregar Rendimentos!\n" + e.getMessage(), "ERRO",
 						JOptionPane.ERROR_MESSAGE);
 			}
@@ -1813,8 +1799,8 @@ public class MenuPrincipalFrame extends JFrame {
 					}
 
 				} catch (SQLException | IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Erro ao buscar Categorias!\n" + e.getMessage(), "ERRO",
+							JOptionPane.ERROR_MESSAGE);
 				}
 				for (Financa financa : financas) {
 					if (financa.isMensal_Ocasional()) {
@@ -1861,8 +1847,8 @@ public class MenuPrincipalFrame extends JFrame {
 					}
 
 				} catch (SQLException | IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Erro ao buscar Categorias!\n" + e.getMessage(), "ERRO",
+							JOptionPane.ERROR_MESSAGE);
 				}
 				for (Financa financa : financas) {
 					if (financa.isMensal_Ocasional()) {
@@ -1880,11 +1866,9 @@ public class MenuPrincipalFrame extends JFrame {
 				}
 
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				JOptionPane.showMessageDialog(null, "Erro ao carregar Rendimentos!\n" + e.getMessage(), "ERRO",
 						JOptionPane.ERROR_MESSAGE);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				JOptionPane.showMessageDialog(null, "Erro ao carregar Rendimentos!\n" + e.getMessage(), "ERRO",
 						JOptionPane.ERROR_MESSAGE);
 			}
@@ -1903,8 +1887,8 @@ public class MenuPrincipalFrame extends JFrame {
 					}
 
 				} catch (SQLException | IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Erro ao buscar Categorias!\n" + e.getMessage(), "ERRO",
+							JOptionPane.ERROR_MESSAGE);
 				}
 				for (Financa financa : financas) {
 					if (financa.isMensal_Ocasional()) {
@@ -1929,8 +1913,8 @@ public class MenuPrincipalFrame extends JFrame {
 					}
 
 				} catch (SQLException | IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Erro ao buscar Categorias!\n" + e.getMessage(), "ERRO",
+							JOptionPane.ERROR_MESSAGE);
 				}
 				for (Financa financa : financas) {
 					if (financa.isMensal_Ocasional()) {
@@ -1949,11 +1933,9 @@ public class MenuPrincipalFrame extends JFrame {
 				}
 
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				JOptionPane.showMessageDialog(null, "Erro ao carregar Rendimentos!\n" + e.getMessage(), "ERRO",
 						JOptionPane.ERROR_MESSAGE);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				JOptionPane.showMessageDialog(null, "Erro ao carregar Rendimentos!\n" + e.getMessage(), "ERRO",
 						JOptionPane.ERROR_MESSAGE);
 			}
@@ -2054,7 +2036,7 @@ public class MenuPrincipalFrame extends JFrame {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				new LoginCadastroFrame();
+				new LoginCadastroWindow();
 			}
 		});
 	}

@@ -1,6 +1,5 @@
 package gui;
 
-import java.awt.EventQueue;
 import java.util.Calendar;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -10,28 +9,23 @@ import javax.swing.JRadioButton;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import javax.swing.border.TitledBorder;
-import entities.Usuario;
 import entities.Categoria;
 import entities.Financa;
 import service.CategoriaService;
 import service.FinancaService;
-import service.UsuarioService;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.border.BevelBorder;
 import javax.swing.JComboBox;
 import javax.swing.border.EtchedBorder;
 import java.awt.Color;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
-import javax.swing.SwingConstants;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -40,7 +34,7 @@ import javax.swing.DefaultComboBoxModel;
 import utils.DadosUsuario;
 import utils.Mes;
 
-public class CadastrarFinancaFrame extends JFrame {
+public class CadastrarFinancaWindow extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtNomeFinanca;
@@ -61,9 +55,7 @@ public class CadastrarFinancaFrame extends JFrame {
 	private JButton btnCadastrarFinanca;
 	private JButton btnCancelar;
 	public ButtonGroup buttonGroup;
-
 	private String tipoFinanca;
-
 	private Financa financa;
 	private JPanel anoPanel;
 	private JComboBox cbAno;
@@ -76,16 +68,16 @@ public class CadastrarFinancaFrame extends JFrame {
 		this.financa = financa;
 	}
 
-	public CadastrarFinancaFrame() {
+	public CadastrarFinancaWindow() {
 		initComponents("", "", 2023);
 	}
 
-	public CadastrarFinancaFrame(String tipoFinanca, String cadastro_edicao, int ano) {
+	public CadastrarFinancaWindow(String tipoFinanca, String cadastro_edicao, int ano) {
 		setTipoFinanca(tipoFinanca);
 		initComponents(tipoFinanca, cadastro_edicao, ano);
 	}
 
-	public CadastrarFinancaFrame(String tipoFinanca, String cadastro_edicao, int ano, Financa financa) {
+	public CadastrarFinancaWindow(String tipoFinanca, String cadastro_edicao, int ano, Financa financa) {
 		setTipoFinanca(tipoFinanca);
 		setFinanca(financa);
 		getFinanca().setNome(financa.getNome());

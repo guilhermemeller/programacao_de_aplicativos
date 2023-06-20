@@ -1,11 +1,8 @@
 package gui;
 
 import javax.swing.*;
-
 import entities.Usuario;
 import service.UsuarioService;
-import utils.DadosUsuario;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,7 +11,7 @@ import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.sql.SQLException;
 
-public class LoginCadastroFrame extends JFrame {
+public class LoginCadastroWindow extends JFrame {
 	private JPanel loginPanel;
 	private JTextField usernameField;
 	private JPasswordField passwordField;
@@ -41,7 +38,7 @@ public class LoginCadastroFrame extends JFrame {
 	private JButton cadastrarUsuarioButton;
 	private JButton voltarButton;
 
-	public LoginCadastroFrame() {
+	public LoginCadastroWindow() {
 		initComponents();
 	}
 
@@ -98,7 +95,7 @@ public class LoginCadastroFrame extends JFrame {
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override
 					public void run() {
-						new MenuPrincipalFrame();
+						new MenuPrincipalWindow();
 					}
 				});
 			} else {

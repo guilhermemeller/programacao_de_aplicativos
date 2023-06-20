@@ -23,10 +23,10 @@ public class CategoriaService {
 		new CategoriaDAO(conn).editarCategoria(categoria);
 	}
 	
-	public int excluirCategoria(Integer id_categoria) throws SQLException, IOException {
+	public int excluirCategoria(Integer idCategoria) throws SQLException, IOException {
 		
 		Connection conn = BancoDados.conectar();
-		return new CategoriaDAO(conn).excluirCategoria(id_categoria);
+		return new CategoriaDAO(conn).excluirCategoria(idCategoria);
 	}
 	
 	public List<Categoria> buscarCategorias(int idUsuario) throws SQLException, IOException {
@@ -35,9 +35,9 @@ public class CategoriaService {
 		return new CategoriaDAO(conn).buscarCategorias(idUsuario);
 	}
 	
-	public String buscarNomeCategoria(int id) throws SQLException, IOException {
+	public String buscarNomeCategoria(int idCategoria) throws SQLException, IOException {
 		Connection conn = BancoDados.conectar();
-		return new CategoriaDAO(conn).buscarNomeCategoria(id);
+		return new CategoriaDAO(conn).buscarNomeCategoria(idCategoria);
 	}
 	
 	public int buscarIdCategoria(String nomeCategoria) throws SQLException, IOException {

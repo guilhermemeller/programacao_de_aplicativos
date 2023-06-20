@@ -15,14 +15,6 @@ public class Financa {
 		
 	}
 	
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-	
 	public Financa(String nome, Categoria categoria, boolean mensal_Ocasional, Double total, String tipo, int mes, int ano) {
 		super();
 		this.nome = nome;
@@ -51,6 +43,14 @@ public class Financa {
 		this.tipo = tipo;
 		this.mes = mes;
 		this.ano = ano;
+	}
+	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getNome() {

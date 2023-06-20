@@ -1,6 +1,9 @@
 package entities;
 
 public class Categoria {
+
+	private int id_Categoria;
+	private String nome;
 	
 	public Categoria(int id_Categoria, String nome) {
 		super();
@@ -22,9 +25,6 @@ public class Categoria {
 		this.nome = nome;
 		this.id_Categoria = id_Categoria;
 	}
-
-	private int id_Categoria;
-	private String nome;
 	
 	public int getId_Categoria() {
 		return id_Categoria;
