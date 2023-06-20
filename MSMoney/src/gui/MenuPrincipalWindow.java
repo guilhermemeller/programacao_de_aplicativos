@@ -957,6 +957,21 @@ public class MenuPrincipalWindow extends JFrame {
 		}
 	}
 
+	public void atualizarNomeCategoria(List<Financa> financas) {
+		String nomeCategoria = "";
+		try {
+			CategoriaService catS = new CategoriaService();
+			for (int i = 0; i < financas.size(); i++) {
+				nomeCategoria = catS.buscarNomeCategoria(financas.get(i).getCategoria().getId_Categoria());
+				financas.get(i).getCategoria().setNome(nomeCategoria);
+			}
+
+		} catch (SQLException | IOException e) {
+			JOptionPane.showMessageDialog(null, "Erro ao buscar Categorias!\n" + e.getMessage(), "ERRO",
+					JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
 	private void buscarRendimentoDespesa(int type) {
 		tableRendimento.setRowHeight(20);
 		tableDespesas.setRowHeight(20);
@@ -978,18 +993,9 @@ public class MenuPrincipalWindow extends JFrame {
 				financas = service.buscarRendimentoDespesaPorUsuario(dadosUsuario.getId(),
 						(cbRendimentoMensal.getSelectedIndex() + 1), ((int) cbRendimentoAnual.getSelectedItem()),
 						"Rendimento");
-				String nomeCategoria = "";
-				try {
-					CategoriaService catS = new CategoriaService();
-					for (int i = 0; i < financas.size(); i++) {
-						nomeCategoria = catS.buscarNomeCategoria(financas.get(i).getCategoria().getId_Categoria());
-						financas.get(i).getCategoria().setNome(nomeCategoria);
-					}
-
-				} catch (SQLException | IOException e) {
-					JOptionPane.showMessageDialog(null, "Erro ao buscar Categorias!\n" + e.getMessage(), "ERRO",
-							JOptionPane.ERROR_MESSAGE);
-				}
+				
+				atualizarNomeCategoria(financas);
+				
 				for (Financa financa : financas) {
 					if (financa.isMensal_Ocasional()) {
 						modeloR.addRow(new Object[] { financa.getCategoria().getNome(), financa.getNome(),
@@ -1016,18 +1022,9 @@ public class MenuPrincipalWindow extends JFrame {
 				financas = service.buscarRendimentoDespesaPorUsuario(dadosUsuario.getId(),
 						(cbDespesasMensal.getSelectedIndex() + 1), ((int) cbDespesasAnual.getSelectedItem()),
 						"Despesa");
-				String nomeCategoria = "";
-				try {
-					CategoriaService catS = new CategoriaService();
-					for (int i = 0; i < financas.size(); i++) {
-						nomeCategoria = catS.buscarNomeCategoria(financas.get(i).getCategoria().getId_Categoria());
-						financas.get(i).getCategoria().setNome(nomeCategoria);
-					}
-
-				} catch (SQLException | IOException e) {
-					JOptionPane.showMessageDialog(null, "Erro ao carregar Categorias!\n" + e.getMessage(), "ERRO",
-							JOptionPane.ERROR_MESSAGE);
-				}
+				
+				atualizarNomeCategoria(financas);
+				
 				for (Financa financa : financas) {
 					if (financa.isMensal_Ocasional()) {
 						modeloD.addRow(new Object[] { financa.getCategoria().getNome(), financa.getNome(),
@@ -1617,18 +1614,9 @@ public class MenuPrincipalWindow extends JFrame {
 				financas = service.buscarRendimentoDespesaPorUsuario(dadosUsuario.getId(),
 						(cbRelatorioMensal.getSelectedIndex() + 1), ((int) cbRelatorioMensalAno.getSelectedItem()),
 						"Rendimento");
-				String nomeCategoria = "";
-				try {
-					CategoriaService catS = new CategoriaService();
-					for (int i = 0; i < financas.size(); i++) {
-						nomeCategoria = catS.buscarNomeCategoria(financas.get(i).getCategoria().getId_Categoria());
-						financas.get(i).getCategoria().setNome(nomeCategoria);
-					}
-
-				} catch (SQLException | IOException e) {
-					JOptionPane.showMessageDialog(null, "Erro ao buscar Categorias!\n" + e.getMessage(), "ERRO",
-							JOptionPane.ERROR_MESSAGE);
-				}
+				
+				atualizarNomeCategoria(financas);
+				
 				for (Financa financa : financas) {
 					if (financa.isMensal_Ocasional()) {
 						modelo.addRow(new Object[] { financa.getTipo(), financa.getCategoria().getNome(),
@@ -1666,18 +1654,9 @@ public class MenuPrincipalWindow extends JFrame {
 				financas = service.buscarRendimentoDespesaPorUsuario(dadosUsuario.getId(),
 						(cbRelatorioMensal.getSelectedIndex() + 1), ((int) cbRelatorioMensalAno.getSelectedItem()),
 						"Despesa");
-				nomeCategoria = "";
-				try {
-					CategoriaService catS = new CategoriaService();
-					for (int i = 0; i < financas.size(); i++) {
-						nomeCategoria = catS.buscarNomeCategoria(financas.get(i).getCategoria().getId_Categoria());
-						financas.get(i).getCategoria().setNome(nomeCategoria);
-					}
-
-				} catch (SQLException | IOException e) {
-					JOptionPane.showMessageDialog(null, "Erro ao buscar Categorias!\n" + e.getMessage(), "ERRO",
-							JOptionPane.ERROR_MESSAGE);
-				}
+				
+				atualizarNomeCategoria(financas);
+				
 				for (Financa financa : financas) {
 					if (financa.isMensal_Ocasional()) {
 						modelo.addRow(new Object[] { financa.getTipo(), financa.getCategoria().getNome(),
@@ -1707,18 +1686,9 @@ public class MenuPrincipalWindow extends JFrame {
 						(cbRelatorioMensal.getSelectedIndex() + 1), ((int) cbRelatorioMensalAno.getSelectedItem()),
 						"Rendimento",
 						new CategoriaService().buscarIdCategoria((String) cbCategoriaMensal.getSelectedItem()));
-				String nomeCategoria = "";
-				try {
-					CategoriaService catS = new CategoriaService();
-					for (int i = 0; i < financas.size(); i++) {
-						nomeCategoria = catS.buscarNomeCategoria(financas.get(i).getCategoria().getId_Categoria());
-						financas.get(i).getCategoria().setNome(nomeCategoria);
-					}
-
-				} catch (SQLException | IOException e) {
-					JOptionPane.showMessageDialog(null, "Erro ao buscar Categorias!\n" + e.getMessage(), "ERRO",
-							JOptionPane.ERROR_MESSAGE);
-				}
+				
+				atualizarNomeCategoria(financas);
+				
 				for (Financa financa : financas) {
 					if (financa.isMensal_Ocasional()) {
 						modelo.addRow(new Object[] { financa.getTipo(), financa.getCategoria().getNome(),
@@ -1734,18 +1704,9 @@ public class MenuPrincipalWindow extends JFrame {
 						(cbRelatorioMensal.getSelectedIndex() + 1), ((int) cbRelatorioMensalAno.getSelectedItem()),
 						"Despesa",
 						new CategoriaService().buscarIdCategoria((String) cbCategoriaMensal.getSelectedItem()));
-				nomeCategoria = "";
-				try {
-					CategoriaService catS = new CategoriaService();
-					for (int i = 0; i < financas.size(); i++) {
-						nomeCategoria = catS.buscarNomeCategoria(financas.get(i).getCategoria().getId_Categoria());
-						financas.get(i).getCategoria().setNome(nomeCategoria);
-					}
-
-				} catch (SQLException | IOException e) {
-					JOptionPane.showMessageDialog(null, "Erro ao buscar Categorias!\n" + e.getMessage(), "ERRO",
-							JOptionPane.ERROR_MESSAGE);
-				}
+				
+				atualizarNomeCategoria(financas);
+				
 				for (Financa financa : financas) {
 					if (financa.isMensal_Ocasional()) {
 						modelo.addRow(new Object[] { financa.getTipo(), financa.getCategoria().getNome(),
@@ -1790,18 +1751,9 @@ public class MenuPrincipalWindow extends JFrame {
 			try {
 				financas = service.buscarRendimentoDespesaPorUsuarioPorAno(dadosUsuario.getId(),
 						((int) cbRelatorioAnual.getSelectedItem()), "Rendimento");
-				String nomeCategoria = "";
-				try {
-					CategoriaService catS = new CategoriaService();
-					for (int i = 0; i < financas.size(); i++) {
-						nomeCategoria = catS.buscarNomeCategoria(financas.get(i).getCategoria().getId_Categoria());
-						financas.get(i).getCategoria().setNome(nomeCategoria);
-					}
-
-				} catch (SQLException | IOException e) {
-					JOptionPane.showMessageDialog(null, "Erro ao buscar Categorias!\n" + e.getMessage(), "ERRO",
-							JOptionPane.ERROR_MESSAGE);
-				}
+				
+				atualizarNomeCategoria(financas);
+				
 				for (Financa financa : financas) {
 					if (financa.isMensal_Ocasional()) {
 						modelo.addRow(new Object[] { financa.getTipo(), financa.getCategoria().getNome(),
@@ -1838,18 +1790,9 @@ public class MenuPrincipalWindow extends JFrame {
 
 				financas = service.buscarRendimentoDespesaPorUsuarioPorAno(dadosUsuario.getId(),
 						((int) cbRelatorioAnual.getSelectedItem()), "Despesa");
-				nomeCategoria = "";
-				try {
-					CategoriaService catS = new CategoriaService();
-					for (int i = 0; i < financas.size(); i++) {
-						nomeCategoria = catS.buscarNomeCategoria(financas.get(i).getCategoria().getId_Categoria());
-						financas.get(i).getCategoria().setNome(nomeCategoria);
-					}
-
-				} catch (SQLException | IOException e) {
-					JOptionPane.showMessageDialog(null, "Erro ao buscar Categorias!\n" + e.getMessage(), "ERRO",
-							JOptionPane.ERROR_MESSAGE);
-				}
+				
+				atualizarNomeCategoria(financas);
+				
 				for (Financa financa : financas) {
 					if (financa.isMensal_Ocasional()) {
 						modelo.addRow(new Object[] { financa.getTipo(), financa.getCategoria().getNome(),
@@ -1878,18 +1821,9 @@ public class MenuPrincipalWindow extends JFrame {
 				financas = service.buscarRendimentoDespesaPorUsuarioPorCategoriaPorAno(dadosUsuario.getId(),
 						((int) cbRelatorioAnual.getSelectedItem()), "Rendimento",
 						new CategoriaService().buscarIdCategoria((String) cbCategoriaAnual.getSelectedItem()));
-				String nomeCategoria = "";
-				try {
-					CategoriaService catS = new CategoriaService();
-					for (int i = 0; i < financas.size(); i++) {
-						nomeCategoria = catS.buscarNomeCategoria(financas.get(i).getCategoria().getId_Categoria());
-						financas.get(i).getCategoria().setNome(nomeCategoria);
-					}
-
-				} catch (SQLException | IOException e) {
-					JOptionPane.showMessageDialog(null, "Erro ao buscar Categorias!\n" + e.getMessage(), "ERRO",
-							JOptionPane.ERROR_MESSAGE);
-				}
+				
+				atualizarNomeCategoria(financas);
+				
 				for (Financa financa : financas) {
 					if (financa.isMensal_Ocasional()) {
 						modelo.addRow(new Object[] { financa.getTipo(), financa.getCategoria().getNome(),
@@ -1904,18 +1838,9 @@ public class MenuPrincipalWindow extends JFrame {
 				financas = service.buscarRendimentoDespesaPorUsuarioPorCategoriaPorAno(dadosUsuario.getId(),
 						((int) cbRelatorioAnual.getSelectedItem()), "Despesa",
 						new CategoriaService().buscarIdCategoria((String) cbCategoriaAnual.getSelectedItem()));
-				nomeCategoria = "";
-				try {
-					CategoriaService catS = new CategoriaService();
-					for (int i = 0; i < financas.size(); i++) {
-						nomeCategoria = catS.buscarNomeCategoria(financas.get(i).getCategoria().getId_Categoria());
-						financas.get(i).getCategoria().setNome(nomeCategoria);
-					}
-
-				} catch (SQLException | IOException e) {
-					JOptionPane.showMessageDialog(null, "Erro ao buscar Categorias!\n" + e.getMessage(), "ERRO",
-							JOptionPane.ERROR_MESSAGE);
-				}
+				
+				atualizarNomeCategoria(financas);
+				
 				for (Financa financa : financas) {
 					if (financa.isMensal_Ocasional()) {
 						modelo.addRow(new Object[] { financa.getTipo(), financa.getCategoria().getNome(),

@@ -62,7 +62,6 @@ public class LoginCadastroWindow extends JFrame {
 			JOptionPane.showMessageDialog(null, "Cadastro realizado com sucesso!");
 			cadastroRealizado = true;
 		} catch (SQLException | IOException e1) {
-			// TODO Auto-generated catch block
 			JOptionPane.showMessageDialog(null, e1.getMessage());
 		}
 
@@ -104,7 +103,6 @@ public class LoginCadastroWindow extends JFrame {
 						"Erro", JOptionPane.ERROR_MESSAGE);
 			}
 		} catch (SQLException | IOException e1) {
-			// TODO Auto-generated catch block
 			JOptionPane.showMessageDialog(null, e1.getMessage());
 		}
 

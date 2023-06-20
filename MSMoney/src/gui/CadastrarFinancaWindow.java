@@ -331,8 +331,8 @@ public class CadastrarFinancaWindow extends JFrame {
 								atualizarCategorias();
 							}
 						} catch (SQLException | IOException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
+							JOptionPane.showMessageDialog(null, "Erro ao carregar Categorias!\n", "ERRO",
+									JOptionPane.ERROR_MESSAGE);
 						}
 
 					} else {
@@ -343,8 +343,8 @@ public class CadastrarFinancaWindow extends JFrame {
 							JOptionPane.showMessageDialog(null, "Editado com sucesso!");
 							atualizarCategorias();
 						} catch (SQLException | IOException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
+							JOptionPane.showMessageDialog(null, "Erro ao carregar Categorias!\n", "ERRO",
+									JOptionPane.ERROR_MESSAGE);
 						}
 
 					}
@@ -419,7 +419,6 @@ public class CadastrarFinancaWindow extends JFrame {
     					financa.setId(service.buscarIdRendimentoDespesaPorNome(dadosUsuario.getId(), financa.getNome(),
     							financa.getMes(), financa.getAno()));
     				} catch (SQLException | IOException e1) {
-    					// TODO Auto-generated catch block
     					JOptionPane.showMessageDialog(null, e1.getMessage());
     				}
 
@@ -443,7 +442,6 @@ public class CadastrarFinancaWindow extends JFrame {
     						JOptionPane.showMessageDialog(null, "Edição com sucesso!");
     						this.dispose();
     					} catch (SQLException | IOException e) {
-    						// TODO Auto-generated catch block
     						JOptionPane.showMessageDialog(null, e.getMessage());
     					}
 
@@ -481,7 +479,6 @@ public class CadastrarFinancaWindow extends JFrame {
     						JOptionPane.showMessageDialog(null, "Edição com sucesso!");
     						this.dispose();
     					} catch (SQLException | IOException e) {
-    						// TODO Auto-generated catch block
     						JOptionPane.showMessageDialog(null, e.getMessage());
     					}
     				}
@@ -516,7 +513,6 @@ public class CadastrarFinancaWindow extends JFrame {
     						JOptionPane.showMessageDialog(null, "Edição com sucesso!");
     						this.dispose();
     					} catch (SQLException | IOException e) {
-    						// TODO Auto-generated catch block
     						JOptionPane.showMessageDialog(null, e.getMessage());
     					}
     				}
@@ -550,7 +546,6 @@ public class CadastrarFinancaWindow extends JFrame {
     						JOptionPane.showMessageDialog(null, "Edição com sucesso!");
     						this.dispose();
     					} catch (SQLException | IOException e) {
-    						// TODO Auto-generated catch block
     						JOptionPane.showMessageDialog(null, e.getMessage());
     					}
     				}
@@ -575,7 +570,6 @@ public class CadastrarFinancaWindow extends JFrame {
     					JOptionPane.showMessageDialog(null, "Edição com sucesso!");
     					this.dispose();
     				} catch (SQLException | IOException e) {
-    					// TODO Auto-generated catch block
     					JOptionPane.showMessageDialog(null, e.getMessage());
     				}
     			}
