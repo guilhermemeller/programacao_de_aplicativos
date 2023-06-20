@@ -27,6 +27,10 @@ Siga as etapas abaixo para executar o projeto:
 3. Execute o projeto: No pacote principal do projeto, localize o arquivo principal que contém o método main e clique com o botão direito do mouse. Em seguida, escolha a opção "Run As" e clique em "Java Application" para executar o projeto.
 4. Após seguir essas etapas, a aplicação de gestão de finanças será executada e estará pronta para uso.
 
+#### Observações: 
+O arquivo database.properties está localizado na pasta resources.
+Existe também um executável do programa chamado MSMoney.jar.
+
 ### Autores
 - **Guilherme Portela Meller** (https://github.com/guilhermemeller)
 - **João Vitor Chudek** (https://github.com/ChudsV)
