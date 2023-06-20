@@ -11,89 +11,89 @@ import entities.Financa;
 
 public class FinancaService {
 
-	public void inserirRedimentoDespesa(Financa financa, int usuarioId) throws SQLException, IOException {
+	public void inserirRedimentoDespesa(Financa financa, int idUsuario) throws SQLException, IOException {
 
 		Connection conn = BancoDados.conectar();
-		new FinancaDAO(conn).inserirRedimentoDespesa(financa, usuarioId);
+		new FinancaDAO(conn).inserirRedimentoDespesa(financa, idUsuario);
 	}
 	
-	public void inserirInvestimento(Financa financa, int usuarioId) throws SQLException, IOException {
+	public void inserirInvestimento(Financa financa, int idUsuario) throws SQLException, IOException {
 
 		Connection conn = BancoDados.conectar();
-		new FinancaDAO(conn).inserirInvestimento(financa, usuarioId);
+		new FinancaDAO(conn).inserirInvestimento(financa, idUsuario);
 	}
 	
-	public void inserirFundoParaDespesas(Financa financa, int usuarioId) throws SQLException, IOException {
+	public void inserirFundoParaDespesas(Financa financa, int idUsuario) throws SQLException, IOException {
 		
 		Connection conn = BancoDados.conectar();
-		new FinancaDAO(conn).inserirFundoParaDespesas(financa, usuarioId);
+		new FinancaDAO(conn).inserirFundoParaDespesas(financa, idUsuario);
 	}
 
 
-	public List<Financa> buscarRendimentoDespesaPorUsuario(int usuarioId, int mes, int ano, String tipoFinanca) throws SQLException, IOException {
+	public List<Financa> buscarRendimentoDespesaPorUsuario(int idUsuario, int mes, int ano, String tipoFinanca) throws SQLException, IOException {
 
 		Connection conn = BancoDados.conectar();
-		return new FinancaDAO(conn).buscarRendimentoDespesaPorUsuario(usuarioId, mes, ano, tipoFinanca);
-	}
-	
-	public List<Financa> buscarRendimentoDespesaPorUsuarioPorAno(int usuarioId, int ano, String tipoFinanca) throws SQLException, IOException {
-
-		Connection conn = BancoDados.conectar();
-		return new FinancaDAO(conn).buscarRendimentoDespesaPorUsuarioPorAno(usuarioId, ano, tipoFinanca);
+		return new FinancaDAO(conn).buscarRendimentoDespesaPorUsuario(idUsuario, mes, ano, tipoFinanca);
 	}
 	
-	public List<Financa> buscarRendimentoDespesaPorUsuarioPorCategoria(int usuarioId, int mes, int ano, String tipoFinanca, int idCategoria) throws SQLException, IOException {
+	public List<Financa> buscarRendimentoDespesaPorUsuarioPorAno(int idUsuario, int ano, String tipoFinanca) throws SQLException, IOException {
 
 		Connection conn = BancoDados.conectar();
-		return new FinancaDAO(conn).buscarRendimentoDespesaPorUsuarioPorCategoria(usuarioId, mes, ano, tipoFinanca, idCategoria);
+		return new FinancaDAO(conn).buscarRendimentoDespesaPorUsuarioPorAno(idUsuario, ano, tipoFinanca);
 	}
 	
-	public List<Financa> buscarRendimentoDespesaPorUsuarioPorCategoriaPorAno(int usuarioId, int ano, String tipoFinanca, int idCategoria) throws SQLException, IOException {
+	public List<Financa> buscarRendimentoDespesaPorUsuarioPorCategoria(int idUsuario, int mes, int ano, String tipoFinanca, int idCategoria) throws SQLException, IOException {
 
 		Connection conn = BancoDados.conectar();
-		return new FinancaDAO(conn).buscarRendimentoDespesaPorUsuarioPorCategoriaPorAno(usuarioId, ano, tipoFinanca, idCategoria);
+		return new FinancaDAO(conn).buscarRendimentoDespesaPorUsuarioPorCategoria(idUsuario, mes, ano, tipoFinanca, idCategoria);
 	}
 	
-	public List<Financa> buscarInvestimentoPorUsuario(int usuarioId, int mes, int ano) throws SQLException, IOException {
+	public List<Financa> buscarRendimentoDespesaPorUsuarioPorCategoriaPorAno(int idUsuario, int ano, String tipoFinanca, int idCategoria) throws SQLException, IOException {
 
 		Connection conn = BancoDados.conectar();
-		return new FinancaDAO(conn).buscarInvestimentoPorUsuario(usuarioId, mes, ano);
+		return new FinancaDAO(conn).buscarRendimentoDespesaPorUsuarioPorCategoriaPorAno(idUsuario, ano, tipoFinanca, idCategoria);
 	}
 	
-	public List<Financa> buscarInvestimentoPorUsuarioPorAno(int usuarioId, int ano) throws SQLException, IOException {
+	public List<Financa> buscarInvestimentoPorUsuario(int idUsuario, int mes, int ano) throws SQLException, IOException {
 
 		Connection conn = BancoDados.conectar();
-		return new FinancaDAO(conn).buscarInvestimentoPorUsuarioPorAno(usuarioId, ano);
+		return new FinancaDAO(conn).buscarInvestimentoPorUsuario(idUsuario, mes, ano);
 	}
 	
-	public List<Financa> buscarFundoDespesasPorUsuario(int usuarioId, int mes, int ano) throws SQLException, IOException {
+	public List<Financa> buscarInvestimentoPorUsuarioPorAno(int idUsuario, int ano) throws SQLException, IOException {
 
 		Connection conn = BancoDados.conectar();
-		return new FinancaDAO(conn).buscarFundoDespesasPorUsuario(usuarioId, mes, ano);
+		return new FinancaDAO(conn).buscarInvestimentoPorUsuarioPorAno(idUsuario, ano);
 	}
 	
-	public List<Financa> buscarFundoDespesasPorUsuarioPorAno(int usuarioId, int ano) throws SQLException, IOException {
+	public List<Financa> buscarFundoDespesasPorUsuario(int idUsuario, int mes, int ano) throws SQLException, IOException {
 
 		Connection conn = BancoDados.conectar();
-		return new FinancaDAO(conn).buscarFundoDespesasPorUsuarioPorAno(usuarioId,  ano);
+		return new FinancaDAO(conn).buscarFundoDespesasPorUsuario(idUsuario, mes, ano);
 	}
 	
-	public int buscarIdRendimentoDespesaPorNome(int usuarioId, String nome, int mes, int ano) throws SQLException, IOException {
+	public List<Financa> buscarFundoDespesasPorUsuarioPorAno(int idUsuario, int ano) throws SQLException, IOException {
 
 		Connection conn = BancoDados.conectar();
-		return new FinancaDAO(conn).buscarIdRendimentoDespesaPorNome(usuarioId, nome, mes, ano);
+		return new FinancaDAO(conn).buscarFundoDespesasPorUsuarioPorAno(idUsuario,  ano);
 	}
 	
-	public int buscarIdInvestimentoPorNome(int usuarioId, String nome, int mes, int ano) throws SQLException, IOException {
+	public int buscarIdRendimentoDespesaPorNome(int idUsuario, String nome, int mes, int ano) throws SQLException, IOException {
 
 		Connection conn = BancoDados.conectar();
-		return new FinancaDAO(conn).buscarIdInvestimentoPorNome(usuarioId, nome, mes, ano);
+		return new FinancaDAO(conn).buscarIdRendimentoDespesaPorNome(idUsuario, nome, mes, ano);
 	}
 	
-	public int buscarIdFundoDespesasPorNome(int usuarioId, String nome, int mes, int ano) throws SQLException, IOException {
+	public int buscarIdInvestimentoPorNome(int idUsuario, String nome, int mes, int ano) throws SQLException, IOException {
 
 		Connection conn = BancoDados.conectar();
-		return new FinancaDAO(conn).buscarIdInvestimentoPorNome(usuarioId, nome, mes, ano);
+		return new FinancaDAO(conn).buscarIdInvestimentoPorNome(idUsuario, nome, mes, ano);
+	}
+	
+	public int buscarIdFundoDespesasPorNome(int idUsuario, String nome, int mes, int ano) throws SQLException, IOException {
+
+		Connection conn = BancoDados.conectar();
+		return new FinancaDAO(conn).buscarIdInvestimentoPorNome(idUsuario, nome, mes, ano);
 	}
 	
 	public void editarRendimentoDespesas(Financa financa, String nome) throws SQLException, IOException {
@@ -119,19 +119,19 @@ public class FinancaService {
 		new FinancaDAO(conn).excluirFinanca(financa, table);
 	}
 	
-	public Double buscarTotalporMes(int usuarioId, String table,String tipo,  int mes, int ano) throws SQLException, IOException {
+	public Double buscarTotalporMes(int idUsuario, String table,String tipo,  int mes, int ano) throws SQLException, IOException {
 		Connection conn = BancoDados.conectar();
-		return new FinancaDAO(conn).buscarTotalporMes(usuarioId, table, tipo, mes, ano);
+		return new FinancaDAO(conn).buscarTotalPorMes(idUsuario, table, tipo, mes, ano);
 	}
 	
-	public List<Double> buscarTotalporAno(int usuarioId, String table,String tipo,  int mes) throws SQLException, IOException {
+	public List<Double> buscarTotalporAno(int idUsuario, String table,String tipo,  int mes) throws SQLException, IOException {
 		Connection conn = BancoDados.conectar();
-		return new FinancaDAO(conn).buscarTotalporAno(usuarioId, table, tipo, mes);
+		return new FinancaDAO(conn).buscarTotalPorAno(idUsuario, table, tipo, mes);
 	}
 	
-	public List<Integer> buscarAnoPorUsuario(int usuario_id, String table, String type)throws SQLException, IOException{
+	public List<Integer> buscarAnoPorUsuario(int idUsuario, String table, String type)throws SQLException, IOException{
 		Connection conn = BancoDados.conectar();
-		return new FinancaDAO(conn).buscarAnoPorUsuario(usuario_id, table, type);
+		return new FinancaDAO(conn).buscarAnoPorUsuario(idUsuario, table, type);
 	}
 	
 }

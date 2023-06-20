@@ -1,7 +1,5 @@
 package dao;
 
-import java.util.HashSet;
-import java.util.Set;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -24,7 +22,7 @@ public class FinancaDAO {
 		this.conn = conn;
 	}
 
-	public List<Financa> buscarRendimentoDespesaPorUsuario(int usuarioId, int mes, int ano, String tipoFinanca)
+	public List<Financa> buscarRendimentoDespesaPorUsuario(int idUsuario, int mes, int ano, String tipoFinanca)
 			throws SQLException {
 
 		PreparedStatement st = null;
@@ -35,7 +33,7 @@ public class FinancaDAO {
 			st = conn.prepareStatement("SELECT nome, categoria, mensal_ocasional, total, tipo, mes, ano "
 					+ "FROM rendimento_despesa WHERE usuario_id = ? AND tipo = ? AND mes = ? AND ano = ?");
 
-			st.setInt(1, usuarioId);
+			st.setInt(1, idUsuario);
 			st.setString(2, tipoFinanca);
 			st.setInt(3, mes);
 			st.setInt(4, ano);
@@ -68,7 +66,7 @@ public class FinancaDAO {
 		}
 	}
 	
-	public List<Financa> buscarRendimentoDespesaPorUsuarioPorAno(int usuarioId, int ano, String tipoFinanca)
+	public List<Financa> buscarRendimentoDespesaPorUsuarioPorAno(int idUsuario, int ano, String tipoFinanca)
 			throws SQLException {
 
 		PreparedStatement st = null;
@@ -79,7 +77,7 @@ public class FinancaDAO {
 			st = conn.prepareStatement("SELECT nome, categoria, mensal_ocasional, total, tipo, mes, ano "
 					+ "FROM rendimento_despesa WHERE usuario_id = ? AND tipo = ? AND ano = ? GROUP BY nome");
 
-			st.setInt(1, usuarioId);
+			st.setInt(1, idUsuario);
 			st.setString(2, tipoFinanca);
 			st.setInt(3, ano);
 
@@ -111,7 +109,7 @@ public class FinancaDAO {
 		}
 	}
 	
-	public List<Financa> buscarRendimentoDespesaPorUsuarioPorCategoria(int usuarioId, int mes, int ano, String tipoFinanca, int idCategoria)
+	public List<Financa> buscarRendimentoDespesaPorUsuarioPorCategoria(int idUsuario, int mes, int ano, String tipoFinanca, int idCategoria)
 			throws SQLException {
 
 		PreparedStatement st = null;
@@ -122,7 +120,7 @@ public class FinancaDAO {
 			st = conn.prepareStatement("SELECT nome, categoria, mensal_ocasional, total, tipo, mes, ano "
 					+ "FROM rendimento_despesa WHERE usuario_id = ? AND tipo = ? AND mes = ? AND ano = ? AND categoria = ?");
 
-			st.setInt(1, usuarioId);
+			st.setInt(1, idUsuario);
 			st.setString(2, tipoFinanca);
 			st.setInt(3, mes);
 			st.setInt(4, ano);
@@ -156,7 +154,7 @@ public class FinancaDAO {
 		}
 	}
 	
-	public List<Financa> buscarRendimentoDespesaPorUsuarioPorCategoriaPorAno(int usuarioId, int ano, String tipoFinanca, int idCategoria)
+	public List<Financa> buscarRendimentoDespesaPorUsuarioPorCategoriaPorAno(int idUsuario, int ano, String tipoFinanca, int idCategoria)
 			throws SQLException {
 
 		PreparedStatement st = null;
@@ -167,7 +165,7 @@ public class FinancaDAO {
 			st = conn.prepareStatement("SELECT nome, categoria, mensal_ocasional, total, tipo, mes, ano "
 					+ "FROM rendimento_despesa WHERE usuario_id = ? AND tipo = ? AND ano = ? AND categoria = ? GROUP BY nome");
 
-			st.setInt(1, usuarioId);
+			st.setInt(1, idUsuario);
 			st.setString(2, tipoFinanca);
 			st.setInt(3, ano);
 			st.setInt(4, idCategoria);
@@ -200,7 +198,7 @@ public class FinancaDAO {
 		}
 	}
 
-	public List<Financa> buscarInvestimentoPorUsuario(int usuarioId, int mes, int ano) throws SQLException {
+	public List<Financa> buscarInvestimentoPorUsuario(int idUsuario, int mes, int ano) throws SQLException {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 
@@ -209,7 +207,7 @@ public class FinancaDAO {
 			st = conn.prepareStatement("SELECT nome, mensal_ocasional, total, tipo, mes, ano "
 					+ "FROM investimento WHERE usuario_id = ? AND mes = ? AND ano = ?");
 
-			st.setInt(1, usuarioId);
+			st.setInt(1, idUsuario);
 			st.setInt(2, mes);
 			st.setInt(3, ano);
 
@@ -241,7 +239,7 @@ public class FinancaDAO {
 		}
 	}
 	
-	public List<Financa> buscarInvestimentoPorUsuarioPorAno(int usuarioId, int ano) throws SQLException {
+	public List<Financa> buscarInvestimentoPorUsuarioPorAno(int idUsuario, int ano) throws SQLException {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 
@@ -250,7 +248,7 @@ public class FinancaDAO {
 			st = conn.prepareStatement("SELECT nome, mensal_ocasional, total, tipo, mes, ano "
 					+ "FROM investimento WHERE usuario_id = ? AND ano = ? GROUP BY nome");
 
-			st.setInt(1, usuarioId);
+			st.setInt(1, idUsuario);
 			st.setInt(2, ano);
 
 			rs = st.executeQuery();
@@ -281,7 +279,7 @@ public class FinancaDAO {
 		}
 	}
 
-	public List<Financa> buscarFundoDespesasPorUsuario(int usuarioId, int mes, int ano) throws SQLException {
+	public List<Financa> buscarFundoDespesasPorUsuario(int idUsuario, int mes, int ano) throws SQLException {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 
@@ -290,7 +288,7 @@ public class FinancaDAO {
 			st = conn.prepareStatement(
 					"SELECT nome, total, tipo, mes, ano FROM fundo_despesas WHERE usuario_id = ? AND mes = ? AND ano = ?");
 
-			st.setInt(1, usuarioId);
+			st.setInt(1, idUsuario);
 			st.setInt(2, mes);
 			st.setInt(3, ano);
 
@@ -321,7 +319,7 @@ public class FinancaDAO {
 		}
 	}
 	
-	public List<Financa> buscarFundoDespesasPorUsuarioPorAno(int usuarioId, int ano) throws SQLException {
+	public List<Financa> buscarFundoDespesasPorUsuarioPorAno(int idUsuario, int ano) throws SQLException {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 
@@ -330,7 +328,7 @@ public class FinancaDAO {
 			st = conn.prepareStatement(
 					"SELECT nome, total, tipo, mes, ano FROM fundo_despesas WHERE usuario_id = ? AND ano = ? GROUP BY nome");
 
-			st.setInt(1, usuarioId);
+			st.setInt(1, idUsuario);
 			st.setInt(2, ano);
 
 			rs = st.executeQuery();
@@ -360,7 +358,7 @@ public class FinancaDAO {
 		}
 	}
 
-	public int buscarIdRendimentoDespesaPorNome(int usuarioId, String nome, int mes, int ano) throws SQLException {
+	public int buscarIdRendimentoDespesaPorNome(int idUsuario, String nome, int mes, int ano) throws SQLException {
 
 		PreparedStatement st = null;
 		ResultSet rs = null;
@@ -370,7 +368,7 @@ public class FinancaDAO {
 			st = conn.prepareStatement(
 					"SELECT id FROM rendimento_despesa WHERE usuario_id = ? AND nome LIKE ? AND mes = ? AND ano = ?");
 
-			st.setInt(1, usuarioId);
+			st.setInt(1, idUsuario);
 			st.setString(2, nome);
 			st.setInt(3, mes);
 			st.setInt(4, ano);
@@ -389,7 +387,7 @@ public class FinancaDAO {
 		return -1;
 	}
 
-	public Double buscarTotalporMes(int usuarioId, String table, String tipo, int mes, int ano) throws SQLException {
+	public Double buscarTotalPorMes(int idUsuario, String table, String tipo, int mes, int ano) throws SQLException {
 
 		PreparedStatement st = null;
 		ResultSet rs = null;
@@ -400,7 +398,7 @@ public class FinancaDAO {
 			st = conn.prepareStatement(
 					"SELECT total FROM " + table + " WHERE usuario_id = ? AND mes = ? AND ano = ? AND tipo LIKE ?");
 
-			st.setInt(1, usuarioId);
+			st.setInt(1, idUsuario);
 			st.setInt(2, mes);
 			st.setInt(3, ano);
 			st.setString(4, tipo);
@@ -420,7 +418,7 @@ public class FinancaDAO {
 		}
 	}
 
-	public List<Double> buscarTotalporAno(int usuarioId, String table, String tipo, int ano) throws SQLException {
+	public List<Double> buscarTotalPorAno(int idUsuario, String table, String tipo, int ano) throws SQLException {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		Double totalFinalMensal = 0.0;
@@ -432,7 +430,7 @@ public class FinancaDAO {
 				st = conn.prepareStatement(
 						"SELECT total, mensal_ocasional FROM " + table + " WHERE usuario_id = ? AND ano = ? AND tipo LIKE ?");
 
-				st.setInt(1, usuarioId);
+				st.setInt(1, idUsuario);
 				st.setInt(2, ano);
 				st.setString(3, tipo);
 
@@ -452,7 +450,7 @@ public class FinancaDAO {
 				st = conn.prepareStatement(
 						"SELECT total FROM " + table + " WHERE usuario_id = ? AND ano = ? AND tipo LIKE ?");
 
-				st.setInt(1, usuarioId);
+				st.setInt(1, idUsuario);
 				st.setInt(2, ano);
 				st.setString(3, tipo);
 
@@ -472,7 +470,7 @@ public class FinancaDAO {
 		return listaTotalFinal;
 	}
 
-	public int buscarIdInvestimentoPorNome(int usuarioId, String nome, int mes, int ano) throws SQLException {
+	public int buscarIdInvestimentoPorNome(int idUsuario, String nome, int mes, int ano) throws SQLException {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 
@@ -481,7 +479,7 @@ public class FinancaDAO {
 			st = conn.prepareStatement(
 					"SELECT id FROM investimento WHERE usuario_id = ? AND nome LIKE ? AND mes = ? AND ano = ?");
 
-			st.setInt(1, usuarioId);
+			st.setInt(1, idUsuario);
 			st.setString(2, nome);
 			st.setInt(3, mes);
 			st.setInt(4, ano);
@@ -500,7 +498,7 @@ public class FinancaDAO {
 		return -1;
 	}
 
-	public int buscarIdFundoDespesasPorNome(int usuarioId, String nome, int mes, int ano) throws SQLException {
+	public int buscarIdFundoDespesasPorNome(int idUsuario, String nome, int mes, int ano) throws SQLException {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 
@@ -509,7 +507,7 @@ public class FinancaDAO {
 			st = conn.prepareStatement(
 					"SELECT id FROM fundo_despesas WHERE usuario_id = ? AND nome LIKE ? AND mes = ? AND ano = ?");
 
-			st.setInt(1, usuarioId);
+			st.setInt(1, idUsuario);
 			st.setString(2, nome);
 			st.setInt(3, mes);
 			st.setInt(4, ano);
@@ -528,7 +526,7 @@ public class FinancaDAO {
 		return -1;
 	}
 
-	public void inserirRedimentoDespesa(Financa financa, int usuarioId) throws SQLException {
+	public void inserirRedimentoDespesa(Financa financa, int idUsuario) throws SQLException {
 
 		PreparedStatement st = null;
 
@@ -550,7 +548,7 @@ public class FinancaDAO {
 					st.setString(5, aux.getTipo());
 					st.setInt(6, aux.getMes());
 					st.setInt(7, aux.getAno());
-					st.setInt(8, usuarioId);
+					st.setInt(8, idUsuario);
 
 					st.executeUpdate();
 
@@ -574,7 +572,7 @@ public class FinancaDAO {
 				st.setString(5, financa.getTipo());
 				st.setInt(6, financa.getMes());
 				st.setInt(7, financa.getAno());
-				st.setInt(8, usuarioId);
+				st.setInt(8, idUsuario);
 
 				st.executeUpdate();
 
@@ -586,7 +584,7 @@ public class FinancaDAO {
 		}
 	}
 
-	public void inserirInvestimento(Financa financa, int usuarioId) throws SQLException {
+	public void inserirInvestimento(Financa financa, int idUsuario) throws SQLException {
 
 		PreparedStatement st = null;
 
@@ -607,7 +605,7 @@ public class FinancaDAO {
 					st.setString(4, aux.getTipo());
 					st.setInt(5, aux.getMes());
 					st.setInt(6, aux.getAno());
-					st.setInt(7, usuarioId);
+					st.setInt(7, idUsuario);
 
 					st.executeUpdate();
 
@@ -630,7 +628,7 @@ public class FinancaDAO {
 				st.setString(4, financa.getTipo());
 				st.setInt(5, financa.getMes());
 				st.setInt(6, financa.getAno());
-				st.setInt(7, usuarioId);
+				st.setInt(7, idUsuario);
 
 				st.executeUpdate();
 
@@ -642,7 +640,7 @@ public class FinancaDAO {
 		}
 	}
 
-	public void inserirFundoParaDespesas(Financa financa, int usuarioId) throws SQLException {
+	public void inserirFundoParaDespesas(Financa financa, int idUsuario) throws SQLException {
 
 		PreparedStatement st = null;
 
@@ -658,7 +656,7 @@ public class FinancaDAO {
 				st.setString(3, financa.getTipo());
 				st.setInt(4, i + 1);
 				st.setInt(5, financa.getAno());
-				st.setInt(6, usuarioId);
+				st.setInt(6, idUsuario);
 
 				st.executeUpdate();
 
@@ -795,14 +793,14 @@ public class FinancaDAO {
 		}
 	}
 
-	public List<Integer> buscarAnoPorUsuario(int usuario_id, String table, String type) throws SQLException {
+	public List<Integer> buscarAnoPorUsuario(int idUsuario, String table, String type) throws SQLException {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		List<Integer> listaAnos = new ArrayList<>();
 
 		try {
 			st = conn.prepareStatement("SELECT ano FROM " + table + " WHERE usuario_id = ? AND tipo = ? GROUP BY ano");
-			st.setInt(1, usuario_id);
+			st.setInt(1, idUsuario);
 			st.setString(2, type);
 			rs = st.executeQuery();
 
@@ -811,7 +809,6 @@ public class FinancaDAO {
 				listaAnos.add(ano);
 			}
 		} finally {
-			// Certifique-se de fechar os recursos adequadamente
 			BancoDados.finalizarStatement(st);
 			BancoDados.finalizarResultSet(rs);
 			BancoDados.desconectar();

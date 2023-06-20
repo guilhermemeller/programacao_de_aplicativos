@@ -60,7 +60,7 @@ public class CategoriaDAO {
 		}	
 	}
 	
-	public int excluirCategoria(Integer id_categoria) throws SQLException {
+	public int excluirCategoria(Integer idCategoria) throws SQLException {
 		
 		PreparedStatement st = null;
 		
@@ -68,7 +68,7 @@ public class CategoriaDAO {
 			
 			st = conn.prepareStatement("DELETE FROM categoria WHERE id_categoria = ?");
 			
-			st.setInt(1, id_categoria);
+			st.setInt(1, idCategoria);
 			
 			int update = st.executeUpdate();
 			
@@ -116,7 +116,7 @@ public class CategoriaDAO {
 		}
 	}
 	
-	public String buscarNomeCategoria(int id) throws SQLException, IOException {
+	public String buscarNomeCategoria(int idCategoria) throws SQLException, IOException {
 		String categoria = "";
 		PreparedStatement st = null;
 		ResultSet rs = null;
@@ -125,7 +125,7 @@ public class CategoriaDAO {
 			
 			st = conn.prepareStatement("SELECT nome_categoria FROM categoria WHERE id_categoria = ?");
 			
-			st.setInt(1, id);
+			st.setInt(1, idCategoria);
 			
 			rs = st.executeQuery();
 			if(rs.next()) {
