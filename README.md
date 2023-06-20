@@ -28,7 +28,7 @@ Siga as etapas abaixo para executar o projeto:
 4. Após seguir essas etapas, a aplicação de gestão de finanças será executada e estará pronta para uso.
 
 ### Autores
-- **Guilherme Portela Meller**
-- **João Vitor Chudek**
-- **Matheus M. Gomes de Araujo**
+- **Guilherme Portela Meller** (https://github.com/guilhermemeller)
+- **João Vitor Chudek** (https://github.com/ChudsV)
+- **Matheus M. Gomes de Araujo** (https://github.com/MiiTzraeL)
 
