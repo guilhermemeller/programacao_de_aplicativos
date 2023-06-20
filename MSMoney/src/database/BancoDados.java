@@ -2,6 +2,7 @@ package database;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -36,9 +37,9 @@ public class BancoDados {
 
 	private static Properties carregarPropriedades() throws IOException {
 
-		FileInputStream propriedadesBanco = null;
+		InputStream propriedadesBanco = null;
 
-		propriedadesBanco = new FileInputStream("database.properties");
+		propriedadesBanco = BancoDados.class.getClassLoader().getResourceAsStream("database.properties");
 
 		Properties props = new Properties();
 		props.load(propriedadesBanco);
