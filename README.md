@@ -28,8 +28,8 @@ Siga as etapas abaixo para executar o projeto:
 4. Após seguir essas etapas, a aplicação de gestão de finanças será executada e estará pronta para uso.
 
 #### Observações: 
-O arquivo database.properties está localizado na pasta resources.
-Existe também um executável do programa chamado MSMoney.jar.
+- O arquivo "database.properties" está localizado na pasta "resources".
+- Existe também um executável do programa chamado "MSMoney.jar", localizado na pasta "MSMoney".
 
 ### Autores
 - **Guilherme Portela Meller** (https://github.com/guilhermemeller)
